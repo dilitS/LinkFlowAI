@@ -30,6 +30,9 @@ LingFlow AI is a comprehensive browser extension that brings the power of AI to 
 ### 🎨 Prompt Mode
 - **Image Prompts**: Generate detailed prompts for Midjourney, DALL-E, Stable Diffusion
 - **Video Prompts**: Create prompts for Sora and other video AI tools
+- **Nanobanana**: Advanced Gemini-specific generation and editing
+  - **Generation Styles**: Photorealistic, Sticker, Logo, Product, Minimalist, Comic
+  - **Editing Modes**: Modify, Retouch, Style Transfer, Composition
 - **Artistic Enhancement**: Adds visual details, style references, and technical specs
 - **Multi-language**: Translate prompts to any supported language
 - **Creative Boost**: Temperature 0.7 for maximum creativity
@@ -82,24 +85,16 @@ LingFlow AI is a comprehensive browser extension that brings the power of AI to 
 
 ## 🔧 Installation
 
-### For Users (Chrome Web Store)
-*Coming soon! Extension will be available on Chrome Web Store.*
+### Chrome Web Store
+**LingFlow AI** is available directly from the Chrome Web Store.
 
-### For Developers (Development Mode)
+1. Go to the [LingFlow AI Chrome Web Store page](#) *(Link coming soon)*
+2. Click **Add to Chrome**
+3. Pin the extension icon for easy access
 
-1. **Clone the repository**:
-   ```bash
-   git clone <repository-url>
-   cd LingFlow-AI
-   ```
+### Configuration
 
-2. **Load in Chrome**:
-   - Open `chrome://extensions/`
-   - Enable "Developer mode" (toggle in top-right)
-   - Click "Load unpacked"
-   - Select the project folder
-
-3. **Configure API Key**:
+1. **Configure API Key**:
    - Click the LingFlow AI extension icon
    - Click Settings (⚙️ icon)
    - **Option A: Free Tier (Built-in)**:
@@ -110,7 +105,7 @@ LingFlow AI is a comprehensive browser extension that brings the power of AI to 
      - Enter your API key
    - Click "Save Settings"
 
-4. **Start Using**:
+2. **Start Using**:
    - Try translating "Hello world" to Polish
    - Test OCR with a screenshot
    - Select text on any webpage
