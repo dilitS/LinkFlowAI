@@ -60,17 +60,17 @@
                 <button id="btn-translate"
                     class="mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-white bg-[#27272a] shadow-sm transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase"
                     data-mode="translate">
-                    <i class="fa-solid fa-globe"></i> __MSG_translateMode__
+                    <i class="fa-solid fa-globe"></i> <span data-i18n="translateMode">TŁUMACZ</span>
                 </button>
                 <button id="btn-correct"
                     class="mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-gray-500 hover:text-gray-300 transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase"
                     data-mode="correct">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> __MSG_correctMode__
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="correctMode">KOREKTA</span>
                 </button>
                 <button id="btn-prompt"
                     class="mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-gray-500 hover:text-gray-300 transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase"
                     data-mode="prompt">
-                    <i class="fa-solid fa-robot"></i> __MSG_promptMode__
+                    <i class="fa-solid fa-robot"></i> <span data-i18n="promptMode">PROMPT</span>
                 </button>
             </div>
         </div>
@@ -155,7 +155,8 @@
                 <!-- Source Input Container -->
                 <div
                     class="relative group bg-[#18181b] rounded-2xl border border-gray-800 hover:border-gray-700 transition-all shadow-sm input-group">
-                    <textarea id="input-text" placeholder="__MSG_inputPlaceholder__"
+                    <textarea id="input-text" data-i18n-placeholder="inputPlaceholder"
+                        placeholder="Wpisz tekst do przetłumaczenia..."
                         class="w-full bg-transparent text-[15px] text-gray-200 placeholder-gray-600 outline-none resize-none h-32 p-3 no-scrollbar leading-relaxed rounded-2xl pb-10"
                         spellcheck="false"></textarea>
 
@@ -192,7 +193,7 @@
                     <button
                         class="relative z-10 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold uppercase tracking-wider py-3 px-10 rounded-full shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all hover:scale-105 active:scale-95 group"
                         id="action-btn">
-                        <span>__MSG_actionButtonTranslate__</span>
+                        <span data-i18n="actionButtonTranslate">Tłumacz</span>
                     </button>
                 </div>
 
@@ -200,8 +201,8 @@
                 <div id="output-container"
                     class="bg-[#18181b] rounded-2xl p-4 border border-gray-800 relative transition-all duration-300 min-h-[100px] hover:border-gray-700 group">
                     <div class="flex justify-between items-start mb-3">
-                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]"
-                            id="output-label">__MSG_outputLabel__</span>
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]" id="output-label"
+                            data-i18n="outputLabel">WYNIK</span>
                         <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                             <!-- Speak Button -->
                             <button id="output-tts-btn"
@@ -218,7 +219,7 @@
                         </div>
                     </div>
                     <p class="text-gray-500 text-[14px] leading-relaxed break-words italic" id="output-text">
-                        __MSG_outputTextPlaceholder__
+                        <span data-i18n="outputTextPlaceholder">Wynik pojawi się tutaj...</span>
                     </p>
                 </div>
             </div>
@@ -229,14 +230,15 @@
                     id="toggle-history-btn">
                     <div class="flex items-center gap-3">
                         <span
-                            class="text-xs font-bold text-gray-500 group-hover:text-gray-300 transition-colors uppercase tracking-widest">__MSG_historyTitle__</span>
+                            class="text-xs font-bold text-gray-500 group-hover:text-gray-300 transition-colors uppercase tracking-widest"
+                            data-i18n="historyTitle">HISTORIA</span>
                         <span id="history-badge"
                             class="hidden text-[10px] bg-[#27272a] text-gray-400 px-2 py-0.5 rounded-full font-mono">0</span>
                     </div>
                     <div class="flex items-center gap-3">
                         <button
                             class="text-[10px] font-bold text-gray-600 hover:text-gray-400 transition-colors hidden uppercase tracking-wider"
-                            id="clear-history-btn">__MSG_clearHistoryButton__</button>
+                            id="clear-history-btn" data-i18n="clearHistoryButton">Wyczyść</button>
                         <i class="fa-solid fa-chevron-up text-xs text-gray-600 group-hover:text-white transition-transform duration-300"
                             id="history-arrow"></i>
                     </div>
@@ -246,7 +248,7 @@
                 <div id="history-list" class="space-y-2 pb-4 animate-fade-in">
                     <!-- History items will be injected here -->
                     <div class="text-center py-4 text-gray-600 text-xs italic" id="empty-history-msg">
-                        __MSG_emptyHistoryMessage__
+                        <span data-i18n="emptyHistoryMessage">Brak historii</span>
                     </div>
                 </div>
             </div>
@@ -257,7 +259,7 @@
             class="absolute inset-0 bg-[#09090b]/95 backdrop-blur-md z-50 transform translate-y-full transition-transform duration-300 cubic-bezier(0.32, 0.72, 0, 1) flex flex-col">
             <!-- Settings Header -->
             <div class="px-5 py-4 border-b border-gray-800 flex justify-between items-center bg-[#09090b]">
-                <h2 class="text-lg font-semibold text-white">__MSG_settingsTitle__</h2>
+                <h2 class="text-lg font-semibold text-white" data-i18n="settingsTitle">Ustawienia</h2>
                 <button id="close-settings-btn"
                     class="w-8 h-8 flex items-center justify-center rounded-full bg-[#18181b] text-gray-400 hover:text-white hover:bg-gray-700 transition-colors">
                     <i class="fa-solid fa-xmark text-sm"></i>

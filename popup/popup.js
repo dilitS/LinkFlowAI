@@ -20,9 +20,44 @@ const ttsManager = new TTSManager();
 const screenshotManager = new ScreenshotManager();
 
 /**
+ * Initialize i18n translations
+ */
+function initI18n() {
+    // Replace text content
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const message = chrome.i18n.getMessage(key);
+        if (message) {
+            el.textContent = message;
+        }
+    });
+
+    // Replace placeholders
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        const message = chrome.i18n.getMessage(key);
+        if (message) {
+            el.placeholder = message;
+        }
+    });
+
+    // Replace title attributes
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        const key = el.getAttribute('data-i18n-title');
+        const message = chrome.i18n.getMessage(key);
+        if (message) {
+            el.title = message;
+        }
+    });
+}
+
+/**
  * Initialize application
  */
 async function initialize() {
+    // Initialize i18n translations
+    initI18n();
+
     // Populate UI
     populateLanguages();
 

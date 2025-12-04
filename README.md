@@ -11,10 +11,10 @@
 
 ## ✨ Features
 
-LingFlow AI is a comprehensive browser extension that brings the power of AI to your browsing experience. With support for **8 languages** and **3 powerful modes**, it's your ultimate companion for translation, text improvement, and creative prompt generation.
+LingFlow AI is a comprehensive browser extension that brings the power of AI to your browsing experience. With support for **26 languages** and **3 powerful modes**, it's your ultimate companion for translation, text improvement, and creative prompt generation.
 
 ### 🌍 Translation Mode
-- **Multi-language Support**: Translate between 8 languages (Polish, English, German, Spanish, French, Italian, Portuguese, Japanese)
+- **Multi-language Support**: Translate between 26 languages (Polish, English, German, Spanish, French, Italian, Portuguese, Dutch, Ukrainian, Czech, Slovak, Hungarian, Romanian, Bulgarian, Greek, Turkish, Swedish, Norwegian, Danish, Finnish, Japanese, Korean, Chinese, Russian, Arabic, Hindi)
 - **Auto-detect**: Automatically detect source language
 - **Text-to-Speech**: Listen to both input and output text
 - **Language Swap**: Quickly swap source and target languages
@@ -315,7 +315,7 @@ LingFlow-AI/
 See [TESTING_GUIDE_SPRINT4.md](docs/TESTING_GUIDE_SPRINT4.md) for comprehensive testing instructions.
 
 ### Test Checklist
-- [ ] Translation works for all 8 languages
+- [ ] Translation works for all 26 languages
 - [ ] Correction improves grammar and style
 - [ ] Prompt generation enhances descriptions
 - [ ] OCR extracts text from screenshots
@@ -416,10 +416,10 @@ This is a personal project, but suggestions and bug reports are welcome!
 - ✅ Performance optimization
 - ✅ Error handling & Toast notifications
 - ✅ Comprehensive documentation
+- ✅ Multi-language UI (i18n)
 
 ### 🔜 v1.1.0 (Future)
 - Keyboard shortcuts
-- Multi-language UI
 - Import/Export history
 - Custom themes
 - Advanced settings
@@ -459,7 +459,7 @@ This is a personal project, but suggestions and bug reports are welcome!
 
 **Built with ❤️ using AI-powered development**
 
-**Last Updated**: 2025-12-03  
+**Last Updated**: 2025-12-04  
 **Current Version**: 1.0.0  
 **Status**: Ready for Release 🚀  
 **Sprints**: 9/9 Completed ✅
