@@ -248,16 +248,6 @@ LingFlow AI is a comprehensive browser extension that brings the power of AI to 
 
 ---
 
-## 🧪 Testing
-
-### Quick Test
-1. Load extension in Chrome
-2. Add API key in Settings
-3. Try translating "Hello world" to Polish
-4. Expected result: "Witaj świecie"
-
----
-
 ## 🐛 Known Issues & Limitations
 
 1. **OCR Requires API Key**: OCR functionality requires user's own API key (no default provided)
