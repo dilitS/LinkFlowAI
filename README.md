@@ -161,8 +161,8 @@ LingFlow AI is a comprehensive browser extension that brings the power of AI to 
 
 1. Select **Prompt** mode
 2. Choose prompt type:
-   - **Image**: For Midjourney, DALL-E, Stable Diffusion
-   - **Video**: For Sora, Runway, etc.
+   - **Image**: For Midjourney, Imagen, Flux, Stable Diffusion
+   - **Video**: For Sora, Runway, Veo, Kling
 3. Describe what you want to see
 4. Choose target language
 5. Click **Generate Prompt**
@@ -190,42 +190,6 @@ LingFlow AI is a comprehensive browser extension that brings the power of AI to 
 
 ---
 
-## 🏗️ Project Structure
-
-```
-LingFlow-AI/
-├── manifest.json                   # Extension manifest (Manifest V3)
-├── popup/
-│   ├── popup.html                 # Main UI
-│   ├── popup.css                  # Styles + Toast notifications
-│   └── popup.js                   # UI logic + Event handlers
-├── lib/
-│   ├── api-client.js              # API integration (OpenAI/Gemini)
-│   ├── state-manager.js           # State management + Storage
-│   ├── tts-manager.js             # Text-to-Speech
-│   ├── screenshot-manager.js      # Screenshot capture + OCR
-│   ├── error-handler.js           # Error handling + Toast
-│   ├── performance-optimizer.js   # Caching + Retry logic
-│   └── utils.js                   # Utilities
-├── background/
-│   └── background.js              # Service worker + Context menu
-├── content/
-│   ├── content.js                 # Content script + On-page translation
-│   └── content.css                # Content styles + Floating button
-├── assets/
-│   └── icons/                     # Extension icons (16, 48, 128)
-└── docs/
-    ├── PRD.md                     # Product Requirements Document
-    ├── DEVELOPMENT_PLAN.md        # Development roadmap
-    ├── SYSTEM_INSTRUCTIONS.md     # AI system prompts
-    ├── IMPLEMENTATION_STATUS.md   # Implementation status report
-    ├── SPRINT_4_SUMMARY.md        # Sprint 4 summary
-    ├── SPRINT_8_SUMMARY.md        # Sprint 8 summary
-    └── TESTING_GUIDE_SPRINT4.md   # Testing guide
-```
-
----
-
 ## 🛠️ Technology Stack
 
 ### Frontend
@@ -248,25 +212,6 @@ LingFlow-AI/
 - **Service Worker**: Background processing
 - **Content Scripts**: On-page functionality
 - **State Management**: Centralized state with observers
-
----
-
-## 📊 Development Progress
-
-| Sprint | Focus | Duration | Status |
-|--------|-------|----------|--------|
-| Sprint 1 | Foundation & Infrastructure | 2 weeks | ✅ Complete |
-| Sprint 2 | Main UI & Translation Mode | 2 weeks | ✅ Complete |
-| Sprint 3 | Correction & Prompt Modes | 1.5 weeks | ✅ Complete |
-| Sprint 4 | OCR & Screenshot Translation | 2 weeks | ✅ Complete |
-| Sprint 5 | On-Page Translation | 2 weeks | ✅ Complete |
-| Sprint 6 | History & Storage | 1 week | ✅ Complete |
-| Sprint 7 | Context Menu Integration | 1 week | ✅ Complete |
-| Sprint 8 | Testing & Optimization | 1.5 weeks | ✅ Complete |
-| Sprint 9 | Polishing & Release Prep | 1 week | ✅ Complete |
-
-**Total Development Time**: ~14 weeks  
-**Completion**: 100% (9/9 sprints)
 
 ---
 
@@ -310,21 +255,6 @@ LingFlow-AI/
 2. Add API key in Settings
 3. Try translating "Hello world" to Polish
 4. Expected result: "Witaj świecie"
-
-### Full Test Suite
-See [TESTING_GUIDE_SPRINT4.md](docs/TESTING_GUIDE_SPRINT4.md) for comprehensive testing instructions.
-
-### Test Checklist
-- [ ] Translation works for all 26 languages
-- [ ] Correction improves grammar and style
-- [ ] Prompt generation enhances descriptions
-- [ ] OCR extracts text from screenshots
-- [ ] On-page translation floating button appears
-- [ ] Context menu translation works
-- [ ] History saves and restores items
-- [ ] Settings persist across sessions
-- [ ] TTS works for all languages
-- [ ] Error handling shows friendly messages
 
 ---
 
@@ -378,88 +308,6 @@ This is a personal project, but suggestions and bug reports are welcome!
 
 ---
 
-## 📞 Support
-
-### Troubleshooting
-
-**Extension not loading?**
-- Check Chrome version (88+)
-- Enable Developer mode
-- Reload extension
-
-**Translation not working?**
-- Verify API key is correct
-- Check API provider status
-- Review console logs (F12)
-
-**OCR failing?**
-- Ensure API key is set
-- Grant screen capture permission
-- Use clear, readable images
-
-**For more help**:
-1. Check [TESTING_GUIDE_SPRINT4.md](docs/TESTING_GUIDE_SPRINT4.md)
-2. Review [IMPLEMENTATION_STATUS.md](docs/IMPLEMENTATION_STATUS.md)
-3. Check console logs for errors
-4. Verify API provider status
-
----
-
-## 🎯 Roadmap
-
-### ✅ v1.0.0 (Current - All Sprints Complete)
-- ✅ Translation, Correction, Prompt modes
-- ✅ OCR & Screenshot translation
-- ✅ On-page translation with floating button
-- ✅ Context menu integration
-- ✅ History & Storage
-- ✅ Performance optimization
-- ✅ Error handling & Toast notifications
-- ✅ Comprehensive documentation
-- ✅ Multi-language UI (i18n)
-
-### 🔜 v1.1.0 (Future)
-- Keyboard shortcuts
-- Import/Export history
-- Custom themes
-- Advanced settings
-
-### 🔮 v2.0.0 (Vision)
-- Offline mode (local models)
-- Browser sync
-- Team features
-- API usage analytics
-- Custom AI models
-
----
-
-## 🏆 Achievements
-
-- ✅ **9/9 Sprints Completed**
-- ✅ **100% Feature Implementation**
-- ✅ **Comprehensive Documentation**
-- ✅ **Production Ready**
-- ✅ **Performance Optimized**
-- ✅ **Error Handling Complete**
-- ✅ **User-Friendly UI**
-
----
-
-## 📚 Documentation
-
-- [Product Requirements Document (PRD)](docs/PRD.md)
-- [Development Plan](docs/DEVELOPMENT_PLAN.md)
-- [System Instructions](docs/SYSTEM_INSTRUCTIONS.md)
-- [Implementation Status](docs/IMPLEMENTATION_STATUS.md)
-- [Sprint 4 Summary](docs/SPRINT_4_SUMMARY.md)
-- [Sprint 8 Summary](docs/SPRINT_8_SUMMARY.md)
-- [Testing Guide](docs/TESTING_GUIDE_SPRINT4.md)
-
----
 
 **Built with ❤️ using AI-powered development**
 
-**Last Updated**: 2025-12-04  
-**Current Version**: 1.0.0  
-**Status**: Ready for Release 🚀  
-**Sprints**: 9/9 Completed ✅
