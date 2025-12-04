@@ -124,5 +124,8 @@
     },
     "translationLabel": {
         "message": "Tłumaczenie"
+    },
+    "toastAutoLanguageSwapError": {
+        "message": "Wybierz konkretny język źródłowy, aby zamienić."
     }
 }

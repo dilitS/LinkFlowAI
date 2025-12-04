@@ -92,7 +92,7 @@ export function setupSettingsListeners(stateManager, showToast) {
     // Handle API Provider Radio Change
     const providerRadios = document.getElementsByName('api-provider-select');
     providerRadios.forEach(radio => {
-        radio.addEventListener('change', (e) => {
+        radio.addEventListener('change', async (e) => {
             const provider = e.target.value;
             elements.apiProvider.value = provider;
             populateModels(provider);
@@ -119,6 +119,9 @@ export function setupSettingsListeners(stateManager, showToast) {
                     elements.apiKey.value = val || '';
                 }
             }
+
+            // Save provider immediately
+            await stateManager.setState({ apiProvider: provider });
         });
     });
 

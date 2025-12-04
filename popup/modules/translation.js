@@ -74,6 +74,8 @@ export function setupTranslationListeners(apiClient, stateManager, ttsManager) {
         if (sourceVal !== 'auto') {
             elements.sourceLang.value = targetVal;
             elements.targetLang.value = sourceVal;
+        } else {
+            showToast(chrome.i18n.getMessage("toastAutoLanguageSwapError"));
         }
     });
 
