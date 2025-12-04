@@ -1,0 +1,63 @@
+// DOM Elements references
+export const elements = {
+    settingsBtn: document.getElementById('settings-btn'),
+    closeSettingsBtn: document.getElementById('close-settings-btn'),
+    settingsView: document.getElementById('settings-view'),
+    saveSettingsBtn: document.getElementById('save-settings-btn'),
+    apiProvider: document.getElementById('api-provider'),
+    apiKey: document.getElementById('api-key'),
+    modelSelect: document.getElementById('model-select'),
+    settingsTargetLang: document.getElementById('settings-target-lang'),
+
+    modeTabs: document.querySelectorAll('.mode-tab'),
+    sourceLang: document.getElementById('source-lang'),
+    targetLang: document.getElementById('target-lang'),
+    swapLangBtn: document.getElementById('swap-lang-btn'),
+
+    inputText: document.getElementById('input-text'),
+    actionBtn: document.getElementById('action-btn'),
+    inputTtsBtn: document.getElementById('input-tts-btn'),
+    pasteBtn: document.getElementById('paste-btn'),
+    ocrBtn: document.getElementById('ocr-btn'),
+    clearInputBtn: document.getElementById('clear-input-btn'),
+
+    outputContainer: document.getElementById('output-container'),
+    outputLabel: document.getElementById('output-label'),
+    outputText: document.getElementById('output-text'),
+    outputTtsBtn: document.getElementById('output-tts-btn'),
+    copyBtn: document.getElementById('copy-btn'),
+
+    toggleHistoryBtn: document.getElementById('toggle-history-btn'),
+    historyList: document.getElementById('history-list'),
+    historyArrow: document.getElementById('history-arrow'),
+    historyBadge: document.getElementById('history-badge'),
+    clearHistoryBtn: document.getElementById('clear-history-btn'),
+    emptyHistoryMsg: document.getElementById('empty-history-msg'),
+
+    promptOptions: document.getElementById('prompt-options'),
+    promptTypeBtns: document.querySelectorAll('.prompt-type-btn'),
+    promptTypeRadios: document.getElementsByName('prompt-type'),
+    nanoOptions: document.getElementById('nano-options'),
+    btnNanoGen: document.getElementById('btn-nano-gen'),
+    btnNanoEdit: document.getElementById('btn-nano-edit'),
+    nanoSubBtns: document.querySelectorAll('.nano-sub-btn'),
+    nanoStyleContainer: document.getElementById('nano-style-container'),
+    nanoStyleSelect: document.getElementById('nano-style-select'),
+    nanoEditStyleContainer: document.getElementById('nano-edit-style-container'),
+    nanoEditStyleSelect: document.getElementById('nano-edit-style-select'),
+
+    toast: document.getElementById('toast'),
+
+    // OCR Modal elements
+    ocrModal: document.getElementById('ocr-modal'),
+    closeOcrModal: document.getElementById('close-ocr-modal'),
+    screenshotPreview: document.getElementById('screenshot-preview'),
+    screenshotImage: document.getElementById('screenshot-image'),
+    ocrLoading: document.getElementById('ocr-loading'),
+    ocrResults: document.getElementById('ocr-results'),
+    ocrTranscription: document.getElementById('ocr-transcription'),
+    ocrTranslation: document.getElementById('ocr-translation'),
+    copyTranscription: document.getElementById('copy-transcription'),
+    copyTranslation: document.getElementById('copy-translation'),
+    ocrTranslationTts: document.getElementById('ocr-translation-tts'),
+};

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LingFlow AI</title>
+    <!-- FontAwesome is allowed as a style resource -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="output.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-[#09090b] text-gray-100 w-[360px] min-h-[500px]">
+
+    <!-- EXTENSION CONTAINER -->
+    <div
+        class="w-full h-full bg-[#09090b] overflow-hidden flex flex-col relative font-sans transition-all duration-300">
+
+        <!-- HEADER: GLOBAL LANGUAGE SELECTOR -->
+        <div class="px-4 pt-3 pb-2 bg-[#09090b] z-20 flex items-center justify-between gap-3">
+
+            <!-- Language Swap Component -->
+            <div
+                class="flex items-center justify-between bg-[#18181b] rounded-xl p-1 border border-gray-800/50 flex-1 h-8">
+                <!-- Source Language -->
+                <div class="relative flex-1 group h-full flex items-center justify-center">
+                    <select id="source-lang"
+                        class="w-full h-full appearance-none bg-transparent text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors text-center outline-none cursor-pointer">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+
+                <button id="swap-lang-btn"
+                    class="w-6 h-6 flex items-center justify-center text-gray-500 hover:text-white transition-colors cursor-pointer hover:rotate-180 duration-300">
+                    <i class="fa-solid fa-arrow-right-arrow-left text-xs"></i>
+                </button>
+
+                <!-- Target Language -->
+                <div class="relative flex-1 group h-full flex items-center justify-center">
+                    <select id="target-lang"
+                        class="w-full h-full appearance-none bg-transparent text-xs font-bold text-gray-200 hover:text-white transition-colors text-center outline-none cursor-pointer">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+            </div>
+
+            <!-- Settings Toggle -->
+            <button id="settings-btn"
+                class="w-8 h-8 rounded-xl hover:bg-[#18181b] border border-transparent hover:border-gray-800 flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200"
+                title="Ustawienia">
+                <i class="fa-solid fa-gear text-sm"></i>
+            </button>
+        </div>
+
+        <!-- MODE SWITCHER TABS -->
+        <div class="px-4 pb-2 bg-[#09090b] z-10">
+            <div class="bg-[#18181b] p-1 rounded-xl flex relative border border-gray-800/50">
+                <button id="btn-translate"
+                    class="mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-white bg-[#27272a] shadow-sm transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase"
+                    data-mode="translate">
+                    <i class="fa-solid fa-globe"></i> TŁUMACZ
+                </button>
+                <button id="btn-correct"
+                    class="mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-gray-500 hover:text-gray-300 transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase"
+                    data-mode="correct">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> KOREKTA
+                </button>
+                <button id="btn-prompt"
+                    class="mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-gray-500 hover:text-gray-300 transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase"
+                    data-mode="prompt">
+                    <i class="fa-solid fa-robot"></i> PROMPT
+                </button>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT AREA -->
+        <div id="main-content"
+            class="flex-1 overflow-y-auto flex flex-col relative scroll-smooth px-4 pb-4 no-scrollbar">
+
+            <!-- PROMPT TYPE SELECTOR (Conditional) -->
+            <div id="prompt-options" class="hidden py-2 flex flex-col gap-2 animate-fade-in mb-2">
+                <div class="flex gap-2">
+                    <button id="btn-p-image"
+                        class="prompt-type-btn flex-1 py-1.5 px-3 text-xs font-medium rounded-lg border border-orange-500/30 bg-orange-500/10 text-orange-400 flex items-center justify-center gap-2 hover:bg-orange-500/20 transition-colors"
+                        data-type="image">
+                        <i class="fa-regular fa-image"></i> Obraz
+                    </button>
+                    <button id="btn-p-video"
+                        class="prompt-type-btn flex-1 py-1.5 px-3 text-xs font-medium rounded-lg border border-gray-700 bg-[#1e1e1e] text-gray-500 flex items-center justify-center gap-2 hover:bg-[#252525] hover:text-gray-300 transition-colors"
+                        data-type="video">
+                        <i class="fa-solid fa-video"></i> Wideo
+                    </button>
+                    <button id="btn-p-nano"
+                        class="prompt-type-btn flex-1 py-1.5 px-3 text-xs font-medium rounded-lg border border-gray-700 bg-[#1e1e1e] text-gray-500 flex items-center justify-center gap-2 hover:bg-[#252525] hover:text-gray-300 transition-colors"
+                        data-type="nanobanana">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Nano
+                    </button>
+                </div>
+
+                <!-- Nanobanana Sub-options -->
+                <div id="nano-options" class="hidden flex flex-col gap-2 pt-1 border-t border-gray-800/50">
+                    <div class="flex gap-2">
+                        <button id="btn-nano-gen"
+                            class="nano-sub-btn flex-1 py-1 px-2 text-[10px] font-medium rounded border border-purple-500/30 bg-purple-500/10 text-purple-400 flex items-center justify-center gap-1 hover:bg-purple-500/20 transition-colors"
+                            data-subtype="gen">
+                            Generowanie
+                        </button>
+                        <button id="btn-nano-edit"
+                            class="nano-sub-btn flex-1 py-1 px-2 text-[10px] font-medium rounded border border-gray-700 bg-[#1e1e1e] text-gray-500 flex items-center justify-center gap-1 hover:bg-[#252525] hover:text-gray-300 transition-colors"
+                            data-subtype="edit">
+                            Edycja
+                        </button>
+                    </div>
+
+                    <!-- Style Selector (Visible only for Generation) -->
+                    <div id="nano-style-container" class="relative">
+                        <select id="nano-style-select"
+                            class="w-full bg-[#1e1e1e] text-gray-300 text-[10px] font-medium border border-gray-700 rounded-lg p-1.5 focus:border-purple-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#252525]">
+                            <option value="photorealistic">Fotorealistyczne (Domyślne)</option>
+                            <option value="sticker">Naklejka / Ilustracja</option>
+                            <option value="logo">Logo / Tekst</option>
+                            <option value="product">Produkt / Mockup</option>
+                            <option value="minimalist">Minimalizm</option>
+                            <option value="comic">Komiks / Storyboard</option>
+                        </select>
+                        <i
+                            class="fa-solid fa-chevron-down absolute right-2 top-2 text-gray-500 text-[10px] pointer-events-none"></i>
+                    </div>
+
+                    <!-- Edit Style Selector (Visible only for Editing) -->
+                    <div id="nano-edit-style-container" class="relative hidden">
+                        <select id="nano-edit-style-select"
+                            class="w-full bg-[#1e1e1e] text-gray-300 text-[10px] font-medium border border-gray-700 rounded-lg p-1.5 focus:border-purple-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#252525]">
+                            <option value="modify">Dodaj / Usuń / Zmień</option>
+                            <option value="retouch">Retusz (Maskowanie)</option>
+                            <option value="style-transfer">Zmiana Stylu</option>
+                            <option value="composition">Kompozycja (Łączenie)</option>
+                        </select>
+                        <i
+                            class="fa-solid fa-chevron-down absolute right-2 top-2 text-gray-500 text-[10px] pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <input type="radio" name="prompt-type" value="image" class="hidden" checked>
+                <input type="radio" name="prompt-type" value="video" class="hidden">
+                <input type="radio" name="prompt-type" value="nanobanana-gen" class="hidden">
+                <input type="radio" name="prompt-type" value="nanobanana-edit" class="hidden">
+            </div>
+
+            <!-- INPUT AREA -->
+            <div class="space-y-4">
+
+                <!-- Source Input Container -->
+                <div
+                    class="relative group bg-[#18181b] rounded-2xl border border-gray-800 hover:border-gray-700 transition-all shadow-sm input-group">
+                    <textarea id="input-text" placeholder="Wpisz tekst do przetłumaczenia..."
+                        class="w-full bg-transparent text-[15px] text-gray-200 placeholder-gray-600 outline-none resize-none h-32 p-3 no-scrollbar leading-relaxed rounded-2xl pb-10"
+                        spellcheck="false"></textarea>
+
+                    <!-- Floating Actions inside Input -->
+                    <div class="absolute bottom-3 right-3 flex gap-2 items-center">
+                        <button id="input-tts-btn"
+                            class="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors"
+                            title="Odsłuchaj tekst źródłowy">
+                            <i class="fa-solid fa-volume-high text-xs"></i>
+                        </button>
+                        <button id="ocr-btn"
+                            class="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors"
+                            title="OCR: Tłumacz z ekranu">
+                            <i class="fa-solid fa-crop-simple text-xs"></i>
+                        </button>
+                        <button id="paste-btn"
+                            class="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors"
+                            title="Wklej">
+                            <i class="fa-regular fa-paste text-xs"></i>
+                        </button>
+                        <button id="clear-input-btn"
+                            class="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors"
+                            title="Wyczyść">
+                            <i class="fa-solid fa-xmark text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ACTION BUTTON -->
+                <div class="relative flex items-center justify-center">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-800/50"></div>
+                    </div>
+                    <button
+                        class="relative z-10 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold uppercase tracking-wider py-3 px-10 rounded-full shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all hover:scale-105 active:scale-95 group"
+                        id="action-btn">
+                        <span>Tłumacz</span>
+                    </button>
+                </div>
+
+                <!-- Result Output (Visible by default) -->
+                <div id="output-container"
+                    class="bg-[#18181b] rounded-2xl p-4 border border-gray-800 relative transition-all duration-300 min-h-[100px] hover:border-gray-700 group">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]"
+                            id="output-label">WYNIK</span>
+                        <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <!-- Speak Button -->
+                            <button id="output-tts-btn"
+                                class="text-gray-500 hover:text-blue-400 transition-colors w-7 h-7 flex items-center justify-center rounded hover:bg-white/5"
+                                title="Odsłuchaj (TTS)">
+                                <i class="fa-solid fa-volume-high text-xs"></i>
+                            </button>
+                            <!-- Copy Button -->
+                            <button id="copy-btn"
+                                class="text-gray-500 hover:text-white transition-colors w-7 h-7 flex items-center justify-center rounded hover:bg-white/5"
+                                title="Kopiuj">
+                                <i class="fa-regular fa-copy text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-gray-500 text-[14px] leading-relaxed break-words italic" id="output-text">
+                        Wynik pojawi się tutaj...
+                    </p>
+                </div>
+            </div>
+
+            <!-- COLLAPSIBLE HISTORY SECTION -->
+            <div class="mt-4 border-t border-gray-800/50 pt-3">
+                <div class="flex items-center justify-between cursor-pointer group select-none mb-3"
+                    id="toggle-history-btn">
+                    <div class="flex items-center gap-3">
+                        <span
+                            class="text-xs font-bold text-gray-500 group-hover:text-gray-300 transition-colors uppercase tracking-widest">Historia
+                            tłumaczeń</span>
+                        <span id="history-badge"
+                            class="hidden text-[10px] bg-[#27272a] text-gray-400 px-2 py-0.5 rounded-full font-mono">0</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button
+                            class="text-[10px] font-bold text-gray-600 hover:text-gray-400 transition-colors hidden uppercase tracking-wider"
+                            id="clear-history-btn">Wyczyść</button>
+                        <i class="fa-solid fa-chevron-up text-xs text-gray-600 group-hover:text-white transition-transform duration-300"
+                            id="history-arrow"></i>
+                    </div>
+                </div>
+
+                <!-- History Container -->
+                <div id="history-list" class="space-y-2 pb-4 animate-fade-in">
+                    <!-- History items will be injected here -->
+                    <div class="text-center py-4 text-gray-600 text-xs italic" id="empty-history-msg">Brak historii
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SETTINGS PANEL (Overlay) -->
+        <div id="settings-view"
+            class="absolute inset-0 bg-[#09090b]/95 backdrop-blur-md z-50 transform translate-y-full transition-transform duration-300 cubic-bezier(0.32, 0.72, 0, 1) flex flex-col">
+            <!-- Settings Header -->
+            <div class="px-5 py-4 border-b border-gray-800 flex justify-between items-center bg-[#09090b]">
+                <h2 class="text-lg font-semibold text-white">Ustawienia</h2>
+                <button id="close-settings-btn"
+                    class="w-8 h-8 flex items-center justify-center rounded-full bg-[#18181b] text-gray-400 hover:text-white hover:bg-gray-700 transition-colors">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Settings Content -->
+            <div class="p-5 space-y-6 overflow-y-auto flex-1">
+                <!-- Language Settings -->
+                <div class="space-y-4 border-b border-gray-800 pb-4">
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Język
+                            docelowy</label>
+                        <div class="relative">
+                            <select id="settings-target-lang"
+                                class="w-full bg-[#18181b] text-gray-200 text-xs font-medium border border-gray-700 rounded-xl p-3 focus:border-blue-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#27272a]">
+                                <!-- Populated by JS -->
+                            </select>
+                            <i
+                                class="fa-solid fa-chevron-down absolute right-3 top-3.5 text-gray-500 text-xs pointer-events-none"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Silnik AI</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer relative group col-span-2">
+                            <input type="radio" name="api-provider-select" value="builtin" class="peer sr-only" checked>
+                            <div
+                                class="p-3 rounded-xl border border-gray-700 bg-[#18181b] text-gray-400 peer-checked:border-purple-500 peer-checked:bg-purple-500/5 peer-checked:text-purple-400 transition-all text-center flex flex-row items-center justify-center gap-3 hover:bg-[#27272a]">
+                                <i class="fa-solid fa-cloud-bolt text-lg"></i>
+                                <span class="text-xs font-medium">OpenRouter (Free)</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer relative group">
+                            <input type="radio" name="api-provider-select" value="openai" class="peer sr-only">
+                            <div
+                                class="p-3 rounded-xl border border-gray-700 bg-[#18181b] text-gray-400 peer-checked:border-green-500 peer-checked:bg-green-500/5 peer-checked:text-green-400 transition-all text-center flex flex-col items-center gap-2 hover:bg-[#27272a]">
+                                <i class="fa-solid fa-bolt text-lg"></i>
+                                <span class="text-xs font-medium">OpenAI GPT-4</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer relative group">
+                            <input type="radio" name="api-provider-select" value="gemini" class="peer sr-only">
+                            <div
+                                class="p-3 rounded-xl border border-gray-700 bg-[#18181b] text-gray-400 peer-checked:border-blue-500 peer-checked:bg-blue-500/5 peer-checked:text-blue-400 transition-all text-center flex flex-col items-center gap-2 hover:bg-[#27272a]">
+                                <i class="fa-brands fa-google text-lg"></i>
+                                <span class="text-xs font-medium">Google Gemini</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Model Selection -->
+                    <div class="mt-3 mb-1">
+                        <label
+                            class="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Model</label>
+                        <div class="relative">
+                            <select id="model-select"
+                                class="w-full bg-[#18181b] text-gray-200 text-xs font-medium border border-gray-700 rounded-xl p-3 focus:border-blue-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#27272a]">
+                                <!-- Populated by JS -->
+                            </select>
+                            <i
+                                class="fa-solid fa-chevron-down absolute right-3 top-3.5 text-gray-500 text-xs pointer-events-none"></i>
+                        </div>
+                    </div>
+                    <!-- Hidden select for compatibility -->
+                    <select id="api-provider" class="hidden">
+                        <option value="builtin">Built-in AI</option>
+                        <option value="openai">OpenAI</option>
+                        <option value="gemini">Gemini</option>
+                    </select>
+
+                    <div class="relative">
+                        <input type="password" id="api-key"
+                            class="w-full bg-[#18181b] border border-gray-700 text-white text-sm rounded-xl p-3 pl-10 focus:border-gray-500 focus:outline-none transition-colors placeholder-gray-600 shadow-inner"
+                            placeholder="Klucz nie jest wymagany" disabled>
+                        <i class="fa-solid fa-key absolute left-3.5 top-3.5 text-gray-500"></i>
+                        <button id="save-settings-btn"
+                            class="absolute right-2 top-2 bg-gray-700 hover:bg-white text-white hover:text-black text-[10px] font-bold uppercase px-3 py-1 rounded-lg transition-colors">Zapisz</button>
+                    </div>
+                </div>
+
+                <!-- Context Menu Settings removed -->
+
+                <div class="text-center pt-2">
+                    <p class="text-[10px] text-gray-700 font-mono">LinguaFlow v1.5.0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast"
+        class="fixed bottom-8 bg-white/10 backdrop-blur-xl border border-white/10 text-white px-4 py-2.5 rounded-full shadow-2xl flex items-center gap-2.5 transform translate-y-24 opacity-0 transition-all duration-300 z-[60]">
+        <i class="fa-solid fa-check text-green-400 text-sm"></i>
+        <span class="text-xs font-medium tracking-wide">Skopiowano do schowka</span>
+    </div>
+
+    <!-- OCR Modal -->
+    <div id="ocr-modal"
+        class="hidden fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div
+            class="bg-[#18181b] border border-gray-700 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div class="sticky top-0 bg-[#18181b] border-b border-gray-700 p-4 flex justify-between items-center z-10">
+                <h3 class="text-lg font-bold text-white">Screenshot Translation</h3>
+                <button id="close-ocr-modal" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="p-4 space-y-4">
+                <div id="screenshot-preview" class="hidden">
+                    <img id="screenshot-image" src="" alt="Screenshot" class="w-full rounded-xl border border-gray-700">
+                </div>
+                <div id="ocr-loading" class="hidden text-center py-12">
+                    <i class="fa-solid fa-circle-notch fa-spin text-4xl text-blue-500 mb-4"></i>
+                    <p class="text-gray-400 animate-pulse">Processing screenshot...</p>
+                </div>
+                <div id="ocr-results" class="hidden space-y-6">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Transcription</h4>
+                            <button id="copy-transcription"
+                                class="text-xs text-blue-400 hover:text-blue-300 transition-colors">
+                                <i class="fa-regular fa-copy mr-1"></i>Copy
+                            </button>
+                        </div>
+                        <div class="bg-black/30 border border-gray-700 rounded-xl p-4">
+                            <p id="ocr-transcription" class="text-gray-300 whitespace-pre-wrap text-sm leading-relaxed">
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Translation</h4>
+                            <div class="flex gap-3">
+                                <button id="ocr-translation-tts"
+                                    class="text-xs text-blue-400 hover:text-blue-300 transition-colors">
+                                    <i class="fa-solid fa-volume-high mr-1"></i>Listen
+                                </button>
+                                <button id="copy-translation"
+                                    class="text-xs text-blue-400 hover:text-blue-300 transition-colors">
+                                    <i class="fa-regular fa-copy mr-1"></i>Copy
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bg-black/30 border border-gray-700 rounded-xl p-4">
+                            <p id="ocr-translation" class="text-gray-300 whitespace-pre-wrap text-sm leading-relaxed">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../dist/popup/popup.bundle.js"></script>
+</body>
+
+</html>

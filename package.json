@@ -1,0 +1,30 @@
+{
+  "name": "lingflow-ai",
+  "version": "1.0.0",
+  "description": "> **AI-powered translation, text correction, and prompt engineering browser extension**",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "tailwindcss -i ./popup/input.css -o ./popup/output.css",
+    "watch:css": "tailwindcss -i ./popup/input.css -o ./popup/output.css --watch",
+    "build": "webpack --mode production",
+    "watch": "webpack --mode development --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.22",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.1",
+    "webpack": "^5.103.0",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1"
+  }
+}

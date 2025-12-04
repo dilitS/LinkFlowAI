@@ -1,0 +1,200 @@
+/* LingFlow AI Content Styles */
+
+/* Floating Button */
+#lingflow-floating-btn {
+    position: absolute;
+    z-index: 2147483647;
+    /* Max z-index */
+    width: 32px;
+    height: 32px;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, opacity 0.2s;
+    opacity: 0;
+    pointer-events: none;
+    font-family: sans-serif;
+}
+
+#lingflow-floating-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+    animation: lingflow-pop-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#lingflow-floating-btn.pulsing {
+    animation: lingflow-pulse 1.5s infinite;
+}
+
+#lingflow-floating-btn:hover {
+    transform: scale(1.1);
+}
+
+#lingflow-floating-btn img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* Tooltip */
+#lingflow-tooltip {
+    position: absolute;
+    z-index: 2147483647;
+    background-color: #18181b;
+    /* Zinc 900 */
+    color: #e4e4e7;
+    /* Zinc 200 */
+    border: 1px solid #27272a;
+    /* Zinc 800 */
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 420px;
+    min-width: 200px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+
+#lingflow-tooltip.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.lingflow-tooltip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #27272a;
+    padding-bottom: 8px;
+}
+
+.lingflow-logo {
+    font-size: 11px;
+    font-weight: 800;
+    color: #3b82f6;
+    /* Blue 500 */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.lingflow-close {
+    cursor: pointer;
+    color: #71717a;
+    font-size: 16px;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.lingflow-close:hover {
+    color: #fff;
+}
+
+.lingflow-content {
+    margin-bottom: 12px;
+    word-wrap: break-word;
+    color: #d4d4d8;
+}
+
+.lingflow-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    color: #a1a1aa;
+}
+
+.lingflow-spinner {
+    border: 2px solid #27272a;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: lingflow-spin 1s linear infinite;
+    margin-right: 8px;
+}
+
+.lingflow-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.lingflow-btn {
+    background: transparent;
+    border: none;
+    color: #a1a1aa;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.lingflow-btn:hover {
+    color: #fff;
+    background-color: #27272a;
+}
+
+@keyframes lingflow-pop-in {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes lingflow-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes lingflow-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+    }
+}
+
+/* OCR Selection Overlay */
+#lingflow-ocr-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2147483647;
+    cursor: crosshair;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+#lingflow-selection-box {
+    position: absolute;
+    border: 2px solid #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+    pointer-events: none;
+    display: none;
+}
