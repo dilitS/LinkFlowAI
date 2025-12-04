@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "Έξυπνος γλωσσικός βοηθός για μετάφραση και διόρθωση."
+  },
+  "settingsTitle": {
+    "message": "Ρυθμίσεις"
+  },
+  "translateMode": {
+    "message": "ΜΕΤΑΦΡΑΣΗ"
+  },
+  "correctMode": {
+    "message": "ΔΙΟΡΘΩΣΗ"
+  },
+  "promptMode": {
+    "message": "PROMPT"
+  },
+  "inputPlaceholder": {
+    "message": "Εισάγετε κείμενο για μετάφραση..."
+  },
+  "actionButtonTranslate": {
+    "message": "Μετάφραση"
+  },
+  "actionButtonCorrect": {
+    "message": "Διόρθωση"
+  },
+  "actionButtonGenerate": {
+    "message": "Δημιουργία"
+  },
+  "outputLabel": {
+    "message": "ΑΠΟΤΕΛΕΣΜΑ"
+  },
+  "outputTextPlaceholder": {
+    "message": "Το αποτέλεσμα θα εμφανιστεί εδώ..."
+  },
+  "historyTitle": {
+    "message": "Ιστορικό μεταφράσεων"
+  },
+  "clearHistoryButton": {
+    "message": "Καθαρισμός"
+  },
+  "emptyHistoryMessage": {
+    "message": "Κανένα ιστορικό"
+  },
+  "ocrTitle": {
+    "message": "OCR (Αναγνώριση κειμένου)"
+  },
+  "ocrDescription": {
+    "message": "Επιλέξτε μια περιοχή στην οθόνη για αντιγραφή κειμένου."
+  },
+  "ocrButton": {
+    "message": "Επιλογή περιοχής"
+  },
+  "ocrLanguageLabel": {
+    "message": "Γλώσσα κειμένου:"
+  },
+  "ocrAutoLanguage": {
+    "message": "Αυτόματος εντοπισμός"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "Επικολλήστε κείμενο για έλεγχο..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "Περιγράψτε τι θέλετε να δημιουργήσετε..."
+  },
+  "toastCopied": {
+    "message": "Αντιγράφηκε στο πρόχειρο"
+  },
+  "toastDeleted": {
+    "message": "Το στοιχείο διαγράφηκε"
+  },
+  "promptImage": {
+    "message": "Prompt Εικόνας"
+  },
+  "confirmClearHistory": {
+    "message": "Είστε σίγουροι ότι θέλετε να διαγράψετε όλο το ιστορικό;"
+  },
+  "detectLanguageOption": {
+    "message": "Εντοπισμός"
+  },
+  "apiKeyNotRequired": {
+    "message": "Δεν απαιτείται κλειδί API"
+  },
+  "settingsSaved": {
+    "message": "Οι ρυθμίσεις αποθηκεύτηκαν"
+  },
+  "ocrApiRequired": {
+    "message": "Το OCR απαιτεί το δικό σας κλειδί API (Gemini/OpenAI). Ρυθμίστε στις επιλογές."
+  },
+  "ocrInitError": {
+    "message": "Σφάλμα προετοιμασίας OCR: "
+  },
+  "toastTranscriptionCopied": {
+    "message": "Η μεταγραφή αντιγράφηκε"
+  },
+  "toastTranslationCopied": {
+    "message": "Η μετάφραση αντιγράφηκε"
+  },
+  "toastEnterText": {
+    "message": "Εισάγετε κείμενο"
+  },
+  "processingText": {
+    "message": "Επεξεργασία..."
+  },
+  "errorPrefix": {
+    "message": "Σφάλμα: "
+  },
+  "toastError": {
+    "message": "Παρουσιάστηκε σφάλμα"
+  },
+  "ocrLoadingText": {
+    "message": "Μετάφραση OCR..."
+  },
+  "imageProcessingFailed": {
+    "message": "Η επεξεργασία εικόνας απέτυχε"
+  },
+  "communicationError": {
+    "message": "Σφάλμα επικοινωνίας"
+  },
+  "transcriptionLabel": {
+    "message": "Μεταγραφή"
+  },
+  "translationLabel": {
+    "message": "Μετάφραση"
+  }
+}

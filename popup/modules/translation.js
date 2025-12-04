@@ -10,7 +10,7 @@ export function setupTranslationListeners(apiClient, stateManager, ttsManager) {
     elements.actionBtn.addEventListener('click', async () => {
         const text = elements.inputText.value.trim();
         if (!text) {
-            showToast('Wpisz tekst');
+            showToast(chrome.i18n.getMessage("toastEnterText"));
             return;
         }
 
@@ -18,7 +18,7 @@ export function setupTranslationListeners(apiClient, stateManager, ttsManager) {
         const targetLang = elements.targetLang.value;
 
         setLoading(true);
-        elements.outputText.textContent = "Przetwarzanie...";
+        elements.outputText.textContent = chrome.i18n.getMessage("processingText");
         elements.outputContainer.classList.add('animate-pulse');
 
         try {
@@ -58,8 +58,8 @@ export function setupTranslationListeners(apiClient, stateManager, ttsManager) {
 
         } catch (error) {
             console.error('Action failed:', error);
-            elements.outputText.textContent = `Błąd: ${error.message}`;
-            showToast('Wystąpił błąd');
+            elements.outputText.textContent = `${chrome.i18n.getMessage("errorPrefix")}${error.message}`;
+            showToast(chrome.i18n.getMessage("toastError"));
         } finally {
             setLoading(false);
             elements.outputContainer.classList.remove('animate-pulse');
@@ -83,7 +83,7 @@ export function setupTranslationListeners(apiClient, stateManager, ttsManager) {
             elements.inputText.value = '';
 
             // Clear output as well
-            elements.outputText.innerText = 'Wynik pojawi się tutaj...';
+            elements.outputText.innerText = chrome.i18n.getMessage("outputTextPlaceholder");
             elements.outputText.classList.add('italic', 'text-gray-500');
             elements.outputText.classList.remove('text-gray-200');
 
@@ -123,7 +123,7 @@ export function setupTranslationListeners(apiClient, stateManager, ttsManager) {
     // Output tools
     elements.copyBtn.addEventListener('click', () => {
         navigator.clipboard.writeText(elements.outputText.innerText);
-        showToast('Skopiowano do schowka');
+        showToast(chrome.i18n.getMessage("toastCopied"));
     });
 
     elements.outputTtsBtn.addEventListener('click', () => {

@@ -11,7 +11,7 @@ export async function handleOCRCapture(apiClient, screenshotManager) {
         const { apiProvider } = apiClient.stateManager.state;
 
         if (!apiProvider || apiProvider === 'builtin') {
-            showToast('OCR wymaga własnego klucza API (Gemini/OpenAI). Skonfiguruj w ustawieniach.');
+            showToast(chrome.i18n.getMessage("ocrApiRequired"));
             return;
         }
 
@@ -36,7 +36,7 @@ export async function handleOCRCapture(apiClient, screenshotManager) {
 
     } catch (error) {
         console.error('OCR initiation failed:', error);
-        showToast('Błąd inicjalizacji OCR: ' + error.message);
+        showToast(chrome.i18n.getMessage("ocrInitError") + error.message);
     }
 }
 
@@ -59,12 +59,12 @@ export function setupOCRListeners(apiClient, screenshotManager, ttsManager) {
 
     elements.copyTranscription.addEventListener('click', () => {
         navigator.clipboard.writeText(elements.ocrTranscription.innerText);
-        showToast('Skopiowano transkrypcję');
+        showToast(chrome.i18n.getMessage("toastTranscriptionCopied"));
     });
 
     elements.copyTranslation.addEventListener('click', () => {
         navigator.clipboard.writeText(elements.ocrTranslation.innerText);
-        showToast('Skopiowano tłumaczenie');
+        showToast(chrome.i18n.getMessage("toastTranslationCopied"));
     });
 
     elements.ocrTranslationTts.addEventListener('click', () => {

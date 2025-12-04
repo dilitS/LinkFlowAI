@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "Asistent lingvistic inteligent pentru traducere și corecție."
+  },
+  "settingsTitle": {
+    "message": "Setări"
+  },
+  "translateMode": {
+    "message": "TRADUCE"
+  },
+  "correctMode": {
+    "message": "CORECTEAZĂ"
+  },
+  "promptMode": {
+    "message": "PROMPT"
+  },
+  "inputPlaceholder": {
+    "message": "Introduceți textul de tradus..."
+  },
+  "actionButtonTranslate": {
+    "message": "Traduce"
+  },
+  "actionButtonCorrect": {
+    "message": "Corectează"
+  },
+  "actionButtonGenerate": {
+    "message": "Generează"
+  },
+  "outputLabel": {
+    "message": "REZULTAT"
+  },
+  "outputTextPlaceholder": {
+    "message": "Rezultatul va apărea aici..."
+  },
+  "historyTitle": {
+    "message": "Istoric traduceri"
+  },
+  "clearHistoryButton": {
+    "message": "Șterge"
+  },
+  "emptyHistoryMessage": {
+    "message": "Fără istoric"
+  },
+  "ocrTitle": {
+    "message": "OCR (Recunoaștere text)"
+  },
+  "ocrDescription": {
+    "message": "Selectați o zonă pe ecran pentru a copia textul."
+  },
+  "ocrButton": {
+    "message": "Selectare zonă"
+  },
+  "ocrLanguageLabel": {
+    "message": "Limba textului:"
+  },
+  "ocrAutoLanguage": {
+    "message": "Detectare automată"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "Lipiți textul pentru verificare..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "Descrieți ce doriți să generați..."
+  },
+  "toastCopied": {
+    "message": "Copiat în clipboard"
+  },
+  "toastDeleted": {
+    "message": "Element șters"
+  },
+  "promptImage": {
+    "message": "Prompt Imagine"
+  },
+  "confirmClearHistory": {
+    "message": "Sigur doriți să ștergeți tot istoricul?"
+  },
+  "detectLanguageOption": {
+    "message": "Detectare"
+  },
+  "apiKeyNotRequired": {
+    "message": "Cheia API nu este necesară"
+  },
+  "settingsSaved": {
+    "message": "Setări salvate"
+  },
+  "ocrApiRequired": {
+    "message": "OCR necesită propria cheie API (Gemini/OpenAI). Configurați în setări."
+  },
+  "ocrInitError": {
+    "message": "Eroare inițializare OCR: "
+  },
+  "toastTranscriptionCopied": {
+    "message": "Transcriere copiată"
+  },
+  "toastTranslationCopied": {
+    "message": "Traducere copiată"
+  },
+  "toastEnterText": {
+    "message": "Introduceți text"
+  },
+  "processingText": {
+    "message": "Se procesează..."
+  },
+  "errorPrefix": {
+    "message": "Eroare: "
+  },
+  "toastError": {
+    "message": "A apărut o eroare"
+  },
+  "ocrLoadingText": {
+    "message": "Traducere OCR..."
+  },
+  "imageProcessingFailed": {
+    "message": "Procesarea imaginii a eșuat"
+  },
+  "communicationError": {
+    "message": "Eroare de comunicare"
+  },
+  "transcriptionLabel": {
+    "message": "Transcriere"
+  },
+  "translationLabel": {
+    "message": "Traducere"
+  }
+}

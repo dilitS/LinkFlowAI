@@ -8,7 +8,7 @@ export function populateLanguages() {
     const createOption = (lang) => `<option value="${lang.code}">${lang.name}</option>`;
     const options = SUPPORTED_LANGUAGES.map(createOption).join('');
 
-    elements.sourceLang.innerHTML = `<option value="auto">Wykryj</option>` + options;
+    elements.sourceLang.innerHTML = `<option value="auto">${chrome.i18n.getMessage("detectLanguageOption")}</option>` + options;
     elements.targetLang.innerHTML = options;
 
     // Populate settings dropdowns
@@ -57,7 +57,7 @@ export function loadSettingsToInputs(state) {
 
     if (provider === 'builtin') {
         elements.apiKey.disabled = true;
-        elements.apiKey.placeholder = "Klucz nie jest wymagany";
+        elements.apiKey.placeholder = chrome.i18n.getMessage("apiKeyNotRequired");
         elements.apiKey.value = "";
     } else {
         elements.apiKey.disabled = false;
@@ -99,7 +99,7 @@ export function setupSettingsListeners(stateManager, showToast) {
 
             if (provider === 'builtin') {
                 elements.apiKey.disabled = true;
-                elements.apiKey.placeholder = "Klucz nie jest wymagany";
+                elements.apiKey.placeholder = chrome.i18n.getMessage("apiKeyNotRequired");
                 elements.apiKey.value = "";
             } else {
                 elements.apiKey.disabled = false;
@@ -152,6 +152,6 @@ export function setupSettingsListeners(stateManager, showToast) {
         elements.targetLang.value = elements.settingsTargetLang.value;
 
         toggleSettings();
-        showToast('Ustawienia zapisane');
+        showToast(chrome.i18n.getMessage("settingsSaved"));
     });
 }

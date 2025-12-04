@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "Intelligent språkassistent för översättning och korrigering."
+  },
+  "settingsTitle": {
+    "message": "Inställningar"
+  },
+  "translateMode": {
+    "message": "ÖVERSÄTT"
+  },
+  "correctMode": {
+    "message": "KORRIGERA"
+  },
+  "promptMode": {
+    "message": "PROMPT"
+  },
+  "inputPlaceholder": {
+    "message": "Ange text att översätta..."
+  },
+  "actionButtonTranslate": {
+    "message": "Översätt"
+  },
+  "actionButtonCorrect": {
+    "message": "Korrigera"
+  },
+  "actionButtonGenerate": {
+    "message": "Generera"
+  },
+  "outputLabel": {
+    "message": "RESULTAT"
+  },
+  "outputTextPlaceholder": {
+    "message": "Resultatet visas här..."
+  },
+  "historyTitle": {
+    "message": "Översättningshistorik"
+  },
+  "clearHistoryButton": {
+    "message": "Rensa"
+  },
+  "emptyHistoryMessage": {
+    "message": "Ingen historik"
+  },
+  "ocrTitle": {
+    "message": "OCR (Textigenkänning)"
+  },
+  "ocrDescription": {
+    "message": "Välj ett område på skärmen för att kopiera text."
+  },
+  "ocrButton": {
+    "message": "Välj område"
+  },
+  "ocrLanguageLabel": {
+    "message": "Textspråk:"
+  },
+  "ocrAutoLanguage": {
+    "message": "Upptäck automatiskt"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "Klistra in text för att kontrollera..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "Beskriv vad du vill generera..."
+  },
+  "toastCopied": {
+    "message": "Kopierat till urklipp"
+  },
+  "toastDeleted": {
+    "message": "Objekt raderat"
+  },
+  "promptImage": {
+    "message": "Bildprompt"
+  },
+  "confirmClearHistory": {
+    "message": "Är du säker på att du vill rensa hela historiken?"
+  },
+  "detectLanguageOption": {
+    "message": "Upptäck"
+  },
+  "apiKeyNotRequired": {
+    "message": "API-nyckel krävs inte"
+  },
+  "settingsSaved": {
+    "message": "Inställningar sparade"
+  },
+  "ocrApiRequired": {
+    "message": "OCR kräver din egen API-nyckel (Gemini/OpenAI). Konfigurera i inställningar."
+  },
+  "ocrInitError": {
+    "message": "OCR-initieringsfel: "
+  },
+  "toastTranscriptionCopied": {
+    "message": "Transkription kopierad"
+  },
+  "toastTranslationCopied": {
+    "message": "Översättning kopierad"
+  },
+  "toastEnterText": {
+    "message": "Ange text"
+  },
+  "processingText": {
+    "message": "Bearbetar..."
+  },
+  "errorPrefix": {
+    "message": "Fel: "
+  },
+  "toastError": {
+    "message": "Ett fel inträffade"
+  },
+  "ocrLoadingText": {
+    "message": "OCR Översättning..."
+  },
+  "imageProcessingFailed": {
+    "message": "Bildbehandling misslyckades"
+  },
+  "communicationError": {
+    "message": "Kommunikationsfel"
+  },
+  "transcriptionLabel": {
+    "message": "Transkription"
+  },
+  "translationLabel": {
+    "message": "Översättning"
+  }
+}

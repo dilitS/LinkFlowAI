@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "翻訳と修正のためのインテリジェントな言語アシスタント。"
+  },
+  "settingsTitle": {
+    "message": "設定"
+  },
+  "translateMode": {
+    "message": "翻訳"
+  },
+  "correctMode": {
+    "message": "修正"
+  },
+  "promptMode": {
+    "message": "プロンプト"
+  },
+  "inputPlaceholder": {
+    "message": "翻訳するテキストを入力..."
+  },
+  "actionButtonTranslate": {
+    "message": "翻訳"
+  },
+  "actionButtonCorrect": {
+    "message": "修正"
+  },
+  "actionButtonGenerate": {
+    "message": "生成"
+  },
+  "outputLabel": {
+    "message": "結果"
+  },
+  "outputTextPlaceholder": {
+    "message": "結果はここに表示されます..."
+  },
+  "historyTitle": {
+    "message": "翻訳履歴"
+  },
+  "clearHistoryButton": {
+    "message": "クリア"
+  },
+  "emptyHistoryMessage": {
+    "message": "履歴なし"
+  },
+  "ocrTitle": {
+    "message": "OCR (文字認識)"
+  },
+  "ocrDescription": {
+    "message": "画面上の領域を選択してテキストをコピーします。"
+  },
+  "ocrButton": {
+    "message": "領域を選択"
+  },
+  "ocrLanguageLabel": {
+    "message": "テキストの言語:"
+  },
+  "ocrAutoLanguage": {
+    "message": "自動検出"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "確認するテキストを貼り付け..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "生成したいものを説明してください..."
+  },
+  "toastCopied": {
+    "message": "クリップボードにコピーしました"
+  },
+  "toastDeleted": {
+    "message": "アイテムを削除しました"
+  },
+  "promptImage": {
+    "message": "画像プロンプト"
+  },
+  "confirmClearHistory": {
+    "message": "履歴をすべて消去してもよろしいですか？"
+  },
+  "detectLanguageOption": {
+    "message": "検出"
+  },
+  "apiKeyNotRequired": {
+    "message": "APIキーは不要です"
+  },
+  "settingsSaved": {
+    "message": "設定を保存しました"
+  },
+  "ocrApiRequired": {
+    "message": "OCRには独自のAPIキー（Gemini/OpenAI）が必要です。設定で構成してください。"
+  },
+  "ocrInitError": {
+    "message": "OCR初期化エラー: "
+  },
+  "toastTranscriptionCopied": {
+    "message": "文字起こしをコピーしました"
+  },
+  "toastTranslationCopied": {
+    "message": "翻訳をコピーしました"
+  },
+  "toastEnterText": {
+    "message": "テキストを入力してください"
+  },
+  "processingText": {
+    "message": "処理中..."
+  },
+  "errorPrefix": {
+    "message": "エラー: "
+  },
+  "toastError": {
+    "message": "エラーが発生しました"
+  },
+  "ocrLoadingText": {
+    "message": "OCR翻訳..."
+  },
+  "imageProcessingFailed": {
+    "message": "画像処理に失敗しました"
+  },
+  "communicationError": {
+    "message": "通信エラー"
+  },
+  "transcriptionLabel": {
+    "message": "文字起こし"
+  },
+  "translationLabel": {
+    "message": "翻訳"
+  }
+}

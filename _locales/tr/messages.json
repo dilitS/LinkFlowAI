@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "Çeviri ve düzeltme için akıllı dil asistanı."
+  },
+  "settingsTitle": {
+    "message": "Ayarlar"
+  },
+  "translateMode": {
+    "message": "ÇEVİR"
+  },
+  "correctMode": {
+    "message": "DÜZELT"
+  },
+  "promptMode": {
+    "message": "PROMPT"
+  },
+  "inputPlaceholder": {
+    "message": "Çevrilecek metni girin..."
+  },
+  "actionButtonTranslate": {
+    "message": "Çevir"
+  },
+  "actionButtonCorrect": {
+    "message": "Düzelt"
+  },
+  "actionButtonGenerate": {
+    "message": "Oluştur"
+  },
+  "outputLabel": {
+    "message": "SONUÇ"
+  },
+  "outputTextPlaceholder": {
+    "message": "Sonuç burada görünecek..."
+  },
+  "historyTitle": {
+    "message": "Çeviri Geçmişi"
+  },
+  "clearHistoryButton": {
+    "message": "Temizle"
+  },
+  "emptyHistoryMessage": {
+    "message": "Geçmiş yok"
+  },
+  "ocrTitle": {
+    "message": "OCR (Metin Tanıma)"
+  },
+  "ocrDescription": {
+    "message": "Metni kopyalamak için ekranda bir alan seçin."
+  },
+  "ocrButton": {
+    "message": "Alan Seç"
+  },
+  "ocrLanguageLabel": {
+    "message": "Metin Dili:"
+  },
+  "ocrAutoLanguage": {
+    "message": "Otomatik Algıla"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "Kontrol edilecek metni yapıştırın..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "Ne oluşturmak istediğinizi açıklayın..."
+  },
+  "toastCopied": {
+    "message": "Panoya kopyalandı"
+  },
+  "toastDeleted": {
+    "message": "Öğe silindi"
+  },
+  "promptImage": {
+    "message": "Görsel İstemi"
+  },
+  "confirmClearHistory": {
+    "message": "Tüm geçmişi silmek istediğinizden emin misiniz?"
+  },
+  "detectLanguageOption": {
+    "message": "Algıla"
+  },
+  "apiKeyNotRequired": {
+    "message": "API Anahtarı gerekli değil"
+  },
+  "settingsSaved": {
+    "message": "Ayarlar kaydedildi"
+  },
+  "ocrApiRequired": {
+    "message": "OCR kendi API anahtarınızı gerektirir (Gemini/OpenAI). Ayarlarda yapılandırın."
+  },
+  "ocrInitError": {
+    "message": "OCR başlatma hatası: "
+  },
+  "toastTranscriptionCopied": {
+    "message": "Transkripsiyon kopyalandı"
+  },
+  "toastTranslationCopied": {
+    "message": "Çeviri kopyalandı"
+  },
+  "toastEnterText": {
+    "message": "Metin girin"
+  },
+  "processingText": {
+    "message": "İşleniyor..."
+  },
+  "errorPrefix": {
+    "message": "Hata: "
+  },
+  "toastError": {
+    "message": "Bir hata oluştu"
+  },
+  "ocrLoadingText": {
+    "message": "OCR Çevirisi..."
+  },
+  "imageProcessingFailed": {
+    "message": "Görüntü işleme başarısız"
+  },
+  "communicationError": {
+    "message": "İletişim hatası"
+  },
+  "transcriptionLabel": {
+    "message": "Transkripsiyon"
+  },
+  "translationLabel": {
+    "message": "Çeviri"
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "Intelligente taalassistent voor vertaling en correctie."
+  },
+  "settingsTitle": {
+    "message": "Instellingen"
+  },
+  "translateMode": {
+    "message": "VERTALEN"
+  },
+  "correctMode": {
+    "message": "CORRIGEREN"
+  },
+  "promptMode": {
+    "message": "PROMPT"
+  },
+  "inputPlaceholder": {
+    "message": "Voer tekst in om te vertalen..."
+  },
+  "actionButtonTranslate": {
+    "message": "Vertalen"
+  },
+  "actionButtonCorrect": {
+    "message": "Corrigeren"
+  },
+  "actionButtonGenerate": {
+    "message": "Genereren"
+  },
+  "outputLabel": {
+    "message": "RESULTAAT"
+  },
+  "outputTextPlaceholder": {
+    "message": "Het resultaat verschijnt hier..."
+  },
+  "historyTitle": {
+    "message": "Vertaalgeschiedenis"
+  },
+  "clearHistoryButton": {
+    "message": "Wissen"
+  },
+  "emptyHistoryMessage": {
+    "message": "Geen geschiedenis"
+  },
+  "ocrTitle": {
+    "message": "OCR (Tekstherkenning)"
+  },
+  "ocrDescription": {
+    "message": "Selecteer een gebied op het scherm om tekst te kopiëren."
+  },
+  "ocrButton": {
+    "message": "Selecteer gebied"
+  },
+  "ocrLanguageLabel": {
+    "message": "Teksttaal:"
+  },
+  "ocrAutoLanguage": {
+    "message": "Automatisch detecteren"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "Plak tekst om te controleren..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "Beschrijf wat je wilt genereren..."
+  },
+  "toastCopied": {
+    "message": "Gekopieerd naar klembord"
+  },
+  "toastDeleted": {
+    "message": "Item verwijderd"
+  },
+  "promptImage": {
+    "message": "Afbeelding Prompt"
+  },
+  "confirmClearHistory": {
+    "message": "Weet je zeker dat je de hele geschiedenis wilt wissen?"
+  },
+  "detectLanguageOption": {
+    "message": "Detecteren"
+  },
+  "apiKeyNotRequired": {
+    "message": "API-sleutel niet vereist"
+  },
+  "settingsSaved": {
+    "message": "Instellingen opgeslagen"
+  },
+  "ocrApiRequired": {
+    "message": "OCR vereist een eigen API-sleutel (Gemini/OpenAI). Configureren in instellingen."
+  },
+  "ocrInitError": {
+    "message": "OCR-initialisatiefout: "
+  },
+  "toastTranscriptionCopied": {
+    "message": "Transcriptie gekopieerd"
+  },
+  "toastTranslationCopied": {
+    "message": "Vertaling gekopieerd"
+  },
+  "toastEnterText": {
+    "message": "Voer tekst in"
+  },
+  "processingText": {
+    "message": "Verwerken..."
+  },
+  "errorPrefix": {
+    "message": "Fout: "
+  },
+  "toastError": {
+    "message": "Er is een fout opgetreden"
+  },
+  "ocrLoadingText": {
+    "message": "OCR Vertaling..."
+  },
+  "imageProcessingFailed": {
+    "message": "Beeldverwerking mislukt"
+  },
+  "communicationError": {
+    "message": "Communicatiefout"
+  },
+  "transcriptionLabel": {
+    "message": "Transcriptie"
+  },
+  "translationLabel": {
+    "message": "Vertaling"
+  }
+}

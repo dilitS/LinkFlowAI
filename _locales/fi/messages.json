@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "Älykäs kieliavustaja kääntämiseen ja korjaamiseen."
+  },
+  "settingsTitle": {
+    "message": "Asetukset"
+  },
+  "translateMode": {
+    "message": "KÄÄNNÄ"
+  },
+  "correctMode": {
+    "message": "KORJAA"
+  },
+  "promptMode": {
+    "message": "PROMPT"
+  },
+  "inputPlaceholder": {
+    "message": "Syötä käännettävä teksti..."
+  },
+  "actionButtonTranslate": {
+    "message": "Käännä"
+  },
+  "actionButtonCorrect": {
+    "message": "Korjaa"
+  },
+  "actionButtonGenerate": {
+    "message": "Luo"
+  },
+  "outputLabel": {
+    "message": "TULOS"
+  },
+  "outputTextPlaceholder": {
+    "message": "Tulos näkyy tässä..."
+  },
+  "historyTitle": {
+    "message": "Käännöshistoria"
+  },
+  "clearHistoryButton": {
+    "message": "Tyhjennä"
+  },
+  "emptyHistoryMessage": {
+    "message": "Ei historiaa"
+  },
+  "ocrTitle": {
+    "message": "OCR (Tekstintunnistus)"
+  },
+  "ocrDescription": {
+    "message": "Valitse alue näytöltä tekstin kopioimiseksi."
+  },
+  "ocrButton": {
+    "message": "Valitse alue"
+  },
+  "ocrLanguageLabel": {
+    "message": "Tekstin kieli:"
+  },
+  "ocrAutoLanguage": {
+    "message": "Tunnista automaattisesti"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "Liitä tarkistettava teksti..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "Kuvaile mitä haluat luoda..."
+  },
+  "toastCopied": {
+    "message": "Kopioitu leikepöydälle"
+  },
+  "toastDeleted": {
+    "message": "Kohde poistettu"
+  },
+  "promptImage": {
+    "message": "Kuvaprompti"
+  },
+  "confirmClearHistory": {
+    "message": "Haluatko varmasti tyhjentää koko historian?"
+  },
+  "detectLanguageOption": {
+    "message": "Tunnista"
+  },
+  "apiKeyNotRequired": {
+    "message": "API-avainta ei vaadita"
+  },
+  "settingsSaved": {
+    "message": "Asetukset tallennettu"
+  },
+  "ocrApiRequired": {
+    "message": "OCR vaatii oman API-avaimen (Gemini/OpenAI). Määritä asetuksissa."
+  },
+  "ocrInitError": {
+    "message": "OCR-alustusvirhe: "
+  },
+  "toastTranscriptionCopied": {
+    "message": "Transkriptio kopioitu"
+  },
+  "toastTranslationCopied": {
+    "message": "Käännös kopioitu"
+  },
+  "toastEnterText": {
+    "message": "Syötä teksti"
+  },
+  "processingText": {
+    "message": "Käsitellään..."
+  },
+  "errorPrefix": {
+    "message": "Virhe: "
+  },
+  "toastError": {
+    "message": "Tapahtui virhe"
+  },
+  "ocrLoadingText": {
+    "message": "OCR Käännös..."
+  },
+  "imageProcessingFailed": {
+    "message": "Kuvankäsittely epäonnistui"
+  },
+  "communicationError": {
+    "message": "Yhteysvirhe"
+  },
+  "transcriptionLabel": {
+    "message": "Transkriptio"
+  },
+  "translationLabel": {
+    "message": "Käännös"
+  }
+}

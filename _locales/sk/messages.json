@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "Inteligentný jazykový asistent pre preklad a korekciu."
+  },
+  "settingsTitle": {
+    "message": "Nastavenia"
+  },
+  "translateMode": {
+    "message": "PRELOŽIŤ"
+  },
+  "correctMode": {
+    "message": "OPRAVIŤ"
+  },
+  "promptMode": {
+    "message": "PROMPT"
+  },
+  "inputPlaceholder": {
+    "message": "Zadajte text na preklad..."
+  },
+  "actionButtonTranslate": {
+    "message": "Preložiť"
+  },
+  "actionButtonCorrect": {
+    "message": "Opraviť"
+  },
+  "actionButtonGenerate": {
+    "message": "Generovať"
+  },
+  "outputLabel": {
+    "message": "VÝSLEDOK"
+  },
+  "outputTextPlaceholder": {
+    "message": "Výsledok sa zobrazí tu..."
+  },
+  "historyTitle": {
+    "message": "História prekladov"
+  },
+  "clearHistoryButton": {
+    "message": "Vymazať"
+  },
+  "emptyHistoryMessage": {
+    "message": "Žiadna história"
+  },
+  "ocrTitle": {
+    "message": "OCR (Rozpoznávanie textu)"
+  },
+  "ocrDescription": {
+    "message": "Vyberte oblasť na obrazovke pre skopírovanie textu."
+  },
+  "ocrButton": {
+    "message": "Vybrať oblasť"
+  },
+  "ocrLanguageLabel": {
+    "message": "Jazyk textu:"
+  },
+  "ocrAutoLanguage": {
+    "message": "Zistiť automaticky"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "Vložte text na kontrolu..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "Popíšte, čo chcete vygenerovať..."
+  },
+  "toastCopied": {
+    "message": "Skopírované do schránky"
+  },
+  "toastDeleted": {
+    "message": "Položka zmazaná"
+  },
+  "promptImage": {
+    "message": "Prompt obrázka"
+  },
+  "confirmClearHistory": {
+    "message": "Naozaj chcete vymazať celú históriu?"
+  },
+  "detectLanguageOption": {
+    "message": "Zistiť"
+  },
+  "apiKeyNotRequired": {
+    "message": "Kľúč API nie je vyžadovaný"
+  },
+  "settingsSaved": {
+    "message": "Nastavenia uložené"
+  },
+  "ocrApiRequired": {
+    "message": "OCR vyžaduje vlastný kľúč API (Gemini/OpenAI). Nakonfigurujte v nastaveniach."
+  },
+  "ocrInitError": {
+    "message": "Chyba inicializácie OCR: "
+  },
+  "toastTranscriptionCopied": {
+    "message": "Prepis skopírovaný"
+  },
+  "toastTranslationCopied": {
+    "message": "Preklad skopírovaný"
+  },
+  "toastEnterText": {
+    "message": "Zadajte text"
+  },
+  "processingText": {
+    "message": "Spracovanie..."
+  },
+  "errorPrefix": {
+    "message": "Chyba: "
+  },
+  "toastError": {
+    "message": "Vyskytla sa chyba"
+  },
+  "ocrLoadingText": {
+    "message": "Preklad OCR..."
+  },
+  "imageProcessingFailed": {
+    "message": "Spracovanie obrazu zlyhalo"
+  },
+  "communicationError": {
+    "message": "Chyba komunikácie"
+  },
+  "transcriptionLabel": {
+    "message": "Prepis"
+  },
+  "translationLabel": {
+    "message": "Preklad"
+  }
+}

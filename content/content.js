@@ -120,7 +120,7 @@ function handleOCRMouseUp(e) {
         showTooltip(rect.left + window.scrollX, rect.bottom + window.scrollY + 10, `
             <div class="lingflow-loading">
                 <div class="lingflow-spinner"></div>
-                <span>Tłumaczenie OCR...</span>
+                <span>${chrome.i18n.getMessage("ocrLoadingText")}</span>
             </div>
         `, rect);
 
@@ -188,7 +188,7 @@ async function processOCRCrop(dataUrl, area) {
         };
         img.src = dataUrl;
     } catch (error) {
-        renderTooltipError('Image processing failed');
+        renderTooltipError(chrome.i18n.getMessage("imageProcessingFailed"));
     }
 }
 
@@ -317,7 +317,7 @@ async function handleTranslateClick(e) {
         hideFloatingButton();
         const btnRect = floatingBtn.getBoundingClientRect();
         showTooltip(btnRect.left + window.scrollX, btnRect.top + window.scrollY, '', btnRect);
-        renderTooltipError('Communication error');
+        renderTooltipError(chrome.i18n.getMessage("communicationError"));
     }
 }
 

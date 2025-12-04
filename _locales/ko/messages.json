@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "번역 및 교정을 위한 지능형 언어 도우미."
+  },
+  "settingsTitle": {
+    "message": "설정"
+  },
+  "translateMode": {
+    "message": "번역"
+  },
+  "correctMode": {
+    "message": "교정"
+  },
+  "promptMode": {
+    "message": "프롬프트"
+  },
+  "inputPlaceholder": {
+    "message": "번역할 텍스트 입력..."
+  },
+  "actionButtonTranslate": {
+    "message": "번역"
+  },
+  "actionButtonCorrect": {
+    "message": "교정"
+  },
+  "actionButtonGenerate": {
+    "message": "생성"
+  },
+  "outputLabel": {
+    "message": "결과"
+  },
+  "outputTextPlaceholder": {
+    "message": "결과가 여기에 표시됩니다..."
+  },
+  "historyTitle": {
+    "message": "번역 기록"
+  },
+  "clearHistoryButton": {
+    "message": "지우기"
+  },
+  "emptyHistoryMessage": {
+    "message": "기록 없음"
+  },
+  "ocrTitle": {
+    "message": "OCR (텍스트 인식)"
+  },
+  "ocrDescription": {
+    "message": "텍스트를 복사하려면 화면에서 영역을 선택하세요."
+  },
+  "ocrButton": {
+    "message": "영역 선택"
+  },
+  "ocrLanguageLabel": {
+    "message": "텍스트 언어:"
+  },
+  "ocrAutoLanguage": {
+    "message": "자동 감지"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "확인할 텍스트 붙여넣기..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "생성할 내용을 설명하세요..."
+  },
+  "toastCopied": {
+    "message": "클립보드에 복사됨"
+  },
+  "toastDeleted": {
+    "message": "항목 삭제됨"
+  },
+  "promptImage": {
+    "message": "이미지 프롬프트"
+  },
+  "confirmClearHistory": {
+    "message": "전체 기록을 지우시겠습니까?"
+  },
+  "detectLanguageOption": {
+    "message": "감지"
+  },
+  "apiKeyNotRequired": {
+    "message": "API 키 필요 없음"
+  },
+  "settingsSaved": {
+    "message": "설정 저장됨"
+  },
+  "ocrApiRequired": {
+    "message": "OCR은 자체 API 키(Gemini/OpenAI)가 필요합니다. 설정에서 구성하십시오."
+  },
+  "ocrInitError": {
+    "message": "OCR 초기화 오류: "
+  },
+  "toastTranscriptionCopied": {
+    "message": "전사 복사됨"
+  },
+  "toastTranslationCopied": {
+    "message": "번역 복사됨"
+  },
+  "toastEnterText": {
+    "message": "텍스트 입력"
+  },
+  "processingText": {
+    "message": "처리 중..."
+  },
+  "errorPrefix": {
+    "message": "오류: "
+  },
+  "toastError": {
+    "message": "오류가 발생했습니다"
+  },
+  "ocrLoadingText": {
+    "message": "OCR 번역..."
+  },
+  "imageProcessingFailed": {
+    "message": "이미지 처리 실패"
+  },
+  "communicationError": {
+    "message": "통신 오류"
+  },
+  "transcriptionLabel": {
+    "message": "전사"
+  },
+  "translationLabel": {
+    "message": "번역"
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "Assistant linguistique intelligent pour la traduction et la correction."
+  },
+  "settingsTitle": {
+    "message": "Paramètres"
+  },
+  "translateMode": {
+    "message": "TRADUIRE"
+  },
+  "correctMode": {
+    "message": "CORRIGER"
+  },
+  "promptMode": {
+    "message": "PROMPT"
+  },
+  "inputPlaceholder": {
+    "message": "Entrez le texte à traduire..."
+  },
+  "actionButtonTranslate": {
+    "message": "Traduire"
+  },
+  "actionButtonCorrect": {
+    "message": "Corriger"
+  },
+  "actionButtonGenerate": {
+    "message": "Générer"
+  },
+  "outputLabel": {
+    "message": "RÉSULTAT"
+  },
+  "outputTextPlaceholder": {
+    "message": "Le résultat apparaîtra ici..."
+  },
+  "historyTitle": {
+    "message": "Historique de traduction"
+  },
+  "clearHistoryButton": {
+    "message": "Effacer"
+  },
+  "emptyHistoryMessage": {
+    "message": "Aucun historique"
+  },
+  "ocrTitle": {
+    "message": "OCR (Reconnaissance de texte)"
+  },
+  "ocrDescription": {
+    "message": "Sélectionnez une zone sur l'écran pour copier le texte."
+  },
+  "ocrButton": {
+    "message": "Sélectionner une zone"
+  },
+  "ocrLanguageLabel": {
+    "message": "Langue du texte :"
+  },
+  "ocrAutoLanguage": {
+    "message": "Détecter automatiquement"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "Collez le texte à vérifier..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "Décrivez ce que vous voulez générer..."
+  },
+  "toastCopied": {
+    "message": "Copié dans le presse-papiers"
+  },
+  "toastDeleted": {
+    "message": "Élément supprimé"
+  },
+  "promptImage": {
+    "message": "Prompt Image"
+  },
+  "confirmClearHistory": {
+    "message": "Êtes-vous sûr de vouloir effacer tout l'historique ?"
+  },
+  "detectLanguageOption": {
+    "message": "Détecter"
+  },
+  "apiKeyNotRequired": {
+    "message": "Clé API non requise"
+  },
+  "settingsSaved": {
+    "message": "Paramètres enregistrés"
+  },
+  "ocrApiRequired": {
+    "message": "L'OCR nécessite votre propre clé API (Gemini/OpenAI). Configurer dans les paramètres."
+  },
+  "ocrInitError": {
+    "message": "Erreur d'initialisation OCR : "
+  },
+  "toastTranscriptionCopied": {
+    "message": "Transcription copiée"
+  },
+  "toastTranslationCopied": {
+    "message": "Traduction copiée"
+  },
+  "toastEnterText": {
+    "message": "Entrez du texte"
+  },
+  "processingText": {
+    "message": "Traitement..."
+  },
+  "errorPrefix": {
+    "message": "Erreur : "
+  },
+  "toastError": {
+    "message": "Une erreur est survenue"
+  },
+  "ocrLoadingText": {
+    "message": "Traduction OCR..."
+  },
+  "imageProcessingFailed": {
+    "message": "Échec du traitement de l'image"
+  },
+  "communicationError": {
+    "message": "Erreur de communication"
+  },
+  "transcriptionLabel": {
+    "message": "Transcription"
+  },
+  "translationLabel": {
+    "message": "Traduction"
+  }
+}

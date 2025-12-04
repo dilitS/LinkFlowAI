@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "Интелигентен езиков асистент за превод и корекция."
+  },
+  "settingsTitle": {
+    "message": "Настройки"
+  },
+  "translateMode": {
+    "message": "ПРЕВОД"
+  },
+  "correctMode": {
+    "message": "КОРЕКЦИЯ"
+  },
+  "promptMode": {
+    "message": "ПРОМПТ"
+  },
+  "inputPlaceholder": {
+    "message": "Въведете текст за превод..."
+  },
+  "actionButtonTranslate": {
+    "message": "Преведи"
+  },
+  "actionButtonCorrect": {
+    "message": "Коригирай"
+  },
+  "actionButtonGenerate": {
+    "message": "Генерирай"
+  },
+  "outputLabel": {
+    "message": "РЕЗУЛТАТ"
+  },
+  "outputTextPlaceholder": {
+    "message": "Резултатът ще се появи тук..."
+  },
+  "historyTitle": {
+    "message": "История на преводите"
+  },
+  "clearHistoryButton": {
+    "message": "Изчисти"
+  },
+  "emptyHistoryMessage": {
+    "message": "Няма история"
+  },
+  "ocrTitle": {
+    "message": "OCR (Разпознаване на текст)"
+  },
+  "ocrDescription": {
+    "message": "Изберете област на екрана, за да копирате текст."
+  },
+  "ocrButton": {
+    "message": "Избери област"
+  },
+  "ocrLanguageLabel": {
+    "message": "Език на текста:"
+  },
+  "ocrAutoLanguage": {
+    "message": "Автоматично откриване"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "Поставете текст за проверка..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "Опишете какво искате да генерирате..."
+  },
+  "toastCopied": {
+    "message": "Копирано в клипборда"
+  },
+  "toastDeleted": {
+    "message": "Елементът е изтрит"
+  },
+  "promptImage": {
+    "message": "Промпт за изображение"
+  },
+  "confirmClearHistory": {
+    "message": "Сигурни ли сте, че искате да изчистите цялата история?"
+  },
+  "detectLanguageOption": {
+    "message": "Откриване"
+  },
+  "apiKeyNotRequired": {
+    "message": "API ключ не се изисква"
+  },
+  "settingsSaved": {
+    "message": "Настройките са запазени"
+  },
+  "ocrApiRequired": {
+    "message": "OCR изисква собствен API ключ (Gemini/OpenAI). Конфигурирайте в настройките."
+  },
+  "ocrInitError": {
+    "message": "Грешка при инициализация на OCR: "
+  },
+  "toastTranscriptionCopied": {
+    "message": "Транскрипцията е копирана"
+  },
+  "toastTranslationCopied": {
+    "message": "Преводът е копиран"
+  },
+  "toastEnterText": {
+    "message": "Въведете текст"
+  },
+  "processingText": {
+    "message": "Обработка..."
+  },
+  "errorPrefix": {
+    "message": "Грешка: "
+  },
+  "toastError": {
+    "message": "Възникна грешка"
+  },
+  "ocrLoadingText": {
+    "message": "OCR Превод..."
+  },
+  "imageProcessingFailed": {
+    "message": "Обработката на изображението е неуспешна"
+  },
+  "communicationError": {
+    "message": "Грешка в комуникацията"
+  },
+  "transcriptionLabel": {
+    "message": "Транскрипция"
+  },
+  "translationLabel": {
+    "message": "Превод"
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "Intelligens nyelvi asszisztens fordításhoz és javításhoz."
+  },
+  "settingsTitle": {
+    "message": "Beállítások"
+  },
+  "translateMode": {
+    "message": "FORDÍTÁS"
+  },
+  "correctMode": {
+    "message": "JAVÍTÁS"
+  },
+  "promptMode": {
+    "message": "PROMPT"
+  },
+  "inputPlaceholder": {
+    "message": "Írja be a fordítandó szöveget..."
+  },
+  "actionButtonTranslate": {
+    "message": "Fordítás"
+  },
+  "actionButtonCorrect": {
+    "message": "Javítás"
+  },
+  "actionButtonGenerate": {
+    "message": "Generálás"
+  },
+  "outputLabel": {
+    "message": "EREDMÉNY"
+  },
+  "outputTextPlaceholder": {
+    "message": "Az eredmény itt jelenik meg..."
+  },
+  "historyTitle": {
+    "message": "Fordítási előzmények"
+  },
+  "clearHistoryButton": {
+    "message": "Törlés"
+  },
+  "emptyHistoryMessage": {
+    "message": "Nincs előzmény"
+  },
+  "ocrTitle": {
+    "message": "OCR (Szövegfelismerés)"
+  },
+  "ocrDescription": {
+    "message": "Jelöljön ki egy területet a képernyőn a szöveg másolásához."
+  },
+  "ocrButton": {
+    "message": "Terület kijelölése"
+  },
+  "ocrLanguageLabel": {
+    "message": "Szöveg nyelve:"
+  },
+  "ocrAutoLanguage": {
+    "message": "Automatikus észlelés"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "Illessze be az ellenőrizendő szöveget..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "Írja le, mit szeretne generálni..."
+  },
+  "toastCopied": {
+    "message": "Vágólapra másolva"
+  },
+  "toastDeleted": {
+    "message": "Elem törölve"
+  },
+  "promptImage": {
+    "message": "Kép Prompt"
+  },
+  "confirmClearHistory": {
+    "message": "Biztosan törölni szeretné a teljes előzményt?"
+  },
+  "detectLanguageOption": {
+    "message": "Észlelés"
+  },
+  "apiKeyNotRequired": {
+    "message": "API kulcs nem szükséges"
+  },
+  "settingsSaved": {
+    "message": "Beállítások mentve"
+  },
+  "ocrApiRequired": {
+    "message": "Az OCR-hez saját API kulcs szükséges (Gemini/OpenAI). Konfigurálja a beállításokban."
+  },
+  "ocrInitError": {
+    "message": "OCR inicializálási hiba: "
+  },
+  "toastTranscriptionCopied": {
+    "message": "Átirat másolva"
+  },
+  "toastTranslationCopied": {
+    "message": "Fordítás másolva"
+  },
+  "toastEnterText": {
+    "message": "Írjon be szöveget"
+  },
+  "processingText": {
+    "message": "Feldolgozás..."
+  },
+  "errorPrefix": {
+    "message": "Hiba: "
+  },
+  "toastError": {
+    "message": "Hiba történt"
+  },
+  "ocrLoadingText": {
+    "message": "OCR Fordítás..."
+  },
+  "imageProcessingFailed": {
+    "message": "Képfeldolgozás sikertelen"
+  },
+  "communicationError": {
+    "message": "Kommunikációs hiba"
+  },
+  "transcriptionLabel": {
+    "message": "Átirat"
+  },
+  "translationLabel": {
+    "message": "Fordítás"
+  }
+}

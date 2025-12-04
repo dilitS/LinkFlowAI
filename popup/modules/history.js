@@ -69,10 +69,10 @@ export function renderHistory(history, stateManager, showToast) {
 
         if (item.mode === 'correct') {
             badgeColor = 'bg-purple-500/10 text-purple-400 border-purple-500/20';
-            label = 'Korekta';
+            label = chrome.i18n.getMessage("correctMode");
         } else if (item.mode === 'prompt') {
             badgeColor = 'bg-orange-500/10 text-orange-400 border-orange-500/20';
-            label = 'Prompt Obraz';
+            label = chrome.i18n.getMessage("promptImage");
         }
 
         const date = new Date(item.timestamp);
@@ -124,7 +124,7 @@ export function renderHistory(history, stateManager, showToast) {
             e.stopPropagation();
             const output = e.target.closest('.history-item').querySelector('p:nth-child(2)').innerText;
             navigator.clipboard.writeText(output);
-            showToast('Skopiowano do schowka');
+            showToast(chrome.i18n.getMessage("toastCopied"));
         });
     });
 
@@ -134,7 +134,7 @@ export function renderHistory(history, stateManager, showToast) {
             const item = e.target.closest('.history-item');
             const id = item.dataset.id;
             await stateManager.removeFromHistory(id);
-            showToast('Usunięto element');
+            showToast(chrome.i18n.getMessage("toastDeleted"));
         });
     });
 }
@@ -151,7 +151,7 @@ export function setupHistoryListeners(stateManager) {
 
         elements.clearHistoryBtn.addEventListener('click', async (e) => {
             e.stopPropagation();
-            if (confirm('Czy na pewno chcesz usunąć całą historię?')) {
+            if (confirm(chrome.i18n.getMessage("confirmClearHistory"))) {
                 await stateManager.clearHistory();
             }
         });

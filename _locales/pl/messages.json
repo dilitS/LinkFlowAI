@@ -1,0 +1,128 @@
+{
+    "extensionName": {
+        "message": "LingFlow AI"
+    },
+    "extensionDescription": {
+        "message": "Inteligentny asystent językowy do tłumaczenia i korekty."
+    },
+    "settingsTitle": {
+        "message": "Ustawienia"
+    },
+    "translateMode": {
+        "message": "TŁUMACZ"
+    },
+    "correctMode": {
+        "message": "KOREKTA"
+    },
+    "promptMode": {
+        "message": "PROMPT"
+    },
+    "inputPlaceholder": {
+        "message": "Wpisz tekst do przetłumaczenia..."
+    },
+    "actionButtonTranslate": {
+        "message": "Tłumacz"
+    },
+    "actionButtonCorrect": {
+        "message": "Popraw"
+    },
+    "actionButtonGenerate": {
+        "message": "Generuj"
+    },
+    "outputLabel": {
+        "message": "WYNIK"
+    },
+    "outputTextPlaceholder": {
+        "message": "Wynik pojawi się tutaj..."
+    },
+    "historyTitle": {
+        "message": "Historia tłumaczeń"
+    },
+    "clearHistoryButton": {
+        "message": "Wyczyść"
+    },
+    "emptyHistoryMessage": {
+        "message": "Brak historii"
+    },
+    "ocrTitle": {
+        "message": "OCR (Rozpoznawanie tekstu)"
+    },
+    "ocrDescription": {
+        "message": "Zaznacz obszar na ekranie, aby skopiować tekst."
+    },
+    "ocrButton": {
+        "message": "Zaznacz obszar"
+    },
+    "ocrLanguageLabel": {
+        "message": "Język tekstu:"
+    },
+    "ocrAutoLanguage": {
+        "message": "Wykryj automatycznie"
+    },
+    "inputPlaceholderCorrect": {
+        "message": "Wklej tekst do sprawdzenia..."
+    },
+    "inputPlaceholderPrompt": {
+        "message": "Opisz co chcesz wygenerować..."
+    },
+    "toastCopied": {
+        "message": "Skopiowano do schowka"
+    },
+    "toastDeleted": {
+        "message": "Usunięto element"
+    },
+    "promptImage": {
+        "message": "Prompt Obraz"
+    },
+    "confirmClearHistory": {
+        "message": "Czy na pewno chcesz usunąć całą historię?"
+    },
+    "detectLanguageOption": {
+        "message": "Wykryj"
+    },
+    "apiKeyNotRequired": {
+        "message": "Klucz nie jest wymagany"
+    },
+    "settingsSaved": {
+        "message": "Ustawienia zapisane"
+    },
+    "ocrApiRequired": {
+        "message": "OCR wymaga własnego klucza API (Gemini/OpenAI). Skonfiguruj w ustawieniach."
+    },
+    "ocrInitError": {
+        "message": "Błąd inicjalizacji OCR: "
+    },
+    "toastTranscriptionCopied": {
+        "message": "Skopiowano transkrypcję"
+    },
+    "toastTranslationCopied": {
+        "message": "Skopiowano tłumaczenie"
+    },
+    "toastEnterText": {
+        "message": "Wpisz tekst"
+    },
+    "processingText": {
+        "message": "Przetwarzanie..."
+    },
+    "errorPrefix": {
+        "message": "Błąd: "
+    },
+    "toastError": {
+        "message": "Wystąpił błąd"
+    },
+    "ocrLoadingText": {
+        "message": "Tłumaczenie OCR..."
+    },
+    "imageProcessingFailed": {
+        "message": "Błąd przetwarzania obrazu"
+    },
+    "communicationError": {
+        "message": "Błąd komunikacji"
+    },
+    "transcriptionLabel": {
+        "message": "Transkrypcja"
+    },
+    "translationLabel": {
+        "message": "Tłumaczenie"
+    }
+}

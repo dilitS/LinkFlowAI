@@ -106,6 +106,15 @@ function setupEventListeners() {
         localStorage.setItem('lingflow_input_text', e.target.value);
     });
 
+    // Language persistence
+    elements.sourceLang.addEventListener('change', (e) => {
+        localStorage.setItem('lingflow_source_lang', e.target.value);
+    });
+
+    elements.targetLang.addEventListener('change', (e) => {
+        localStorage.setItem('lingflow_target_lang', e.target.value);
+    });
+
     // Keyboard shortcuts
     elements.inputText.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
@@ -122,9 +131,20 @@ function renderState(state) {
     renderHistory(state.history, stateManager, showToast);
     loadSettingsToInputs(state);
 
-    // Apply default target language on first load
-    if (state.settings && state.settings.defaultTargetLang && !window.hasAppliedDefaultLang) {
-        elements.targetLang.value = state.settings.defaultTargetLang;
+    // Restore saved languages or apply default
+    const savedSourceLang = localStorage.getItem('lingflow_source_lang');
+    const savedTargetLang = localStorage.getItem('lingflow_target_lang');
+
+    if (!window.hasAppliedDefaultLang) {
+        if (savedSourceLang) {
+            elements.sourceLang.value = savedSourceLang;
+        }
+
+        if (savedTargetLang) {
+            elements.targetLang.value = savedTargetLang;
+        } else if (state.settings && state.settings.defaultTargetLang) {
+            elements.targetLang.value = state.settings.defaultTargetLang;
+        }
         window.hasAppliedDefaultLang = true;
     }
 }

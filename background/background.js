@@ -38,8 +38,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             .then(result => {
                 // Format result: Transcription + Translation
                 const text = `
-                    <div style="margin-bottom: 8px;"><strong>Transcription:</strong><br>${result.transcription}</div>
-                    <div><strong>Translation:</strong><br>${result.translation}</div>
+                    <div style="margin-bottom: 8px;"><strong>${chrome.i18n.getMessage("transcriptionLabel")}:</strong><br>${result.transcription}</div>
+                    <div><strong>${chrome.i18n.getMessage("translationLabel")}:</strong><br>${result.translation}</div>
                 `;
                 chrome.tabs.sendMessage(sender.tab.id, {
                     action: 'show_ocr_result',

@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "अनुवाद और सुधार के लिए बुद्धिमान भाषा सहायक।"
+  },
+  "settingsTitle": {
+    "message": "सेटिंग्स"
+  },
+  "translateMode": {
+    "message": "अनुवाद"
+  },
+  "correctMode": {
+    "message": "सुधार"
+  },
+  "promptMode": {
+    "message": "प्रॉम्प्ट"
+  },
+  "inputPlaceholder": {
+    "message": "अनुवाद के लिए पाठ दर्ज करें..."
+  },
+  "actionButtonTranslate": {
+    "message": "अनुवाद करें"
+  },
+  "actionButtonCorrect": {
+    "message": "सुधारें"
+  },
+  "actionButtonGenerate": {
+    "message": "उत्पन्न करें"
+  },
+  "outputLabel": {
+    "message": "परिणाम"
+  },
+  "outputTextPlaceholder": {
+    "message": "परिणाम यहाँ दिखाई देगा..."
+  },
+  "historyTitle": {
+    "message": "अनुवाद इतिहास"
+  },
+  "clearHistoryButton": {
+    "message": "साफ़ करें"
+  },
+  "emptyHistoryMessage": {
+    "message": "कोई इतिहास नहीं"
+  },
+  "ocrTitle": {
+    "message": "OCR (पाठ पहचान)"
+  },
+  "ocrDescription": {
+    "message": "पाठ कॉपी करने के लिए स्क्रीन पर एक क्षेत्र चुनें।"
+  },
+  "ocrButton": {
+    "message": "क्षेत्र चुनें"
+  },
+  "ocrLanguageLabel": {
+    "message": "पाठ भाषा:"
+  },
+  "ocrAutoLanguage": {
+    "message": "स्वचालित रूप से पता लगाएं"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "जाँच के लिए पाठ पेस्ट करें..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "वर्णन करें कि आप क्या उत्पन्न करना चाहते हैं..."
+  },
+  "toastCopied": {
+    "message": "क्लिपबोर्ड पर कॉपी किया गया"
+  },
+  "toastDeleted": {
+    "message": "आइटम हटाया गया"
+  },
+  "promptImage": {
+    "message": "छवि प्रॉम्प्ट"
+  },
+  "confirmClearHistory": {
+    "message": "क्या आप वाकई पूरा इतिहास साफ़ करना चाहते हैं?"
+  },
+  "detectLanguageOption": {
+    "message": "पता लगाएं"
+  },
+  "apiKeyNotRequired": {
+    "message": "API कुंजी की आवश्यकता नहीं है"
+  },
+  "settingsSaved": {
+    "message": "सेटिंग्स सहेजी गईं"
+  },
+  "ocrApiRequired": {
+    "message": "OCR के लिए आपकी अपनी API कुंजी (Gemini/OpenAI) की आवश्यकता है। सेटिंग्स में कॉन्फ़िगर करें।"
+  },
+  "ocrInitError": {
+    "message": "OCR प्रारंभ त्रुटि: "
+  },
+  "toastTranscriptionCopied": {
+    "message": "प्रतिलेखन कॉपी किया गया"
+  },
+  "toastTranslationCopied": {
+    "message": "अनुवाद कॉपी किया गया"
+  },
+  "toastEnterText": {
+    "message": "पाठ दर्ज करें"
+  },
+  "processingText": {
+    "message": "प्रसंस्करण..."
+  },
+  "errorPrefix": {
+    "message": "त्रुटि: "
+  },
+  "toastError": {
+    "message": "एक त्रुटि हुई"
+  },
+  "ocrLoadingText": {
+    "message": "OCR अनुवाद..."
+  },
+  "imageProcessingFailed": {
+    "message": "छवि प्रसंस्करण विफल"
+  },
+  "communicationError": {
+    "message": "संचार त्रुटि"
+  },
+  "transcriptionLabel": {
+    "message": "प्रतिलेखन"
+  },
+  "translationLabel": {
+    "message": "अनुवाद"
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "Inteligentní jazykový asistent pro překlad a korekci."
+  },
+  "settingsTitle": {
+    "message": "Nastavení"
+  },
+  "translateMode": {
+    "message": "PŘELOŽIT"
+  },
+  "correctMode": {
+    "message": "OPRAVIT"
+  },
+  "promptMode": {
+    "message": "PROMPT"
+  },
+  "inputPlaceholder": {
+    "message": "Zadejte text k překladu..."
+  },
+  "actionButtonTranslate": {
+    "message": "Přeložit"
+  },
+  "actionButtonCorrect": {
+    "message": "Opravit"
+  },
+  "actionButtonGenerate": {
+    "message": "Generovat"
+  },
+  "outputLabel": {
+    "message": "VÝSLEDEK"
+  },
+  "outputTextPlaceholder": {
+    "message": "Výsledek se zobrazí zde..."
+  },
+  "historyTitle": {
+    "message": "Historie překladů"
+  },
+  "clearHistoryButton": {
+    "message": "Vymazat"
+  },
+  "emptyHistoryMessage": {
+    "message": "Žádná historie"
+  },
+  "ocrTitle": {
+    "message": "OCR (Rozpoznávání textu)"
+  },
+  "ocrDescription": {
+    "message": "Vyberte oblast na obrazovce pro zkopírování textu."
+  },
+  "ocrButton": {
+    "message": "Vybrat oblast"
+  },
+  "ocrLanguageLabel": {
+    "message": "Jazyk textu:"
+  },
+  "ocrAutoLanguage": {
+    "message": "Zjistit automaticky"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "Vložte text ke kontrole..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "Popište, co chcete vygenerovat..."
+  },
+  "toastCopied": {
+    "message": "Zkopírováno do schránky"
+  },
+  "toastDeleted": {
+    "message": "Položka smazána"
+  },
+  "promptImage": {
+    "message": "Prompt obrázku"
+  },
+  "confirmClearHistory": {
+    "message": "Opravdu chcete vymazat celou historii?"
+  },
+  "detectLanguageOption": {
+    "message": "Zjistit"
+  },
+  "apiKeyNotRequired": {
+    "message": "Klíč API není vyžadován"
+  },
+  "settingsSaved": {
+    "message": "Nastavení uloženo"
+  },
+  "ocrApiRequired": {
+    "message": "OCR vyžaduje vlastní klíč API (Gemini/OpenAI). Nakonfigurujte v nastavení."
+  },
+  "ocrInitError": {
+    "message": "Chyba inicializace OCR: "
+  },
+  "toastTranscriptionCopied": {
+    "message": "Přepis zkopírován"
+  },
+  "toastTranslationCopied": {
+    "message": "Překlad zkopírován"
+  },
+  "toastEnterText": {
+    "message": "Zadejte text"
+  },
+  "processingText": {
+    "message": "Zpracování..."
+  },
+  "errorPrefix": {
+    "message": "Chyba: "
+  },
+  "toastError": {
+    "message": "Došlo k chybě"
+  },
+  "ocrLoadingText": {
+    "message": "Překlad OCR..."
+  },
+  "imageProcessingFailed": {
+    "message": "Zpracování obrazu selhalo"
+  },
+  "communicationError": {
+    "message": "Chyba komunikace"
+  },
+  "transcriptionLabel": {
+    "message": "Přepis"
+  },
+  "translationLabel": {
+    "message": "Překlad"
+  }
+}

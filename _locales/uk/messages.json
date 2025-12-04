@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "Інтелектуальний мовний помічник для перекладу та корекції."
+  },
+  "settingsTitle": {
+    "message": "Налаштування"
+  },
+  "translateMode": {
+    "message": "ПЕРЕКЛАСТИ"
+  },
+  "correctMode": {
+    "message": "ВИПРАВИТИ"
+  },
+  "promptMode": {
+    "message": "ПРОМПТ"
+  },
+  "inputPlaceholder": {
+    "message": "Введіть текст для перекладу..."
+  },
+  "actionButtonTranslate": {
+    "message": "Перекласти"
+  },
+  "actionButtonCorrect": {
+    "message": "Виправити"
+  },
+  "actionButtonGenerate": {
+    "message": "Згенерувати"
+  },
+  "outputLabel": {
+    "message": "РЕЗУЛЬТАТ"
+  },
+  "outputTextPlaceholder": {
+    "message": "Результат з'явиться тут..."
+  },
+  "historyTitle": {
+    "message": "Історія перекладів"
+  },
+  "clearHistoryButton": {
+    "message": "Очистити"
+  },
+  "emptyHistoryMessage": {
+    "message": "Немає історії"
+  },
+  "ocrTitle": {
+    "message": "OCR (Розпізнавання тексту)"
+  },
+  "ocrDescription": {
+    "message": "Виберіть область на екрані, щоб скопіювати текст."
+  },
+  "ocrButton": {
+    "message": "Вибрати область"
+  },
+  "ocrLanguageLabel": {
+    "message": "Мова тексту:"
+  },
+  "ocrAutoLanguage": {
+    "message": "Визначити автоматично"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "Вставте текст для перевірки..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "Опишіть, що ви хочете згенерувати..."
+  },
+  "toastCopied": {
+    "message": "Скопійовано в буфер обміну"
+  },
+  "toastDeleted": {
+    "message": "Елемент видалено"
+  },
+  "promptImage": {
+    "message": "Промпт зображення"
+  },
+  "confirmClearHistory": {
+    "message": "Ви впевнені, що хочете очистити всю історію?"
+  },
+  "detectLanguageOption": {
+    "message": "Визначити"
+  },
+  "apiKeyNotRequired": {
+    "message": "API-ключ не потрібен"
+  },
+  "settingsSaved": {
+    "message": "Налаштування збережено"
+  },
+  "ocrApiRequired": {
+    "message": "OCR вимагає власного ключа API (Gemini/OpenAI). Налаштуйте в параметрах."
+  },
+  "ocrInitError": {
+    "message": "Помилка ініціалізації OCR: "
+  },
+  "toastTranscriptionCopied": {
+    "message": "Транскрипцію скопійовано"
+  },
+  "toastTranslationCopied": {
+    "message": "Переклад скопійовано"
+  },
+  "toastEnterText": {
+    "message": "Введіть текст"
+  },
+  "processingText": {
+    "message": "Обробка..."
+  },
+  "errorPrefix": {
+    "message": "Помилка: "
+  },
+  "toastError": {
+    "message": "Сталася помилка"
+  },
+  "ocrLoadingText": {
+    "message": "Переклад OCR..."
+  },
+  "imageProcessingFailed": {
+    "message": "Помилка обробки зображення"
+  },
+  "communicationError": {
+    "message": "Помилка зв'язку"
+  },
+  "transcriptionLabel": {
+    "message": "Транскрипція"
+  },
+  "translationLabel": {
+    "message": "Переклад"
+  }
+}

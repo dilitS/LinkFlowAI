@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "مساعد لغوي ذكي للترجمة والتصحيح."
+  },
+  "settingsTitle": {
+    "message": "الإعدادات"
+  },
+  "translateMode": {
+    "message": "ترجمة"
+  },
+  "correctMode": {
+    "message": "تصحيح"
+  },
+  "promptMode": {
+    "message": "موجه"
+  },
+  "inputPlaceholder": {
+    "message": "أدخل النص للترجمة..."
+  },
+  "actionButtonTranslate": {
+    "message": "ترجمة"
+  },
+  "actionButtonCorrect": {
+    "message": "تصحيح"
+  },
+  "actionButtonGenerate": {
+    "message": "توليد"
+  },
+  "outputLabel": {
+    "message": "النتيجة"
+  },
+  "outputTextPlaceholder": {
+    "message": "ستظهر النتيجة هنا..."
+  },
+  "historyTitle": {
+    "message": "سجل الترجمة"
+  },
+  "clearHistoryButton": {
+    "message": "مسح"
+  },
+  "emptyHistoryMessage": {
+    "message": "لا يوجد سجل"
+  },
+  "ocrTitle": {
+    "message": "OCR (التعرف على النص)"
+  },
+  "ocrDescription": {
+    "message": "حدد منطقة على الشاشة لنسخ النص."
+  },
+  "ocrButton": {
+    "message": "تحديد منطقة"
+  },
+  "ocrLanguageLabel": {
+    "message": "لغة النص:"
+  },
+  "ocrAutoLanguage": {
+    "message": "كشف تلقائي"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "الصق النص للتحقق..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "صف ما تريد توليده..."
+  },
+  "toastCopied": {
+    "message": "تم النسخ إلى الحافظة"
+  },
+  "toastDeleted": {
+    "message": "تم حذف العنصر"
+  },
+  "promptImage": {
+    "message": "موجه الصورة"
+  },
+  "confirmClearHistory": {
+    "message": "هل أنت متأكد أنك تريد مسح السجل بالكامل؟"
+  },
+  "detectLanguageOption": {
+    "message": "كشف"
+  },
+  "apiKeyNotRequired": {
+    "message": "مفتاح API غير مطلوب"
+  },
+  "settingsSaved": {
+    "message": "تم حفظ الإعدادات"
+  },
+  "ocrApiRequired": {
+    "message": "يتطلب OCR مفتاح API خاص بك (Gemini/OpenAI). قم بالتكوين في الإعدادات."
+  },
+  "ocrInitError": {
+    "message": "خطأ في تهيئة OCR: "
+  },
+  "toastTranscriptionCopied": {
+    "message": "تم نسخ النص"
+  },
+  "toastTranslationCopied": {
+    "message": "تم نسخ الترجمة"
+  },
+  "toastEnterText": {
+    "message": "أدخل النص"
+  },
+  "processingText": {
+    "message": "جارٍ المعالجة..."
+  },
+  "errorPrefix": {
+    "message": "خطأ: "
+  },
+  "toastError": {
+    "message": "حدث خطأ"
+  },
+  "ocrLoadingText": {
+    "message": "ترجمة OCR..."
+  },
+  "imageProcessingFailed": {
+    "message": "فشل معالجة الصورة"
+  },
+  "communicationError": {
+    "message": "خطأ في الاتصال"
+  },
+  "transcriptionLabel": {
+    "message": "النسخ"
+  },
+  "translationLabel": {
+    "message": "الترجمة"
+  }
+}

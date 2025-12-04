@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "用于翻译和校对的智能语言助手。"
+  },
+  "settingsTitle": {
+    "message": "设置"
+  },
+  "translateMode": {
+    "message": "翻译"
+  },
+  "correctMode": {
+    "message": "校对"
+  },
+  "promptMode": {
+    "message": "提示词"
+  },
+  "inputPlaceholder": {
+    "message": "输入要翻译的文本..."
+  },
+  "actionButtonTranslate": {
+    "message": "翻译"
+  },
+  "actionButtonCorrect": {
+    "message": "校对"
+  },
+  "actionButtonGenerate": {
+    "message": "生成"
+  },
+  "outputLabel": {
+    "message": "结果"
+  },
+  "outputTextPlaceholder": {
+    "message": "结果将显示在这里..."
+  },
+  "historyTitle": {
+    "message": "翻译历史"
+  },
+  "clearHistoryButton": {
+    "message": "清除"
+  },
+  "emptyHistoryMessage": {
+    "message": "无历史记录"
+  },
+  "ocrTitle": {
+    "message": "OCR (文本识别)"
+  },
+  "ocrDescription": {
+    "message": "在屏幕上选择区域以复制文本。"
+  },
+  "ocrButton": {
+    "message": "选择区域"
+  },
+  "ocrLanguageLabel": {
+    "message": "文本语言："
+  },
+  "ocrAutoLanguage": {
+    "message": "自动检测"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "粘贴要检查的文本..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "描述您想要生成的内容..."
+  },
+  "toastCopied": {
+    "message": "已复制到剪贴板"
+  },
+  "toastDeleted": {
+    "message": "项目已删除"
+  },
+  "promptImage": {
+    "message": "图像提示词"
+  },
+  "confirmClearHistory": {
+    "message": "您确定要清除所有历史记录吗？"
+  },
+  "detectLanguageOption": {
+    "message": "检测"
+  },
+  "apiKeyNotRequired": {
+    "message": "无需 API 密钥"
+  },
+  "settingsSaved": {
+    "message": "设置已保存"
+  },
+  "ocrApiRequired": {
+    "message": "OCR 需要您自己的 API 密钥 (Gemini/OpenAI)。请在设置中配置。"
+  },
+  "ocrInitError": {
+    "message": "OCR 初始化错误："
+  },
+  "toastTranscriptionCopied": {
+    "message": "转录已复制"
+  },
+  "toastTranslationCopied": {
+    "message": "翻译已复制"
+  },
+  "toastEnterText": {
+    "message": "输入文本"
+  },
+  "processingText": {
+    "message": "处理中..."
+  },
+  "errorPrefix": {
+    "message": "错误："
+  },
+  "toastError": {
+    "message": "发生错误"
+  },
+  "ocrLoadingText": {
+    "message": "OCR 翻译..."
+  },
+  "imageProcessingFailed": {
+    "message": "图像处理失败"
+  },
+  "communicationError": {
+    "message": "通信错误"
+  },
+  "transcriptionLabel": {
+    "message": "转录"
+  },
+  "translationLabel": {
+    "message": "翻译"
+  }
+}

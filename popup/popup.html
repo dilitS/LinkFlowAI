@@ -4,13 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LingFlow AI</title>
-    <!-- FontAwesome is allowed as a style resource -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>__MSG_extensionName__</title>
+    <!-- Local Assets -->
+    <link rel="stylesheet" href="../assets/css/fontawesome.min.css">
+    <link rel="stylesheet" href="../assets/css/inter.css">
     <link rel="stylesheet" href="popup.css">
     <link rel="stylesheet" href="output.css">
-    <!-- Google Fonts: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body class="bg-[#09090b] text-gray-100 w-[360px] min-h-[500px]">
@@ -50,7 +49,7 @@
             <!-- Settings Toggle -->
             <button id="settings-btn"
                 class="w-8 h-8 rounded-xl hover:bg-[#18181b] border border-transparent hover:border-gray-800 flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200"
-                title="Ustawienia">
+                title="__MSG_settingsTitle__">
                 <i class="fa-solid fa-gear text-sm"></i>
             </button>
         </div>
@@ -61,17 +60,17 @@
                 <button id="btn-translate"
                     class="mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-white bg-[#27272a] shadow-sm transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase"
                     data-mode="translate">
-                    <i class="fa-solid fa-globe"></i> TŁUMACZ
+                    <i class="fa-solid fa-globe"></i> __MSG_translateMode__
                 </button>
                 <button id="btn-correct"
                     class="mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-gray-500 hover:text-gray-300 transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase"
                     data-mode="correct">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> KOREKTA
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> __MSG_correctMode__
                 </button>
                 <button id="btn-prompt"
                     class="mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-gray-500 hover:text-gray-300 transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase"
                     data-mode="prompt">
-                    <i class="fa-solid fa-robot"></i> PROMPT
+                    <i class="fa-solid fa-robot"></i> __MSG_promptMode__
                 </button>
             </div>
         </div>
@@ -156,7 +155,7 @@
                 <!-- Source Input Container -->
                 <div
                     class="relative group bg-[#18181b] rounded-2xl border border-gray-800 hover:border-gray-700 transition-all shadow-sm input-group">
-                    <textarea id="input-text" placeholder="Wpisz tekst do przetłumaczenia..."
+                    <textarea id="input-text" placeholder="__MSG_inputPlaceholder__"
                         class="w-full bg-transparent text-[15px] text-gray-200 placeholder-gray-600 outline-none resize-none h-32 p-3 no-scrollbar leading-relaxed rounded-2xl pb-10"
                         spellcheck="false"></textarea>
 
@@ -193,7 +192,7 @@
                     <button
                         class="relative z-10 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold uppercase tracking-wider py-3 px-10 rounded-full shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all hover:scale-105 active:scale-95 group"
                         id="action-btn">
-                        <span>Tłumacz</span>
+                        <span>__MSG_actionButtonTranslate__</span>
                     </button>
                 </div>
 
@@ -202,7 +201,7 @@
                     class="bg-[#18181b] rounded-2xl p-4 border border-gray-800 relative transition-all duration-300 min-h-[100px] hover:border-gray-700 group">
                     <div class="flex justify-between items-start mb-3">
                         <span class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]"
-                            id="output-label">WYNIK</span>
+                            id="output-label">__MSG_outputLabel__</span>
                         <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                             <!-- Speak Button -->
                             <button id="output-tts-btn"
@@ -219,7 +218,7 @@
                         </div>
                     </div>
                     <p class="text-gray-500 text-[14px] leading-relaxed break-words italic" id="output-text">
-                        Wynik pojawi się tutaj...
+                        __MSG_outputTextPlaceholder__
                     </p>
                 </div>
             </div>
@@ -230,15 +229,14 @@
                     id="toggle-history-btn">
                     <div class="flex items-center gap-3">
                         <span
-                            class="text-xs font-bold text-gray-500 group-hover:text-gray-300 transition-colors uppercase tracking-widest">Historia
-                            tłumaczeń</span>
+                            class="text-xs font-bold text-gray-500 group-hover:text-gray-300 transition-colors uppercase tracking-widest">__MSG_historyTitle__</span>
                         <span id="history-badge"
                             class="hidden text-[10px] bg-[#27272a] text-gray-400 px-2 py-0.5 rounded-full font-mono">0</span>
                     </div>
                     <div class="flex items-center gap-3">
                         <button
                             class="text-[10px] font-bold text-gray-600 hover:text-gray-400 transition-colors hidden uppercase tracking-wider"
-                            id="clear-history-btn">Wyczyść</button>
+                            id="clear-history-btn">__MSG_clearHistoryButton__</button>
                         <i class="fa-solid fa-chevron-up text-xs text-gray-600 group-hover:text-white transition-transform duration-300"
                             id="history-arrow"></i>
                     </div>
@@ -247,7 +245,8 @@
                 <!-- History Container -->
                 <div id="history-list" class="space-y-2 pb-4 animate-fade-in">
                     <!-- History items will be injected here -->
-                    <div class="text-center py-4 text-gray-600 text-xs italic" id="empty-history-msg">Brak historii
+                    <div class="text-center py-4 text-gray-600 text-xs italic" id="empty-history-msg">
+                        __MSG_emptyHistoryMessage__
                     </div>
                 </div>
             </div>
@@ -258,7 +257,7 @@
             class="absolute inset-0 bg-[#09090b]/95 backdrop-blur-md z-50 transform translate-y-full transition-transform duration-300 cubic-bezier(0.32, 0.72, 0, 1) flex flex-col">
             <!-- Settings Header -->
             <div class="px-5 py-4 border-b border-gray-800 flex justify-between items-center bg-[#09090b]">
-                <h2 class="text-lg font-semibold text-white">Ustawienia</h2>
+                <h2 class="text-lg font-semibold text-white">__MSG_settingsTitle__</h2>
                 <button id="close-settings-btn"
                     class="w-8 h-8 flex items-center justify-center rounded-full bg-[#18181b] text-gray-400 hover:text-white hover:bg-gray-700 transition-colors">
                     <i class="fa-solid fa-xmark text-sm"></i>
@@ -271,7 +270,7 @@
                 <div class="space-y-4 border-b border-gray-800 pb-4">
                     <div>
                         <label class="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Język
-                            docelowy</label>
+                            tłumaczenia zaznaczenia i OCR</label>
                         <div class="relative">
                             <select id="settings-target-lang"
                                 class="w-full bg-[#18181b] text-gray-200 text-xs font-medium border border-gray-700 rounded-xl p-3 focus:border-blue-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#27272a]">
@@ -290,22 +289,38 @@
                             <input type="radio" name="api-provider-select" value="builtin" class="peer sr-only" checked>
                             <div
                                 class="p-3 rounded-xl border border-gray-700 bg-[#18181b] text-gray-400 peer-checked:border-purple-500 peer-checked:bg-purple-500/5 peer-checked:text-purple-400 transition-all text-center flex flex-row items-center justify-center gap-3 hover:bg-[#27272a]">
-                                <i class="fa-solid fa-cloud-bolt text-lg"></i>
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    style="width: 18px; height: 18px; flex-shrink: 0;" viewBox="-45 32.23 556.5 433.48"
+                                    fill="currentColor" stroke="currentColor">
+                                    <path
+                                        d="M3 248.945C18 248.945 76 236 106 219C136 202 136 202 198 158C276.497 102.293 332 120.945 423 120.945"
+                                        stroke-width="90" fill="none" />
+                                    <path d="M511 121.5L357.25 210.268L357.25 32.7324L511 121.5Z" stroke="none" />
+                                    <path
+                                        d="M0 249C15 249 73 261.945 103 278.945C133 295.945 133 295.945 195 339.945C273.497 395.652 329 377 420 377"
+                                        stroke-width="90" fill="none" />
+                                    <path d="M508 376.445L354.25 287.678L354.25 465.213L508 376.445Z" stroke="none" />
+                                </svg>
                                 <span class="text-xs font-medium">OpenRouter (Free)</span>
                             </div>
                         </label>
                         <label class="cursor-pointer relative group">
                             <input type="radio" name="api-provider-select" value="openai" class="peer sr-only">
                             <div
-                                class="p-3 rounded-xl border border-gray-700 bg-[#18181b] text-gray-400 peer-checked:border-green-500 peer-checked:bg-green-500/5 peer-checked:text-green-400 transition-all text-center flex flex-col items-center gap-2 hover:bg-[#27272a]">
-                                <i class="fa-solid fa-bolt text-lg"></i>
-                                <span class="text-xs font-medium">OpenAI GPT-4</span>
+                                class="p-3 rounded-xl border border-gray-700 bg-[#18181b] text-gray-400 peer-checked:border-green-500 peer-checked:bg-green-500/5 peer-checked:text-green-400 transition-all text-center flex flex-col items-center justify-center gap-2 h-full hover:bg-[#27272a]">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    style="width: 18px; height: 18px; flex-shrink: 0;" viewBox="0 0 24 24"
+                                    fill="currentColor">
+                                    <path
+                                        d="M22.282 9.821a6 6 0 0 0-.516-4.91 6.05 6.05 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a6 6 0 0 0-3.998 2.9 6.05 6.05 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.05 6.05 0 0 0 6.515 2.9A6 6 0 0 0 13.26 24a6.06 6.06 0 0 0 5.772-4.206 6 6 0 0 0 3.997-2.9 6.06 6.06 0 0 0-.747-7.073M13.26 22.43a4.48 4.48 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.8.8 0 0 0 .392-.681v-6.737l2.02 1.168a.07.07 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494M3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.77.77 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646M2.34 7.896a4.5 4.5 0 0 1 2.366-1.973V11.6a.77.77 0 0 0 .388.677l5.815 3.354-2.02 1.168a.08.08 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855-5.833-3.387L15.119 7.2a.08.08 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667m2.01-3.023-.141-.085-4.774-2.782a.78.78 0 0 0-.785 0L9.409 9.23V6.897a.07.07 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.8.8 0 0 0-.393.681zm1.097-2.365 2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5Z" />
+                                </svg>
+                                <span class="text-xs font-medium">OpenAI</span>
                             </div>
                         </label>
                         <label class="cursor-pointer relative group">
                             <input type="radio" name="api-provider-select" value="gemini" class="peer sr-only">
                             <div
-                                class="p-3 rounded-xl border border-gray-700 bg-[#18181b] text-gray-400 peer-checked:border-blue-500 peer-checked:bg-blue-500/5 peer-checked:text-blue-400 transition-all text-center flex flex-col items-center gap-2 hover:bg-[#27272a]">
+                                class="p-3 rounded-xl border border-gray-700 bg-[#18181b] text-gray-400 peer-checked:border-blue-500 peer-checked:bg-blue-500/5 peer-checked:text-blue-400 transition-all text-center flex flex-col items-center justify-center gap-2 h-full hover:bg-[#27272a]">
                                 <i class="fa-brands fa-google text-lg"></i>
                                 <span class="text-xs font-medium">Google Gemini</span>
                             </div>
@@ -327,7 +342,7 @@
                     </div>
                     <!-- Hidden select for compatibility -->
                     <select id="api-provider" class="hidden">
-                        <option value="builtin">Built-in AI</option>
+                        <option value="builtin">OpenRouter (Free)</option>
                         <option value="openai">OpenAI</option>
                         <option value="gemini">Gemini</option>
                     </select>
@@ -345,7 +360,7 @@
                 <!-- Context Menu Settings removed -->
 
                 <div class="text-center pt-2">
-                    <p class="text-[10px] text-gray-700 font-mono">LinguaFlow v1.5.0</p>
+                    <p class="text-[10px] text-gray-700 font-mono">LinguaFlowAI v1.5.0</p>
                 </div>
             </div>
         </div>

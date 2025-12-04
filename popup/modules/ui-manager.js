@@ -27,18 +27,18 @@ export function switchMode(mode) {
     if (mode === 'translate') {
         elements.promptOptions.classList.add('hidden');
         elements.ocrBtn.style.display = 'flex';
-        elements.inputText.placeholder = "Wpisz tekst do przetłumaczenia...";
-        elements.outputLabel.textContent = "WYNIK";
+        elements.inputText.placeholder = chrome.i18n.getMessage("inputPlaceholder");
+        elements.outputLabel.textContent = chrome.i18n.getMessage("outputLabel");
     } else if (mode === 'correct') {
         elements.promptOptions.classList.add('hidden');
         elements.ocrBtn.style.display = 'none';
-        elements.inputText.placeholder = "Wklej tekst do sprawdzenia...";
-        elements.outputLabel.textContent = "KOREKTA";
+        elements.inputText.placeholder = chrome.i18n.getMessage("inputPlaceholderCorrect");
+        elements.outputLabel.textContent = chrome.i18n.getMessage("correctMode");
     } else if (mode === 'prompt') {
         elements.promptOptions.classList.remove('hidden');
         elements.ocrBtn.style.display = 'none';
-        elements.inputText.placeholder = "Opisz co chcesz wygenerować...";
-        elements.outputLabel.textContent = "PROMPT";
+        elements.inputText.placeholder = chrome.i18n.getMessage("inputPlaceholderPrompt");
+        elements.outputLabel.textContent = chrome.i18n.getMessage("promptMode");
         updatePromptTypeVisuals(getSelectedPromptType());
     }
 }

@@ -1,0 +1,128 @@
+{
+  "extensionName": {
+    "message": "LingFlow AI"
+  },
+  "extensionDescription": {
+    "message": "Intelligent språkassistent for oversettelse og korrigering."
+  },
+  "settingsTitle": {
+    "message": "Innstillinger"
+  },
+  "translateMode": {
+    "message": "OVERSETT"
+  },
+  "correctMode": {
+    "message": "KORRIGER"
+  },
+  "promptMode": {
+    "message": "PROMPT"
+  },
+  "inputPlaceholder": {
+    "message": "Skriv inn tekst for å oversette..."
+  },
+  "actionButtonTranslate": {
+    "message": "Oversett"
+  },
+  "actionButtonCorrect": {
+    "message": "Korriger"
+  },
+  "actionButtonGenerate": {
+    "message": "Generer"
+  },
+  "outputLabel": {
+    "message": "RESULTAT"
+  },
+  "outputTextPlaceholder": {
+    "message": "Resultatet vises her..."
+  },
+  "historyTitle": {
+    "message": "Oversettelseshistorikk"
+  },
+  "clearHistoryButton": {
+    "message": "Tøm"
+  },
+  "emptyHistoryMessage": {
+    "message": "Ingen historikk"
+  },
+  "ocrTitle": {
+    "message": "OCR (Tekstgjenkjenning)"
+  },
+  "ocrDescription": {
+    "message": "Velg et område på skjermen for å kopiere tekst."
+  },
+  "ocrButton": {
+    "message": "Velg område"
+  },
+  "ocrLanguageLabel": {
+    "message": "Tekstspråk:"
+  },
+  "ocrAutoLanguage": {
+    "message": "Oppdag automatisk"
+  },
+  "inputPlaceholderCorrect": {
+    "message": "Lim inn tekst for å sjekke..."
+  },
+  "inputPlaceholderPrompt": {
+    "message": "Beskriv hva du vil generere..."
+  },
+  "toastCopied": {
+    "message": "Kopiert til utklippstavle"
+  },
+  "toastDeleted": {
+    "message": "Element slettet"
+  },
+  "promptImage": {
+    "message": "Bildeprompt"
+  },
+  "confirmClearHistory": {
+    "message": "Er du sikker på at du vil tømme hele historikken?"
+  },
+  "detectLanguageOption": {
+    "message": "Oppdag"
+  },
+  "apiKeyNotRequired": {
+    "message": "API-nøkkel ikke påkrevd"
+  },
+  "settingsSaved": {
+    "message": "Innstillinger lagret"
+  },
+  "ocrApiRequired": {
+    "message": "OCR krever din egen API-nøkkel (Gemini/OpenAI). Konfigurer i innstillinger."
+  },
+  "ocrInitError": {
+    "message": "OCR-initialiseringsfeil: "
+  },
+  "toastTranscriptionCopied": {
+    "message": "Transkripsjon kopiert"
+  },
+  "toastTranslationCopied": {
+    "message": "Oversettelse kopiert"
+  },
+  "toastEnterText": {
+    "message": "Skriv inn tekst"
+  },
+  "processingText": {
+    "message": "Behandler..."
+  },
+  "errorPrefix": {
+    "message": "Feil: "
+  },
+  "toastError": {
+    "message": "Det oppsto en feil"
+  },
+  "ocrLoadingText": {
+    "message": "OCR Oversettelse..."
+  },
+  "imageProcessingFailed": {
+    "message": "Bildebehandling mislyktes"
+  },
+  "communicationError": {
+    "message": "Kommunikasjonsfeil"
+  },
+  "transcriptionLabel": {
+    "message": "Transkripsjon"
+  },
+  "translationLabel": {
+    "message": "Oversettelse"
+  }
+}
