@@ -1,6 +1,7 @@
 import { elements } from './dom-elements.js';
 import { SUPPORTED_LANGUAGES, MODELS } from './constants.js';
 import { escapeHtml } from '../../lib/sanitize.js';
+import { piperManager } from '../../lib/piper-manager.js';
 
 /**
  * Populate language dropdowns

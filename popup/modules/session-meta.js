@@ -1,38 +1,4 @@
 import { elements } from './dom-elements.js';
-import { MODELS } from './constants.js';
-import { getCurrentMode } from './ui-manager.js';
-import { getCurrentTone } from './tone.js';
-
-const PROVIDER_LABELS = {
-    'chrome-ai': 'Chrome AI · on-device',
-    openai: 'OpenAI',
-    gemini: 'Gemini'
-};
-
-function getModelName(provider, selectedModel) {
-    const models = MODELS[provider];
-    return models?.find(model => model.id === selectedModel)?.name
-        || selectedModel
-        || models?.[0]?.name
-        || 'Default';
-}
-
-function getDirectionLabel() {
-    const source = elements.sourceLang.value === 'auto' ? 'Auto' : String(elements.sourceLang.value).toUpperCase();
-    const target = String(elements.targetLang.value || 'en').toUpperCase();
-    return `${source} → ${target}`;
-}
-
-function getToneLabel(tone) {
-    const labels = {
-        auto: 'Auto',
-        formal: 'Formalny',
-        casual: 'Swobodny',
-        professional: 'Biznesowy',
-        friendly: 'Przyjazny'
-    };
-    return labels[tone] || 'Auto';
-}
 
 export function renderSessionMeta(state) {
     // UI element removed per user request
@@ -46,3 +12,4 @@ export function initSessionMeta(stateManager) {
     window.addEventListener('lingflow:tonechange', rerender);
     rerender();
 }
+

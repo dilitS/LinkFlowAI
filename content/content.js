@@ -362,6 +362,12 @@ function createFloatingButton() {
     floatingBtn.innerHTML = `<img src="${iconUrl}" alt="Translate" draggable="false">`;
     document.body.appendChild(floatingBtn);
 
+    // Prevent losing text selection when clicking the button
+    floatingBtn.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
     floatingBtn.addEventListener('click', handleTranslateClick);
 }
 
@@ -474,6 +480,10 @@ async function handleTranslateClick(e) {
     const btnRect = floatingBtn.getBoundingClientRect();
     const anchorX = btnRect.left + window.scrollX;
     const anchorY = btnRect.top + window.scrollY;
+
+    // Render loading state immediately
+    renderTooltipLoading(chrome.i18n.getMessage('processingText') || 'Przetwarzanie...');
+    showTooltip(anchorX, anchorY, btnRect);
 
     try {
         const response = await withTimeout(
