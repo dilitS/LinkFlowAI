@@ -1,7 +1,7 @@
 {
   "name": "lingflow-ai",
-  "version": "1.0.0",
-  "description": "> **AI-powered translation, text correction, and prompt engineering browser extension**",
+  "version": "1.6.0",
+  "description": "AI-powered translation, text correction, and prompt engineering browser extension",
   "main": "index.js",
   "directories": {
     "doc": "docs",
@@ -16,7 +16,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "autoprefixer": "^10.4.22",
     "postcss": "^8.5.6",
