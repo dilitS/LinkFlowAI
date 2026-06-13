@@ -46,33 +46,37 @@ function getChromeTtsVoices() {
 async function populateTtsVoices(settings = {}) {
     if (!elements.ttsVoice) return;
 
+    const engine = elements.ttsEngine?.value || settings.ttsEngine || 'web';
     const lang = elements.ttsLanguage?.value || settings.ttsLanguage || settings.defaultTargetLang || 'en';
-    const voices = await getChromeTtsVoices();
     const base = lang.split('-')[0].toLowerCase();
-    const filtered = voices.filter(voice => {
-        const voiceLang = String(voice.lang || '').toLowerCase();
-        return !voiceLang || voiceLang.startsWith(base);
-    });
 
-    const voiceOptions = [
-        '<option value="">Auto</option>',
-        ...filtered.map(voice => {
+    let voiceOptions = ['<option value="">Auto</option>'];
+
+    if (engine === 'piper') {
+        const filtered = PIPER_VOICE_HINTS.filter(v => v.toLowerCase().startsWith(base));
+        voiceOptions.push(...filtered.map(voice => `<option value="${voice}">${voice}</option>`));
+        elements.piperVoiceCatalog?.classList.remove('hidden');
+    } else {
+        elements.piperVoiceCatalog?.classList.add('hidden');
+        const voices = await getChromeTtsVoices();
+        const filtered = voices.filter(voice => {
+            const voiceLang = String(voice.lang || '').toLowerCase();
+            return !voiceLang || voiceLang.startsWith(base);
+        });
+        voiceOptions.push(...filtered.map(voice => {
             const name = escapeHtml(voice.voiceName);
-            const lang = voice.lang ? ` (${escapeHtml(voice.lang)})` : '';
-            return `<option value="${name}">${name}${lang}</option>`;
-        })
-    ];
+            const vlang = voice.lang ? ` (${escapeHtml(voice.lang)})` : '';
+            return `<option value="${name}">${name}${vlang}</option>`;
+        }));
+    }
 
     elements.ttsVoice.innerHTML = voiceOptions.join('');
     if (settings.ttsVoiceName && [...elements.ttsVoice.options].some(option => option.value === settings.ttsVoiceName)) {
         elements.ttsVoice.value = settings.ttsVoiceName;
     }
-
-    if (elements.piperVoiceCatalog) {
-        elements.piperVoiceCatalog.innerHTML = PIPER_VOICE_HINTS.map(voice =>
-            `<span class="rounded-full border border-gray-800 bg-[#18181b] px-2 py-1">${voice}</span>`
-        ).join('');
-    }
+    
+    // Dispatch event to update piper download UI
+    elements.ttsVoice.dispatchEvent(new Event('piper-voice-changed'));
 }
 
 /**
@@ -198,8 +202,8 @@ export function setupSettingsListeners(stateManager, showToast) {
         });
     });
 
-    // Save settings
-    elements.saveSettingsBtn.addEventListener('click', async () => {
+    // Extract reusable save function
+    const saveAllSettings = async (closePanel = false) => {
         const selectedProvider = document.querySelector('input[name="api-provider-select"]:checked')?.value || 'chrome-ai';
 
         const newState = {
@@ -217,11 +221,9 @@ export function setupSettingsListeners(stateManager, showToast) {
 
         if (selectedProvider === 'openai') {
             newState.openaiApiKey = elements.apiKey.value;
-            // Clear legacy key if we're setting a new specific one
             if (stateManager.state.userApiKey) newState.userApiKey = null;
         } else if (selectedProvider === 'gemini') {
             newState.geminiApiKey = elements.apiKey.value;
-            // Clear legacy key if we're setting a new specific one
             if (stateManager.state.userApiKey) newState.userApiKey = null;
         }
 
@@ -230,19 +232,135 @@ export function setupSettingsListeners(stateManager, showToast) {
         // Apply new default language immediately
         elements.targetLang.value = elements.settingsTargetLang.value;
 
-        toggleSettings();
-        showToast(chrome.i18n.getMessage("settingsSaved"));
-    });
+        if (closePanel) {
+            toggleSettings();
+            showToast(chrome.i18n.getMessage("settingsSaved"));
+        }
+    };
 
-    elements.ttsLanguage?.addEventListener('change', () => {
-        populateTtsVoices({
+    // Save settings on button click (and close panel)
+    elements.saveSettingsBtn.addEventListener('click', () => saveAllSettings(true));
+
+    // Auto-save on dropdown changes
+    elements.settingsTargetLang?.addEventListener('change', () => saveAllSettings(false));
+    elements.modelSelect?.addEventListener('change', () => saveAllSettings(false));
+    elements.ttsVoice?.addEventListener('change', () => saveAllSettings(false));
+
+    elements.ttsLanguage?.addEventListener('change', async () => {
+        await populateTtsVoices({
             ...stateManager.state.settings,
             ttsLanguage: elements.ttsLanguage.value,
             ttsVoiceName: ''
         });
+        saveAllSettings(false);
     });
 
-    elements.ttsEngine?.addEventListener('change', () => {
-        populateTtsVoices(stateManager.state.settings || {});
+    elements.ttsEngine?.addEventListener('change', async () => {
+        await populateTtsVoices(stateManager.state.settings || {});
+        saveAllSettings(false);
+    });
+
+    // Piper download UI logic
+    const updatePiperUI = async () => {
+        const engine = elements.ttsEngine?.value;
+        const voiceId = elements.ttsVoice?.value;
+        if (engine !== 'piper' || !voiceId) {
+            elements.downloadPiperVoiceBtn?.classList.add('hidden');
+            elements.deletePiperVoiceBtn?.classList.add('hidden');
+            return;
+        }
+
+        const hasVoice = await piperManager.hasVoice(voiceId);
+        if (hasVoice) {
+            elements.downloadPiperVoiceBtn?.classList.add('hidden');
+            elements.deletePiperVoiceBtn?.classList.remove('hidden');
+            if (elements.piperStatusText) elements.piperStatusText.innerText = 'Gotowy do użycia offline.';
+        } else {
+            elements.downloadPiperVoiceBtn?.classList.remove('hidden');
+            elements.deletePiperVoiceBtn?.classList.add('hidden');
+            if (elements.piperStatusText) elements.piperStatusText.innerText = 'Wybierz głos i kliknij przycisk, aby go pobrać.';
+        }
+    };
+
+    elements.ttsVoice?.addEventListener('piper-voice-changed', updatePiperUI);
+    elements.ttsVoice?.addEventListener('change', updatePiperUI);
+
+    elements.downloadPiperVoiceBtn?.addEventListener('click', async () => {
+        const voiceId = elements.ttsVoice?.value;
+        if (!voiceId) return;
+
+        elements.downloadPiperVoiceBtn.disabled = true;
+        elements.piperDownloadProgress.classList.remove('hidden');
+        elements.piperStatusText.innerText = 'Przygotowanie pobierania...';
+        
+        try {
+            // Helper for fetching with progress
+            const fetchWithProgress = async (url, typeLabel) => {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const contentLength = +response.headers.get('Content-Length');
+                const reader = response.body.getReader();
+                let receivedLength = 0;
+                let chunks = [];
+                
+                while(true) {
+                    const {done, value} = await reader.read();
+                    if (done) break;
+                    chunks.push(value);
+                    receivedLength += value.length;
+                    
+                    if (contentLength) {
+                        const percent = Math.round((receivedLength / contentLength) * 100);
+                        elements.piperProgressBar.style.width = `${percent}%`;
+                        elements.piperProgressText.innerText = `${percent}%`;
+                        elements.piperStatusText.innerText = `Pobieranie ${typeLabel}... (${percent}%)`;
+                    }
+                }
+                
+                let allChunks = new Uint8Array(receivedLength);
+                let position = 0;
+                for(let chunk of chunks) {
+                    allChunks.set(chunk, position);
+                    position += chunk.length;
+                }
+                return allChunks.buffer;
+            };
+
+            // Piper Repository URL construction
+            // Format: lang/lang_id/name/quality/lang_id-name-quality.onnx
+            const parts = voiceId.split('-'); // [pl_PL, gosia, medium]
+            const langCode = parts[0].split('_')[0]; // pl
+            const name = parts[1];
+            const quality = parts[2];
+            const baseUrl = `https://huggingface.co/rhasspy/piper-voices/resolve/main/${langCode}/${parts[0]}/${name}/${quality}/${voiceId}.onnx`;
+
+            // 1. Download JSON config
+            const jsonBuffer = await fetchWithProgress(`${baseUrl}.json`, 'konfiguracji');
+            
+            // 2. Download ONNX model
+            const onnxBuffer = await fetchWithProgress(baseUrl, 'modelu');
+
+            // 3. Save to IndexedDB
+            await piperManager.saveVoice(voiceId, onnxBuffer, jsonBuffer);
+            
+            showToast('Pobrano model głosu!');
+            updatePiperUI();
+        } catch (e) {
+            console.error('Download error:', e);
+            elements.piperStatusText.innerText = 'Błąd pobierania: ' + e.message;
+            showToast('Pobieranie nie powiodło się');
+        } finally {
+            elements.downloadPiperVoiceBtn.disabled = false;
+            elements.piperDownloadProgress.classList.add('hidden');
+        }
+    });
+
+    elements.deletePiperVoiceBtn?.addEventListener('click', async () => {
+        const voiceId = elements.ttsVoice?.value;
+        if (!voiceId) return;
+        await piperManager.deleteVoice(voiceId);
+        showToast('Usunięto model z dysku');
+        updatePiperUI();
     });
 }

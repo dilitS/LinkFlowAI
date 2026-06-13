@@ -78,8 +78,54 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             .then(() => sendResponse({ success: true }))
             .catch(error => sendResponse({ success: false, error: error.message }));
         return true;
+    } else if (request.action === 'piper_speak') {
+        playPiperTTS(request.text, request.voiceId)
+            .then(() => sendResponse({ success: true }))
+            .catch(error => sendResponse({ success: false, error: error.message }));
+        return true;
+    } else if (request.action === 'stop_tts') {
+        stopTTS();
+        sendResponse({ success: true });
+        return false;
     }
 });
+
+let creatingOffscreenPromise = null;
+const OFFSCREEN_PATH = 'offscreen/offscreen.html';
+
+async function setupOffscreenDocument() {
+    if (await chrome.offscreen.hasDocument()) return;
+    if (creatingOffscreenPromise) {
+        await creatingOffscreenPromise;
+        return;
+    }
+    creatingOffscreenPromise = chrome.offscreen.createDocument({
+        url: OFFSCREEN_PATH,
+        reasons: ['AUDIO_PLAYBACK'],
+        justification: 'Synthesize and play offline Piper TTS audio'
+    });
+    await creatingOffscreenPromise;
+    creatingOffscreenPromise = null;
+}
+
+async function playPiperTTS(text, voiceId) {
+    await setupOffscreenDocument();
+    const response = await chrome.runtime.sendMessage({
+        action: 'play_piper_tts',
+        text,
+        voiceId
+    });
+    if (response && !response.success) {
+        throw new Error(response.error);
+    }
+}
+
+async function stopTTS() {
+    chrome.tts.stop?.();
+    if (await chrome.offscreen.hasDocument()) {
+        chrome.runtime.sendMessage({ action: 'stop_tts' }).catch(() => {});
+    }
+}
 
 async function handleOCR(image, targetLang) {
     await stateManager.loadState();

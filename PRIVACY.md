@@ -87,6 +87,7 @@ browser data removes it.
 | `clipboardWrite` | Copy a result to your clipboard when you press the Copy button. |
 | `tts` | List and play Chrome TTS voices, including installed Piper voices when available. |
 | `sidePanel` | Open the LingFlow workspace in the browser side panel. |
+| `offscreen` | Host a hidden background document strictly for offline Piper TTS audio playback (since Manifest V3 service workers cannot play audio). |
 | Host access to the AI endpoints above | Send your request to the AI provider you selected. |
 | Content script on pages (`<all_urls>`) | Show the quick-translate button and inline result tooltip on the page where you select text. It runs only to render that UI in response to your selection. |
 

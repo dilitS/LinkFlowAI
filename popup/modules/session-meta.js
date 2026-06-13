@@ -35,24 +35,7 @@ function getToneLabel(tone) {
 }
 
 export function renderSessionMeta(state) {
-    if (!elements.outputMeta) return;
-
-    const provider = state.apiProvider || 'chrome-ai';
-    const modelName = getModelName(provider, state.selectedModel);
-    const mode = getCurrentMode();
-    const tone = getCurrentTone();
-
-    const parts = [
-        PROVIDER_LABELS[provider] || provider,
-        modelName,
-        getDirectionLabel()
-    ];
-
-    if (mode === 'translate') {
-        parts.push(`Ton: ${getToneLabel(tone)}`);
-    }
-
-    elements.outputMeta.textContent = parts.join(' • ');
+    // UI element removed per user request
 }
 
 export function initSessionMeta(stateManager) {

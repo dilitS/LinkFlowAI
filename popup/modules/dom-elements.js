@@ -12,6 +12,12 @@ export const elements = {
     ttsLanguage: document.getElementById('tts-language'),
     ttsVoice: document.getElementById('tts-voice'),
     piperVoiceCatalog: document.getElementById('piper-voice-catalog'),
+    downloadPiperVoiceBtn: document.getElementById('download-piper-voice-btn'),
+    deletePiperVoiceBtn: document.getElementById('delete-piper-voice-btn'),
+    piperDownloadProgress: document.getElementById('piper-download-progress'),
+    piperProgressBar: document.getElementById('piper-progress-bar'),
+    piperProgressText: document.getElementById('piper-progress-text'),
+    piperStatusText: document.getElementById('piper-status-text'),
 
     modeTabs: document.querySelectorAll('.mode-tab'),
     sourceLang: document.getElementById('source-lang'),
@@ -28,7 +34,6 @@ export const elements = {
 
     outputContainer: document.getElementById('output-container'),
     outputLabel: document.getElementById('output-label'),
-    outputMeta: document.getElementById('output-meta'),
     outputText: document.getElementById('output-text'),
     outputTtsBtn: document.getElementById('output-tts-btn'),
     copyBtn: document.getElementById('copy-btn'),

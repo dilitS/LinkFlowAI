@@ -577,7 +577,14 @@ function renderOcrResult(transcription, translation) {
 }
 
 function renderTooltipResult(translation) {
-    currentResult = typeof translation === 'string' ? translation : '';
+    if (typeof translation === 'string') {
+        currentResult = translation;
+    } else if (translation && typeof translation === 'object') {
+        currentResult = translation.text || translation.translation || JSON.stringify(translation);
+    } else {
+        currentResult = String(translation || '');
+    }
+    
     const canReplace = !!replaceContext;
 
     // Untrusted model output → textContent, never innerHTML.
