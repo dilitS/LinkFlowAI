@@ -16,6 +16,94 @@ let selectionOverlay = null;
 let selectionBox = null;
 let ocrTargetLang = 'pl';
 
+// Cached Web Speech voices (populated async by the browser).
+let pageVoices = [];
+
+const TTS_LANG_MAP = {
+    pl: 'pl-PL', en: 'en-US', de: 'de-DE', es: 'es-ES', fr: 'fr-FR', it: 'it-IT',
+    pt: 'pt-PT', nl: 'nl-NL', uk: 'uk-UA', cs: 'cs-CZ', sk: 'sk-SK', hu: 'hu-HU',
+    ro: 'ro-RO', bg: 'bg-BG', el: 'el-GR', tr: 'tr-TR', sv: 'sv-SE', no: 'nb-NO',
+    da: 'da-DK', fi: 'fi-FI', ja: 'ja-JP', ko: 'ko-KR', zh: 'zh-CN', ru: 'ru-RU',
+    ar: 'ar-SA', hi: 'hi-IN'
+};
+
+function loadPageVoices() {
+    try {
+        pageVoices = window.speechSynthesis.getVoices() || [];
+    } catch (e) {
+        pageVoices = [];
+    }
+}
+
+function toBcp47(lang) {
+    if (!lang) return 'en-US';
+    return TTS_LANG_MAP[lang] || (lang.includes('-') ? lang : `${lang}-${lang.toUpperCase()}`);
+}
+
+/**
+ * Pick the best-sounding installed voice for a language, preferring local,
+ * non-default system voices over the robotic fallback.
+ */
+function pickVoice(lang) {
+    if (!pageVoices.length) loadPageVoices();
+    const bcp = toBcp47(lang).toLowerCase();
+    const base = bcp.split('-')[0];
+    const matches = pageVoices.filter(v => {
+        const vl = (v.lang || '').replace('_', '-').toLowerCase();
+        return vl === bcp || vl.startsWith(base);
+    });
+    if (!matches.length) return null;
+    // Prefer higher-quality voices (named "Premium"/"Enhanced"/"Natural") and local ones.
+    return (
+        matches.find(v => /premium|enhanced|natural|neural/i.test(v.name)) ||
+        matches.find(v => v.localService) ||
+        matches[0]
+    );
+}
+
+/**
+ * Speak text from the inline tooltip. Defaults to the page Web Speech API
+ * (which exposes the user's good system voices). Only routes through Chrome
+ * TTS when the user explicitly selected that engine in Settings.
+ */
+async function speakInline(text, lang) {
+    let settings = {};
+    try {
+        const stored = await chrome.storage.local.get('settings');
+        settings = stored.settings || {};
+    } catch (e) {
+        settings = {};
+    }
+
+    const effectiveLang = settings.ttsLanguage || lang || 'en';
+
+    if (settings.ttsEngine === 'chrome') {
+        try {
+            const res = await chrome.runtime.sendMessage({
+                action: 'tts_speak',
+                text,
+                lang: effectiveLang
+            });
+            if (res?.success) return;
+        } catch (e) {
+            // Fall back to Web Speech below.
+        }
+    }
+
+    try {
+        window.speechSynthesis.cancel();
+        const utt = new SpeechSynthesisUtterance(text);
+        const voice = pickVoice(effectiveLang);
+        if (voice) utt.voice = voice;
+        utt.lang = voice ? voice.lang : toBcp47(effectiveLang);
+        utt.rate = 1;
+        utt.pitch = 1;
+        window.speechSynthesis.speak(utt);
+    } catch (e) {
+        /* no-op */
+    }
+}
+
 /**
  * Read the user's configured target language from extension storage.
  */
@@ -82,6 +170,10 @@ function performReplace(ctx, text) {
 function init() {
     createFloatingButton();
     createTooltip();
+    loadPageVoices();
+    if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = loadPageVoices;
+    }
     document.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('mousedown', handleMouseDown);
     document.addEventListener('keydown', handleKeyDown);
@@ -454,25 +546,9 @@ function renderTooltipResult(translation) {
     }
 
     if (listenBtn) {
-        listenBtn.addEventListener('click', async (ev) => {
+        listenBtn.addEventListener('click', (ev) => {
             ev.stopPropagation();
-            try {
-                const response = await chrome.runtime.sendMessage({
-                    action: 'tts_speak',
-                    text: currentResult,
-                    lang: currentResultLang
-                });
-                if (response?.success) return;
-            } catch (e) {
-                // Fall back to the page's Web Speech API below.
-            }
-
-            try {
-                window.speechSynthesis.cancel();
-                const utt = new SpeechSynthesisUtterance(currentResult);
-                utt.lang = currentResultLang;
-                window.speechSynthesis.speak(utt);
-            } catch (e) { /* no-op */ }
+            speakInline(currentResult, currentResultLang);
         });
     }
 

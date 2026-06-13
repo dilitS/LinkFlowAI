@@ -134,8 +134,18 @@ function setupEventListeners() {
         localStorage.setItem('lingflow_source_lang', e.target.value);
     });
 
-    elements.targetLang.addEventListener('change', (e) => {
-        localStorage.setItem('lingflow_target_lang', e.target.value);
+    elements.targetLang.addEventListener('change', async (e) => {
+        const value = e.target.value;
+        localStorage.setItem('lingflow_target_lang', value);
+        // Keep the on-page selection / OCR target language in sync with the
+        // language the user picks here, so "the language I set" is consistent
+        // across the popup, inline translation, and OCR.
+        await stateManager.setState({
+            settings: {
+                ...stateManager.state.settings,
+                defaultTargetLang: value
+            }
+        });
     });
 
     // Keyboard shortcuts
