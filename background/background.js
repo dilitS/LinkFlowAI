@@ -59,14 +59,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     } else if (request.action === 'perform_ocr') {
         handleOCR(request.image, request.targetLang)
             .then(result => {
-                // Format result: Transcription + Translation
-                const text = `
-                    <div style="margin-bottom: 8px;"><strong>${chrome.i18n.getMessage("transcriptionLabel")}:</strong><br>${escapeHtml(result.transcription || '')}</div>
-                    <div><strong>${chrome.i18n.getMessage("translationLabel")}:</strong><br>${escapeHtml(result.translation || result.transcription || '')}</div>
-                `;
+                // Send structured data; the content script builds DOM safely
+                // (no HTML string crosses the message boundary).
                 chrome.tabs.sendMessage(sender.tab.id, {
                     action: 'show_ocr_result',
-                    text: text
+                    transcription: result.transcription || '',
+                    translation: result.translation || result.transcription || ''
                 });
             })
             .catch(error => {
@@ -83,19 +81,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
 });
 
-function escapeHtml(value) {
-    return String(value)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;')
-        .replace(/\n/g, '<br>');
-}
-
 async function handleOCR(image, targetLang) {
     await stateManager.loadState();
-    await apiClient.fetchRemoteConfig();
     if (!targetLang) {
         targetLang = stateManager.state.settings?.defaultTargetLang || 'pl';
     }
@@ -105,7 +92,6 @@ async function handleOCR(image, targetLang) {
 async function handleTranslation(text, targetLang) {
     // Ensure state is loaded
     await stateManager.loadState();
-    await apiClient.fetchRemoteConfig();
 
     // If targetLang is not provided, use settings or default to 'pl'
     if (!targetLang) {

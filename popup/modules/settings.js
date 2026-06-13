@@ -1,5 +1,6 @@
 import { elements } from './dom-elements.js';
 import { SUPPORTED_LANGUAGES, MODELS } from './constants.js';
+import { escapeHtml } from '../../lib/sanitize.js';
 
 /**
  * Populate language dropdowns
@@ -55,7 +56,11 @@ async function populateTtsVoices(settings = {}) {
 
     const voiceOptions = [
         '<option value="">Auto</option>',
-        ...filtered.map(voice => `<option value="${voice.voiceName}">${voice.voiceName}${voice.lang ? ` (${voice.lang})` : ''}</option>`)
+        ...filtered.map(voice => {
+            const name = escapeHtml(voice.voiceName);
+            const lang = voice.lang ? ` (${escapeHtml(voice.lang)})` : '';
+            return `<option value="${name}">${name}${lang}</option>`;
+        })
     ];
 
     elements.ttsVoice.innerHTML = voiceOptions.join('');
@@ -96,8 +101,14 @@ export function toggleSettings() {
 /**
  * Load settings from state to UI
  */
+// Treat any legacy/unknown provider (e.g. the old `builtin` OpenRouter tier) as
+// the on-device Chrome AI free tier.
+function normalizeProvider(provider) {
+    return provider === 'openai' || provider === 'gemini' ? provider : 'chrome-ai';
+}
+
 export function loadSettingsToInputs(state) {
-    const provider = state.apiProvider || 'builtin';
+    const provider = normalizeProvider(state.apiProvider);
     elements.apiProvider.value = provider;
 
     // Update radios
@@ -105,8 +116,10 @@ export function loadSettingsToInputs(state) {
     if (radio) radio.checked = true;
 
     populateModels(provider, state.selectedModel);
+    // On-device tier has a single, fixed model — no manual selection.
+    elements.modelSelect.disabled = provider === 'chrome-ai';
 
-    if (provider === 'builtin') {
+    if (provider === 'chrome-ai') {
         elements.apiKey.disabled = true;
         elements.apiKey.placeholder = chrome.i18n.getMessage("apiKeyNotRequired");
         elements.apiKey.value = "";
@@ -155,8 +168,9 @@ export function setupSettingsListeners(stateManager, showToast) {
             const provider = e.target.value;
             elements.apiProvider.value = provider;
             populateModels(provider);
+            elements.modelSelect.disabled = provider === 'chrome-ai';
 
-            if (provider === 'builtin') {
+            if (provider === 'chrome-ai') {
                 elements.apiKey.disabled = true;
                 elements.apiKey.placeholder = chrome.i18n.getMessage("apiKeyNotRequired");
                 elements.apiKey.value = "";
@@ -186,7 +200,7 @@ export function setupSettingsListeners(stateManager, showToast) {
 
     // Save settings
     elements.saveSettingsBtn.addEventListener('click', async () => {
-        const selectedProvider = document.querySelector('input[name="api-provider-select"]:checked')?.value || 'builtin';
+        const selectedProvider = document.querySelector('input[name="api-provider-select"]:checked')?.value || 'chrome-ai';
 
         const newState = {
             apiProvider: selectedProvider,

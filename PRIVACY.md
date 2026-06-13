@@ -7,9 +7,11 @@ corrects, and rewrites text and generates AI prompts. This policy explains exact
 what data the extension handles, where it goes, and what it never does.
 
 **Short version:** LingFlow AI has no servers that store your content, no analytics,
-no trackers, and no ads. Your API keys and history stay on your device. The only time
-your text leaves your browser is when you trigger an AI action — and then it goes
-directly to the AI provider you chose.
+no trackers, and no ads. Your API keys and history stay on your device. The **free tier
+runs entirely on-device** using Chrome's built-in AI (Gemini Nano) — your text never
+leaves your browser. If you choose to bring your own API key (OpenAI or Gemini), your
+text goes **directly** from your browser to that provider. LingFlow operates no proxy
+and hosts no API of its own.
 
 ---
 
@@ -27,26 +29,23 @@ The extension only processes data when **you** actively trigger an action
 The extension does **not** read, collect, or transmit page content in the background.
 Nothing is sent unless you explicitly start an action.
 
-## 2. Where your data goes (third-party AI providers)
+## 2. Where your data goes
 
-Depending on the provider you select in Settings, your text/image is sent **directly
-from your browser** to one of:
-
-| Provider | Endpoint | When it is used |
+| Tier / Provider | Destination | When it is used |
 | --- | --- | --- |
+| **Chrome Built-in AI (Free)** | On-device (no network request) | Default free tier. Text is processed locally by Chrome's built-in model; it does not leave your device. |
 | OpenAI | `https://api.openai.com` | When you select OpenAI and provide your own API key |
 | Google Gemini | `https://generativelanguage.googleapis.com` | When you select Gemini and provide your own API key |
-| LingFlow Free Proxy | `https://link-flow-proxy.vercel.app` | When you use the built-in **Free** tier (no key required) |
 
-When you use your **own API key**, your request is governed by that provider's privacy
-policy and you are their direct customer:
+The **free tier is fully on-device**: translation, correction, and prompt generation run
+through Chrome's built-in AI and make no network request. (Screenshot/OCR is the one
+feature that is vision-only and therefore requires a bring-your-own-key provider.)
+
+When you use your **own API key**, your request is sent directly from your browser to
+that provider, is governed by their privacy policy, and makes you their direct customer:
 
 - OpenAI: https://openai.com/policies/privacy-policy
 - Google: https://policies.google.com/privacy
-
-When you use the **Free** tier, the request is relayed through the LingFlow proxy to a
-model provider (OpenRouter). The proxy forwards the request and returns the result; it
-is not used to build a profile of you and is not tied to your identity.
 
 We do **not** sell, rent, or share your data with anyone for advertising or marketing.
 
@@ -93,9 +92,10 @@ browser data removes it.
 
 ## 6. Data retention
 
-LingFlow itself retains nothing server-side. Local data persists on your device until
-you clear history, change preferences, or uninstall. Any retention by OpenAI, Google, or
-OpenRouter is governed by their respective policies linked above.
+LingFlow itself retains nothing server-side and operates no servers. Local data persists
+on your device until you clear history, change preferences, or uninstall. Any retention
+by OpenAI or Google (when you use your own key) is governed by their respective policies
+linked above.
 
 ## 7. Children
 
@@ -126,9 +126,10 @@ urządzeniu.
 
 - **Co jest przetwarzane:** wyłącznie tekst, który zaznaczysz lub wpiszesz, oraz
   fragment ekranu wybrany do OCR — i tylko gdy sam uruchomisz akcję.
-- **Dokąd trafia:** bezpośrednio z Twojej przeglądarki do wybranego dostawcy AI
-  (OpenAI lub Google Gemini z Twoim kluczem) albo — w trybie darmowym — przez proxy
-  LingFlow do dostawcy modelu. Nic nie jest wykorzystywane do profilowania.
+- **Dokąd trafia:** w trybie darmowym przetwarzanie odbywa się **w całości na
+  urządzeniu** (wbudowane AI Chrome) i dane nie opuszczają przeglądarki; przy własnym
+  kluczu tekst trafia bezpośrednio do wybranego dostawcy (OpenAI lub Google Gemini).
+  LingFlow nie prowadzi żadnego proxy ani własnego API.
 - **Co jest zapisywane lokalnie:** klucze API, historia oraz preferencje (w tym
   ustawienia per‑strona). Dane te nigdy nie są wysyłane do LingFlow.
 - **Czego nie robimy:** brak analityki, reklam, sprzedaży danych i zbierania historii

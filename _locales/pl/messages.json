@@ -175,5 +175,41 @@
     },
     "siteContextResumedToast": {
         "message": "Wznowiono inline translation na tej stronie"
+    },
+    "providerChromeAi": {
+        "message": "Chrome AI · za darmo, na urządzeniu"
+    },
+    "errorNoApiKey": {
+        "message": "Wymagany klucz API. Dodaj swój klucz OpenAI lub Gemini w Ustawieniach."
+    },
+    "errorInputTooLong": {
+        "message": "Tekst przekracza limit 5000 znaków. Skróć go."
+    },
+    "errorChromeAiUnavailable": {
+        "message": "Wbudowane AI nie jest dostępne. Zaktualizuj Chrome lub wybierz OpenAI/Gemini z własnym kluczem w Ustawieniach."
+    },
+    "errorOcrRequiresKey": {
+        "message": "OCR wymaga własnego klucza API (OpenAI lub Gemini). Dodaj go w Ustawieniach."
+    },
+    "errorRateLimited": {
+        "message": "Zbyt wiele żądań. Odczekaj chwilę i spróbuj ponownie."
+    },
+    "errorQuotaExceeded": {
+        "message": "Przekroczono limit API. Sprawdź rozliczenia i limity u dostawcy."
+    },
+    "errorNetwork": {
+        "message": "Błąd sieci. Sprawdź połączenie i spróbuj ponownie."
+    },
+    "errorTimeout": {
+        "message": "Przekroczono czas oczekiwania. Spróbuj ponownie z krótszym tekstem."
+    },
+    "errorContentTooLarge": {
+        "message": "Tekst jest zbyt długi dla modelu. Spróbuj z krótszym tekstem."
+    },
+    "errorContentFiltered": {
+        "message": "Odpowiedź została odfiltrowana ze względów bezpieczeństwa. Spróbuj przeformułować tekst."
+    },
+    "errorGeneric": {
+        "message": "Coś poszło nie tak. Spróbuj ponownie."
     }
 }

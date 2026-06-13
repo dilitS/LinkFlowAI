@@ -29,11 +29,9 @@ export const SUPPORTED_LANGUAGES = [
 ];
 
 // Available AI models (should match api-client.js)
-export let MODELS = {
-    builtin: [
-        { id: 'meta-llama/llama-3.2-3b-instruct:free', name: 'Llama 3.2 3B (Free)' },
-        { id: 'google/gemma-2-9b-it:free', name: 'Gemma 2 9B (Free)' },
-        { id: 'nousresearch/hermes-3-llama-3.1-405b:free', name: 'Hermes 3 (Free)' }
+export const MODELS = {
+    'chrome-ai': [
+        { id: 'gemini-nano', name: 'Gemini Nano (on-device)' }
     ],
     openai: [
         { id: 'gpt-4o-mini', name: 'GPT-4o mini' },
@@ -57,12 +55,6 @@ export const TONE_PRESETS = [
     { id: 'professional', label: 'Biznesowy', icon: 'fa-briefcase' },
     { id: 'friendly', label: 'Przyjazny', icon: 'fa-heart' }
 ];
-
-export function updateModels(provider, newModels) {
-    if (MODELS[provider]) {
-        MODELS[provider] = newModels;
-    }
-}
 
 // Mode colors and configuration
 export const MODE_COLORS = {

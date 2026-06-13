@@ -190,7 +190,7 @@ function init() {
         } else if (request.action === 'process_ocr_crop') {
             processOCRCrop(request.image, request.area);
         } else if (request.action === 'show_ocr_result') {
-            renderTooltipHtml(request.text);
+            renderOcrResult(request.transcription, request.translation);
         }
     });
 }
@@ -207,8 +207,8 @@ function showResultFromBackground(translation) {
     if (selection.rangeCount > 0) {
         const range = selection.getRangeAt(0);
         const rect = range.getBoundingClientRect();
-        showTooltip(rect.left + window.scrollX, rect.bottom + window.scrollY + 10, '', rect);
         renderTooltipResult(translation);
+        showTooltip(rect.left + window.scrollX, rect.bottom + window.scrollY + 10, rect);
     }
 }
 
@@ -223,8 +223,8 @@ function showErrorFromBackground(error) {
     if (selection.rangeCount > 0) {
         const range = selection.getRangeAt(0);
         const rect = range.getBoundingClientRect();
-        showTooltip(rect.left + window.scrollX, rect.bottom + window.scrollY + 10, '', rect);
         renderTooltipError(error);
+        showTooltip(rect.left + window.scrollX, rect.bottom + window.scrollY + 10, rect);
     }
 }
 
@@ -284,12 +284,8 @@ function handleOCRMouseUp(e) {
     // Ensure valid selection (at least 10x10)
     if (rect.width > 10 && rect.height > 10) {
         // Show loading tooltip at selection center
-        showTooltip(rect.left + window.scrollX, rect.bottom + window.scrollY + 10, `
-            <div class="lingflow-loading">
-                <div class="lingflow-spinner"></div>
-                <span>${chrome.i18n.getMessage("ocrLoadingText")}</span>
-            </div>
-        `, rect);
+        renderTooltipLoading(chrome.i18n.getMessage("ocrLoadingText"));
+        showTooltip(rect.left + window.scrollX, rect.bottom + window.scrollY + 10, rect);
 
         // Send area to background to capture tab
         chrome.runtime.sendMessage({
@@ -411,11 +407,9 @@ function hideFloatingButton() {
     floatingBtn.classList.remove('pulsing');
 }
 
-function showTooltip(x, y, content = null, referenceRect = null) {
-    if (content) {
-        tooltip.innerHTML = content;
-    }
-
+function showTooltip(x, y, referenceRect = null) {
+    // Content is rendered beforehand via the render* helpers (safe DOM), so the
+    // size measurement below reflects the final layout used for flip logic.
     // Adjust position to keep on screen
     const tooltipRect = tooltip.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
@@ -451,6 +445,22 @@ function hideTooltip() {
     tooltip.classList.remove('visible');
 }
 
+// Safety net so the icon never pulses forever if the service worker is asleep
+// or never answers.
+const TRANSLATE_TIMEOUT_MS = 30000;
+
+function withTimeout(promise, ms) {
+    let timer;
+    const timeout = new Promise((_, reject) => {
+        timer = setTimeout(() => {
+            const error = new Error('Request timed out');
+            error.code = 'TIMEOUT';
+            reject(error);
+        }, ms);
+    });
+    return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+}
+
 async function handleTranslateClick(e) {
     e.stopPropagation(); // Prevent deselection
 
@@ -459,122 +469,169 @@ async function handleTranslateClick(e) {
     const targetLang = await getTargetLang();
     currentResultLang = targetLang;
 
-    // Start pulsing
+    // Start pulsing and record the anchor while the button is still visible.
     floatingBtn.classList.add('pulsing');
+    const btnRect = floatingBtn.getBoundingClientRect();
+    const anchorX = btnRect.left + window.scrollX;
+    const anchorY = btnRect.top + window.scrollY;
 
     try {
-        // Send message to background
-        const response = await chrome.runtime.sendMessage({
-            action: 'translate_selection',
-            text: currentSelection,
-            targetLang
-        });
+        const response = await withTimeout(
+            chrome.runtime.sendMessage({
+                action: 'translate_selection',
+                text: currentSelection,
+                targetLang
+            }),
+            TRANSLATE_TIMEOUT_MS
+        );
 
-        // Stop pulsing and hide button
-        floatingBtn.classList.remove('pulsing');
-        hideFloatingButton();
-
-        // Get position for tooltip (where button was)
-        const btnRect = floatingBtn.getBoundingClientRect();
-
-        // Show result
-        if (response.success) {
-            showTooltip(btnRect.left + window.scrollX, btnRect.top + window.scrollY, '', btnRect);
+        if (response && response.success) {
             renderTooltipResult(response.data);
         } else {
-            showTooltip(btnRect.left + window.scrollX, btnRect.top + window.scrollY, '', btnRect);
-            renderTooltipError(response.error);
+            renderTooltipError((response && response.error) || chrome.i18n.getMessage('communicationError'));
         }
+        showTooltip(anchorX, anchorY, btnRect);
     } catch (error) {
+        const message = error?.code === 'TIMEOUT'
+            ? (chrome.i18n.getMessage('errorTimeout') || 'Request timed out. Please try again.')
+            : chrome.i18n.getMessage('communicationError');
+        renderTooltipError(message);
+        showTooltip(anchorX, anchorY, btnRect);
+    } finally {
+        // Lifecycle guarantee: always return the icon to rest.
         floatingBtn.classList.remove('pulsing');
         hideFloatingButton();
-        const btnRect = floatingBtn.getBoundingClientRect();
-        showTooltip(btnRect.left + window.scrollX, btnRect.top + window.scrollY, '', btnRect);
-        renderTooltipError(chrome.i18n.getMessage("communicationError"));
     }
 }
 
-function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+// Static, trusted SVG markup for tooltip action buttons. These contain no
+// dynamic data, so assigning them via innerHTML on a fresh element is safe.
+const ACTION_ICONS = {
+    copy: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>',
+    listen: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>',
+    replace: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>',
+    close: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'
+};
+
+/**
+ * Build a tooltip action button. The icon is static, trusted markup; no
+ * untrusted data is ever interpolated into HTML here.
+ */
+function buildActionButton(action, title, extraClass = '') {
+    const btn = document.createElement('button');
+    btn.className = `lingflow-action-btn${extraClass ? ' ' + extraClass : ''}`;
+    btn.dataset.action = action;
+    btn.title = title;
+    btn.innerHTML = ACTION_ICONS[action] || '';
+    return btn;
+}
+
+/** Replace tooltip contents with freshly built, safe DOM nodes. */
+function setTooltipContent(...nodes) {
+    tooltip.replaceChildren(...nodes);
+}
+
+/** Loading state (spinner + message) built without HTML injection. */
+function renderTooltipLoading(message) {
+    const wrap = document.createElement('div');
+    wrap.className = 'lingflow-loading';
+
+    const spinner = document.createElement('div');
+    spinner.className = 'lingflow-spinner';
+
+    const label = document.createElement('span');
+    label.textContent = message || '';
+
+    wrap.append(spinner, label);
+    setTooltipContent(wrap);
 }
 
 /**
- * Render pre-formatted HTML content (e.g. OCR transcription + translation).
- * No action bar — the markup is trusted output produced by the extension.
+ * Render an OCR transcription + translation. Values come from the model and
+ * are treated as untrusted: they are written via textContent only.
  */
-function renderTooltipHtml(html) {
-    tooltip.innerHTML = `<div class="lingflow-content">${html}</div>`;
+function renderOcrResult(transcription, translation) {
+    const content = document.createElement('div');
+    content.className = 'lingflow-content';
+
+    const makeBlock = (labelKey, value) => {
+        const block = document.createElement('div');
+        block.style.marginBottom = '8px';
+
+        const label = document.createElement('strong');
+        label.textContent = `${chrome.i18n.getMessage(labelKey)}: `;
+
+        const body = document.createElement('div');
+        body.style.whiteSpace = 'pre-wrap';
+        body.textContent = value || '';
+
+        block.append(label, body);
+        return block;
+    };
+
+    content.append(
+        makeBlock('transcriptionLabel', transcription),
+        makeBlock('translationLabel', translation || transcription)
+    );
+    setTooltipContent(content);
 }
 
 function renderTooltipResult(translation) {
     currentResult = typeof translation === 'string' ? translation : '';
     const canReplace = !!replaceContext;
 
-    tooltip.innerHTML = `
-        <div class="lingflow-content">${escapeHtml(currentResult)}</div>
-        <div class="lingflow-actions">
-            <button class="lingflow-action-btn" data-action="copy" title="${chrome.i18n.getMessage('toastCopied') || 'Copy'}">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-            </button>
-            <button class="lingflow-action-btn" data-action="listen" title="Listen">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
-            </button>
-            ${canReplace ? `
-            <button class="lingflow-action-btn lingflow-action-replace" data-action="replace" title="Replace">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-            </button>` : ''}
-            <button class="lingflow-action-btn" data-action="close" title="Close">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-        </div>
-    `;
+    // Untrusted model output → textContent, never innerHTML.
+    const content = document.createElement('div');
+    content.className = 'lingflow-content';
+    content.textContent = currentResult;
 
-    const copyBtn = tooltip.querySelector('[data-action="copy"]');
-    const listenBtn = tooltip.querySelector('[data-action="listen"]');
-    const replaceBtn = tooltip.querySelector('[data-action="replace"]');
-    const closeBtn = tooltip.querySelector('[data-action="close"]');
+    const actions = document.createElement('div');
+    actions.className = 'lingflow-actions';
 
-    if (copyBtn) {
-        copyBtn.addEventListener('click', (ev) => {
-            ev.stopPropagation();
-            navigator.clipboard.writeText(currentResult);
-            copyBtn.classList.add('lingflow-action-done');
-            setTimeout(() => copyBtn.classList.remove('lingflow-action-done'), 1200);
-        });
-    }
+    const copyBtn = buildActionButton('copy', chrome.i18n.getMessage('toastCopied') || 'Copy');
+    const listenBtn = buildActionButton('listen', 'Listen');
+    const closeBtn = buildActionButton('close', 'Close');
 
-    if (listenBtn) {
-        listenBtn.addEventListener('click', (ev) => {
-            ev.stopPropagation();
-            speakInline(currentResult, currentResultLang);
-        });
-    }
+    copyBtn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        navigator.clipboard.writeText(currentResult);
+        copyBtn.classList.add('lingflow-action-done');
+        setTimeout(() => copyBtn.classList.remove('lingflow-action-done'), 1200);
+    });
 
-    if (replaceBtn) {
+    listenBtn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        speakInline(currentResult, currentResultLang);
+    });
+
+    actions.append(copyBtn, listenBtn);
+
+    if (canReplace) {
+        const replaceBtn = buildActionButton('replace', 'Replace', 'lingflow-action-replace');
         replaceBtn.addEventListener('click', (ev) => {
             ev.stopPropagation();
             if (performReplace(replaceContext, currentResult)) {
                 hideTooltip();
             }
         });
+        actions.append(replaceBtn);
     }
 
-    if (closeBtn) {
-        closeBtn.addEventListener('click', (ev) => {
-            ev.stopPropagation();
-            hideTooltip();
-        });
-    }
+    closeBtn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        hideTooltip();
+    });
+    actions.append(closeBtn);
+
+    setTooltipContent(content, actions);
 }
 
 function renderTooltipError(error) {
-    tooltip.innerHTML = `
-        <div class="lingflow-content" style="color: #fca5a5;">
-            ${error}
-        </div>
-    `;
+    const content = document.createElement('div');
+    content.className = 'lingflow-content';
+    content.style.color = '#fca5a5';
+    content.textContent = typeof error === 'string' ? error : String(error ?? '');
+    setTooltipContent(content);
 }
 
 // Start

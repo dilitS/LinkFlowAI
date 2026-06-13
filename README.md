@@ -26,10 +26,11 @@
 
 ---
 
-LingFlow AI is an open-source, Manifest V3 browser extension that brings AI translation, grammar correction, OCR, text-to-speech, and image-prompt engineering into a single workspace. Select text on any page, capture a screenshot, or work from the popup or side panel — results stream in token by token, powered by **Google Gemini 3.1 Flash Lite** or **OpenAI GPT-4o-mini**.
+LingFlow AI is an open-source, Manifest V3 browser extension that brings AI translation, grammar correction, OCR, text-to-speech, and image-prompt engineering into a single workspace. Select text on any page, capture a screenshot, or work from the popup or side panel — results stream in token by token, powered by **Chrome's built-in AI (Gemini Nano) running on-device for free**, or your own **OpenAI** / **Google Gemini** key for advanced features.
 
 ## ✨ Highlights
 
+- 🆓 **Free & private on-device tier** — translate, correct, and prompt with Chrome's built-in AI (Gemini Nano). No API key, no network, no author-hosted servers.
 - 🌍 **Translate across 26 languages** with auto-detect, language swap, and DeepL-style tone control (Auto · Formal · Casual · Business · Friendly).
 - ✏️ **Fix & rewrite text** — set the same source and target language to clean up grammar and style while preserving meaning.
 - 🎨 **Prompt engineering** for AI image models — Photo, Graphic, and Expand modes for photorealistic scenes, illustrations, and prompt cleanup.
@@ -55,8 +56,8 @@ See [Build from source](#-build-from-source) to load the unpacked extension duri
 
 1. Open the extension and go to **Settings (⚙️)**.
 2. Pick how you connect:
-   - **Built-in (Free)** — uses a secure proxy, ready immediately.
-   - **Custom key** — choose OpenAI or Gemini and paste your own key for full control.
+   - **Chrome AI (Free)** — runs on-device with Chrome's built-in AI. No key, no network; ready as soon as the model is available.
+   - **Custom key** — choose OpenAI or Gemini and paste your own key for full control and OCR/vision.
 3. Save, then translate "Hello world" to confirm it works.
 
 > Bring-your-own keys: [OpenAI](https://platform.openai.com/api-keys) · [Google Gemini](https://aistudio.google.com/app/apikey)
@@ -172,9 +173,9 @@ npm run watch:css    # Tailwind --watch
 ## 🔐 Privacy
 
 - API keys are stored **locally** in browser extension storage.
-- Free-tier requests pass through a secure proxy; no key is exposed client-side.
+- The free tier runs **entirely on-device** (Chrome built-in AI) — no proxy, no network, no key, no author-hosted API.
 - **No telemetry, no tracking, no data collection** — your data stays on your device.
-- HTTPS only, minimal permissions.
+- HTTPS only (for bring-your-own-key providers), minimal permissions.
 
 Full details: [PRIVACY.md](PRIVACY.md).
 

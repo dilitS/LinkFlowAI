@@ -124,5 +124,41 @@
   },
   "translationLabel": {
     "message": "अनुवाद"
+  },
+  "providerChromeAi": {
+    "message": "Chrome AI · free, on-device"
+  },
+  "errorNoApiKey": {
+    "message": "API key required. Add your OpenAI or Gemini key in Settings."
+  },
+  "errorInputTooLong": {
+    "message": "Your text exceeds the 5000-character limit. Please shorten it."
+  },
+  "errorChromeAiUnavailable": {
+    "message": "On-device AI is unavailable here. Update Chrome, or pick OpenAI/Gemini with your own key in Settings."
+  },
+  "errorOcrRequiresKey": {
+    "message": "OCR needs your own API key (OpenAI or Gemini). Add one in Settings."
+  },
+  "errorRateLimited": {
+    "message": "Too many requests. Please wait a moment and try again."
+  },
+  "errorQuotaExceeded": {
+    "message": "API quota exceeded. Check your provider billing and limits."
+  },
+  "errorNetwork": {
+    "message": "Network error. Check your connection and try again."
+  },
+  "errorTimeout": {
+    "message": "Request timed out. Please try again with a shorter text."
+  },
+  "errorContentTooLarge": {
+    "message": "Text is too long for the model. Please try a shorter text."
+  },
+  "errorContentFiltered": {
+    "message": "The response was filtered for safety. Try rephrasing your text."
+  },
+  "errorGeneric": {
+    "message": "Something went wrong. Please try again."
   }
 }

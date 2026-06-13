@@ -11,7 +11,6 @@ import { populateLanguages, setupSettingsListeners, loadSettingsToInputs, toggle
 import { setupHistoryListeners, renderHistory } from './modules/history.js';
 import { setupTranslationListeners } from './modules/translation.js';
 import { setupOCRListeners, closeOCRModal } from './modules/ocr.js';
-import { updateModels } from './modules/constants.js';
 import { renderTonePills } from './modules/tone.js';
 import { initSessionMeta, renderSessionMeta } from './modules/session-meta.js';
 
@@ -85,18 +84,6 @@ async function initialize() {
 
     // Initial render
     renderState(stateManager.state);
-
-    // Fetch remote config for models
-    try {
-        const config = await apiClient.fetchRemoteConfig();
-        if (config && config.freeModels) {
-            updateModels('builtin', config.freeModels);
-            // Re-render settings to show new models if builtin provider is selected
-            loadSettingsToInputs(stateManager.state);
-        }
-    } catch (e) {
-        console.error('Failed to update models:', e);
-    }
 }
 
 /**

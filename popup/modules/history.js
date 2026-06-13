@@ -2,6 +2,7 @@ import { elements } from './dom-elements.js';
 import { switchMode } from './ui-manager.js';
 import { setTone } from './tone.js';
 import { resizeInputTextarea } from './translation.js';
+import { escapeHtml } from '../../lib/sanitize.js';
 
 let isHistoryOpen = false;
 let historyFilter = 'all';
@@ -134,21 +135,21 @@ export function renderHistory(history, stateManager, showToast) {
         const date = new Date(item.timestamp);
         const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const pinIconClass = item.pinned ? 'text-amber-300 bg-amber-500/10' : 'text-gray-500 bg-black/30';
-        const meta = item.tone && item.tone !== 'auto' ? ` • ${item.tone}` : '';
+        const meta = item.tone && item.tone !== 'auto' ? ` • ${escapeHtml(item.tone)}` : '';
 
         return `
-            <div class="bg-[#18181b] border border-gray-800/50 rounded-xl p-4 hover:border-gray-700 transition-all group relative overflow-hidden animate-fade-in cursor-pointer history-item" data-id="${item.id}">
+            <div class="bg-[#18181b] border border-gray-800/50 rounded-xl p-4 hover:border-gray-700 transition-all group relative overflow-hidden animate-fade-in cursor-pointer history-item" data-id="${escapeHtml(item.id)}">
                 <div class="flex justify-between items-start mb-2 gap-3">
                     <div class="flex items-center gap-2 min-w-0">
-                        <span class="text-[10px] ${badge.color} px-2 py-0.5 rounded border font-bold uppercase tracking-wider">${badge.label}</span>
+                        <span class="text-[10px] ${badge.color} px-2 py-0.5 rounded border font-bold uppercase tracking-wider">${escapeHtml(badge.label)}</span>
                         ${item.pinned ? '<span class="text-[10px] text-amber-300 font-bold uppercase tracking-wide">PIN</span>' : ''}
                     </div>
                     <span class="text-[10px] text-gray-600 font-medium shrink-0">${timeStr}</span>
                 </div>
                 <div class="space-y-1">
-                    <p class="text-gray-200 text-sm font-bold truncate leading-snug">${item.input}</p>
-                    <p class="text-gray-500 text-xs truncate font-medium">${item.output}</p>
-                    <p class="text-[10px] text-gray-600 font-medium uppercase tracking-wide">${item.mode}${meta}</p>
+                    <p class="text-gray-200 text-sm font-bold truncate leading-snug">${escapeHtml(item.input)}</p>
+                    <p class="text-gray-500 text-xs truncate font-medium">${escapeHtml(item.output)}</p>
+                    <p class="text-[10px] text-gray-600 font-medium uppercase tracking-wide">${escapeHtml(item.mode)}${meta}</p>
                 </div>
                 <div class="absolute bottom-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button class="w-7 h-7 flex items-center justify-center rounded-lg ${pinIconClass} hover:text-white hover:bg-white/10 transition-colors pin-history-btn" title="Przypnij">

@@ -4,13 +4,17 @@ import { getCurrentMode } from './ui-manager.js';
 import { getCurrentTone } from './tone.js';
 
 const PROVIDER_LABELS = {
-    builtin: 'OpenRouter Free',
+    'chrome-ai': 'Chrome AI · on-device',
     openai: 'OpenAI',
     gemini: 'Gemini'
 };
 
 function getModelName(provider, selectedModel) {
-    return MODELS[provider]?.find(model => model.id === selectedModel)?.name || selectedModel || 'Default';
+    const models = MODELS[provider];
+    return models?.find(model => model.id === selectedModel)?.name
+        || selectedModel
+        || models?.[0]?.name
+        || 'Default';
 }
 
 function getDirectionLabel() {
@@ -33,7 +37,7 @@ function getToneLabel(tone) {
 export function renderSessionMeta(state) {
     if (!elements.outputMeta) return;
 
-    const provider = state.apiProvider || 'builtin';
+    const provider = state.apiProvider || 'chrome-ai';
     const modelName = getModelName(provider, state.selectedModel);
     const mode = getCurrentMode();
     const tone = getCurrentTone();

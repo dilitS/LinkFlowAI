@@ -81,7 +81,7 @@ async function runAction(apiClient, stateManager, force = false) {
         elements.outputText.textContent = accumulated;
     };
 
-    const options = { onStream, signal: abortController.signal, tone, force };
+    const options = { onStream, signal: abortController.signal, tone, force, sourceLang: elements.sourceLang.value };
 
     try {
         let result;

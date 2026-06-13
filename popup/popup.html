@@ -276,22 +276,11 @@
                     <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Silnik AI</label>
                     <div class="grid grid-cols-2 gap-3">
                         <label class="cursor-pointer relative group col-span-2">
-                            <input type="radio" name="api-provider-select" value="builtin" class="peer sr-only" checked>
+                            <input type="radio" name="api-provider-select" value="chrome-ai" class="peer sr-only" checked>
                             <div
                                 class="p-3 rounded-xl border border-gray-700 bg-[#18181b] text-gray-400 peer-checked:border-purple-500 peer-checked:bg-purple-500/5 peer-checked:text-purple-400 transition-all text-center flex flex-row items-center justify-center gap-3 hover:bg-[#27272a]">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    style="width: 18px; height: 18px; flex-shrink: 0;" viewBox="-45 32.23 556.5 433.48"
-                                    fill="currentColor" stroke="currentColor">
-                                    <path
-                                        d="M3 248.945C18 248.945 76 236 106 219C136 202 136 202 198 158C276.497 102.293 332 120.945 423 120.945"
-                                        stroke-width="90" fill="none" />
-                                    <path d="M511 121.5L357.25 210.268L357.25 32.7324L511 121.5Z" stroke="none" />
-                                    <path
-                                        d="M0 249C15 249 73 261.945 103 278.945C133 295.945 133 295.945 195 339.945C273.497 395.652 329 377 420 377"
-                                        stroke-width="90" fill="none" />
-                                    <path d="M508 376.445L354.25 287.678L354.25 465.213L508 376.445Z" stroke="none" />
-                                </svg>
-                                <span class="text-xs font-medium">OpenRouter (Free)</span>
+                                <i class="fa-solid fa-microchip" style="font-size: 16px; flex-shrink: 0;"></i>
+                                <span class="text-xs font-medium" data-i18n="providerChromeAi">Chrome AI · za darmo, na urządzeniu</span>
                             </div>
                         </label>
                         <label class="cursor-pointer relative group">
@@ -332,7 +321,7 @@
                     </div>
                     <!-- Hidden select for compatibility -->
                     <select id="api-provider" class="hidden">
-                        <option value="builtin">OpenRouter (Free)</option>
+                        <option value="chrome-ai">Chrome AI (Free)</option>
                         <option value="openai">OpenAI</option>
                         <option value="gemini">Gemini</option>
                     </select>

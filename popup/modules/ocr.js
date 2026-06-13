@@ -10,7 +10,9 @@ export async function handleOCRCapture(apiClient, screenshotManager) {
         await apiClient.stateManager.loadState();
         const { apiProvider } = apiClient.stateManager.state;
 
-        if (!apiProvider || apiProvider === 'builtin') {
+        // OCR is vision-only → requires a BYOK provider. The on-device free tier
+        // (chrome-ai, or the legacy `builtin`) is text-only.
+        if (!apiProvider || apiProvider === 'chrome-ai' || apiProvider === 'builtin') {
             showToast(chrome.i18n.getMessage("ocrApiRequired"));
             return;
         }
