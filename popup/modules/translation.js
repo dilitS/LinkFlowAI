@@ -9,17 +9,10 @@ let isProcessing = false;
 let abortController = null;
 
 /**
- * Resolve the prompt type string, appending the Nanobanana style when relevant.
+ * Resolve the selected prompt type.
  */
 function resolvePromptType() {
-    let type = getSelectedPromptType();
-    if (type === 'nanobanana-gen') {
-        return `${type}:${elements.nanoStyleSelect.value}`;
-    }
-    if (type === 'nanobanana-edit') {
-        return `${type}:${elements.nanoEditStyleSelect.value}`;
-    }
-    return type;
+    return getSelectedPromptType();
 }
 
 /**
@@ -34,6 +27,14 @@ function updateCharCounter() {
     elements.charCounter.classList.toggle('text-gray-600', len <= MAX_CHARS * 0.9);
 }
 
+export function resizeInputTextarea() {
+    if (!elements.inputText) return;
+    elements.inputText.style.height = 'auto';
+    const maxHeight = 384; // 24rem, matching the Tailwind max-h class.
+    elements.inputText.style.height = `${Math.min(elements.inputText.scrollHeight, maxHeight)}px`;
+    elements.inputText.style.overflowY = elements.inputText.scrollHeight > maxHeight ? 'auto' : 'hidden';
+}
+
 function showOutputPlaceholder() {
     elements.outputText.innerHTML = `<span class="italic text-gray-500">${chrome.i18n.getMessage('outputTextPlaceholder')}</span>`;
 }
@@ -43,7 +44,7 @@ function setStreamingState(streaming) {
 }
 
 /**
- * Run the current action (translate / correct / prompt) with streaming output.
+ * Run the current action (translate / prompt) with streaming output.
  * @param {boolean} force - bypass cache (used by "Regenerate").
  */
 async function runAction(apiClient, stateManager, force = false) {
@@ -84,12 +85,10 @@ async function runAction(apiClient, stateManager, force = false) {
 
     try {
         let result;
-        if (mode === 'translate') {
-            result = await apiClient.translate(text, targetLang, options);
-        } else if (mode === 'correct') {
-            result = await apiClient.correct(text, targetLang, options);
-        } else {
+        if (mode === 'prompt') {
             result = await apiClient.generatePrompt(text, targetLang, resolvePromptType(), options);
+        } else {
+            result = await apiClient.translate(text, targetLang, options);
         }
 
         // If the user hit Stop on a non-streaming provider, keep partial state.
@@ -142,6 +141,7 @@ async function runAction(apiClient, stateManager, force = false) {
 export function setupTranslationListeners(apiClient, stateManager, ttsManager) {
     // Initial counter state
     updateCharCounter();
+    resizeInputTextarea();
 
     // Action button doubles as a Stop control while processing.
     elements.actionBtn.addEventListener('click', () => {
@@ -181,6 +181,7 @@ export function setupTranslationListeners(apiClient, stateManager, ttsManager) {
             elements.inputText.value = '';
             localStorage.setItem('lingflow_input_text', '');
             updateCharCounter();
+            resizeInputTextarea();
             elements.inputText.dispatchEvent(new Event('input', { bubbles: true }));
             showOutputPlaceholder();
             elements.inputText.focus();
@@ -194,6 +195,7 @@ export function setupTranslationListeners(apiClient, stateManager, ttsManager) {
                 elements.inputText.value = text;
                 localStorage.setItem('lingflow_input_text', text);
                 updateCharCounter();
+                resizeInputTextarea();
                 elements.inputText.dispatchEvent(new Event('input', { bubbles: true }));
             } catch (err) {
                 console.error('Failed to read clipboard', err);
@@ -202,7 +204,10 @@ export function setupTranslationListeners(apiClient, stateManager, ttsManager) {
     }
 
     // Live character counter
-    elements.inputText.addEventListener('input', updateCharCounter);
+    elements.inputText.addEventListener('input', () => {
+        updateCharCounter();
+        resizeInputTextarea();
+    });
 
     // Input TTS
     if (elements.inputTtsBtn) {

@@ -41,10 +41,10 @@ export function getCurrentTone() {
 }
 
 /**
- * Tone only applies to translate & correct; hidden in prompt mode.
+ * Tone only applies to translate; hidden in prompt mode.
  */
 export function updateToneVisibility(mode) {
     if (!elements.toneSelector) return;
-    const visible = mode === 'translate' || mode === 'correct';
+    const visible = mode === 'translate';
     elements.toneSelector.classList.toggle('hidden', !visible);
 }

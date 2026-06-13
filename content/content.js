@@ -8,7 +8,6 @@ let currentSelection = null;
 let currentResult = '';
 let currentResultLang = 'pl';
 let replaceContext = null;
-let sitePreference = {};
 
 // OCR Selection State
 let isSelecting = false;
@@ -22,39 +21,10 @@ let ocrTargetLang = 'pl';
  */
 async function getTargetLang() {
     try {
-        const { settings, sitePreferences } = await chrome.storage.local.get(['settings', 'sitePreferences']);
-        const hostname = window.location.hostname;
-        const siteTarget = sitePreferences?.[hostname]?.targetLang;
-        return siteTarget || settings?.defaultTargetLang || 'pl';
+        const { settings } = await chrome.storage.local.get('settings');
+        return settings?.defaultTargetLang || 'pl';
     } catch (e) {
         return 'pl';
-    }
-}
-
-async function loadSitePreference() {
-    try {
-        const { sitePreferences } = await chrome.storage.local.get('sitePreferences');
-        sitePreference = sitePreferences?.[window.location.hostname] || {};
-    } catch (e) {
-        sitePreference = {};
-    }
-}
-
-async function updateSitePreference(patch) {
-    try {
-        const hostname = window.location.hostname;
-        const { sitePreferences } = await chrome.storage.local.get('sitePreferences');
-        const next = {
-            ...(sitePreferences || {}),
-            [hostname]: {
-                ...(sitePreferences?.[hostname] || {}),
-                ...patch
-            }
-        };
-        await chrome.storage.local.set({ sitePreferences: next });
-        sitePreference = next[hostname] || {};
-    } catch (e) {
-        console.error('Failed to update site preference', e);
     }
 }
 
@@ -110,24 +80,13 @@ function performReplace(ctx, text) {
 
 // Initialize UI
 function init() {
-    loadSitePreference();
     createFloatingButton();
     createTooltip();
     document.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('mousedown', handleMouseDown);
     document.addEventListener('keydown', handleKeyDown);
 
-    chrome.storage.onChanged.addListener((changes, areaName) => {
-        if (areaName !== 'local' || !changes.sitePreferences) return;
-        const next = changes.sitePreferences.newValue || {};
-        sitePreference = next[window.location.hostname] || {};
-        if (sitePreference.paused) {
-            hideFloatingButton();
-            hideTooltip();
-        }
-    });
-
-    // Listen for messages from background (e.g. Context Menu results)
+    // Listen for messages from the background service worker.
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (request.action === 'show_translation_result') {
             showResultFromBackground(request.translation);
@@ -328,11 +287,6 @@ function handleMouseUp(e) {
     // Ignore if clicking inside our UI
     if (floatingBtn.contains(e.target) || tooltip.contains(e.target)) return;
     if (isSelecting) return; // Ignore if selecting for OCR
-    if (sitePreference.paused) {
-        hideFloatingButton();
-        hideTooltip();
-        return;
-    }
 
     const selection = window.getSelection();
     const text = selection.toString().trim();
@@ -479,9 +433,6 @@ function renderTooltipResult(translation) {
             <button class="lingflow-action-btn lingflow-action-replace" data-action="replace" title="Replace">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
             </button>` : ''}
-            <button class="lingflow-action-btn" data-action="pause" title="Pause on this site">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect></svg>
-            </button>
             <button class="lingflow-action-btn" data-action="close" title="Close">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
@@ -491,7 +442,6 @@ function renderTooltipResult(translation) {
     const copyBtn = tooltip.querySelector('[data-action="copy"]');
     const listenBtn = tooltip.querySelector('[data-action="listen"]');
     const replaceBtn = tooltip.querySelector('[data-action="replace"]');
-    const pauseBtn = tooltip.querySelector('[data-action="pause"]');
     const closeBtn = tooltip.querySelector('[data-action="close"]');
 
     if (copyBtn) {
@@ -504,8 +454,19 @@ function renderTooltipResult(translation) {
     }
 
     if (listenBtn) {
-        listenBtn.addEventListener('click', (ev) => {
+        listenBtn.addEventListener('click', async (ev) => {
             ev.stopPropagation();
+            try {
+                const response = await chrome.runtime.sendMessage({
+                    action: 'tts_speak',
+                    text: currentResult,
+                    lang: currentResultLang
+                });
+                if (response?.success) return;
+            } catch (e) {
+                // Fall back to the page's Web Speech API below.
+            }
+
             try {
                 window.speechSynthesis.cancel();
                 const utt = new SpeechSynthesisUtterance(currentResult);
@@ -521,15 +482,6 @@ function renderTooltipResult(translation) {
             if (performReplace(replaceContext, currentResult)) {
                 hideTooltip();
             }
-        });
-    }
-
-    if (pauseBtn) {
-        pauseBtn.addEventListener('click', async (ev) => {
-            ev.stopPropagation();
-            await updateSitePreference({ paused: true });
-            hideFloatingButton();
-            hideTooltip();
         });
     }
 

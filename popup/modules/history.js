@@ -1,18 +1,13 @@
 import { elements } from './dom-elements.js';
 import { switchMode } from './ui-manager.js';
 import { setTone } from './tone.js';
+import { resizeInputTextarea } from './translation.js';
 
 let isHistoryOpen = false;
 let historyFilter = 'all';
 let historySearch = '';
 
 function getItemBadge(item) {
-    if (item.mode === 'correct') {
-        return {
-            color: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
-            label: chrome.i18n.getMessage('correctMode')
-        };
-    }
     if (item.mode === 'prompt') {
         return {
             color: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
@@ -28,6 +23,7 @@ function getItemBadge(item) {
 function normalizeHistoryItem(item) {
     return {
         ...item,
+        mode: item.mode === 'correct' ? 'translate' : item.mode,
         input: item.input || item.sourceText || '',
         output: item.output || item.targetText || '',
         pinned: !!item.pinned
@@ -137,7 +133,7 @@ export function renderHistory(history, stateManager, showToast) {
         const badge = getItemBadge(item);
         const date = new Date(item.timestamp);
         const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        const pinIconClass = item.pinned ? 'text-amber-300 bg-amber-500/10 border-amber-500/20' : 'text-gray-500 bg-black/30';
+        const pinIconClass = item.pinned ? 'text-amber-300 bg-amber-500/10' : 'text-gray-500 bg-black/30';
         const meta = item.tone && item.tone !== 'auto' ? ` • ${item.tone}` : '';
 
         return `
@@ -155,7 +151,7 @@ export function renderHistory(history, stateManager, showToast) {
                     <p class="text-[10px] text-gray-600 font-medium uppercase tracking-wide">${item.mode}${meta}</p>
                 </div>
                 <div class="absolute bottom-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button class="w-7 h-7 flex items-center justify-center rounded-lg border ${pinIconClass} hover:text-white hover:bg-white/10 transition-colors pin-history-btn" title="Przypnij">
+                    <button class="w-7 h-7 flex items-center justify-center rounded-lg ${pinIconClass} hover:text-white hover:bg-white/10 transition-colors pin-history-btn" title="Przypnij">
                         <i class="fa-solid fa-thumbtack text-[10px]"></i>
                     </button>
                     <button class="w-7 h-7 flex items-center justify-center rounded-lg bg-black/30 text-gray-500 hover:text-white hover:bg-white/10 transition-colors copy-history-btn" title="Kopiuj">
@@ -188,6 +184,7 @@ export function renderHistory(history, stateManager, showToast) {
 
             elements.inputText.value = historyItem.input;
             localStorage.setItem('lingflow_input_text', historyItem.input);
+            resizeInputTextarea();
             elements.inputText.dispatchEvent(new Event('input', { bubbles: true }));
             elements.outputText.innerText = historyItem.output;
             elements.outputText.classList.remove('italic', 'text-gray-500');

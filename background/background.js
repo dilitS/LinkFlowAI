@@ -8,8 +8,6 @@ const apiClient = new APIClient(stateManager);
 
 chrome.runtime.onInstalled.addListener(() => {
     console.log('LingFlow AI Installed');
-
-    // Context Menu removed as per user request
 });
 
 // The active tab is passed straight to the listener so we can call
@@ -35,7 +33,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         // Capture visible tab
         chrome.tabs.captureVisibleTab(null, { format: 'png' }, (dataUrl) => {
             if (chrome.runtime.lastError) {
+                const message = chrome.runtime.lastError.message || 'Screenshot capture failed';
                 console.error('Capture failed:', chrome.runtime.lastError);
+                chrome.tabs.sendMessage(sender.tab.id, {
+                    action: 'show_translation_error',
+                    error: message
+                });
+                return;
+            }
+
+            if (!dataUrl) {
+                chrome.tabs.sendMessage(sender.tab.id, {
+                    action: 'show_translation_error',
+                    error: 'Screenshot capture returned an empty image.'
+                });
                 return;
             }
             // Send back to content script for cropping
@@ -50,8 +61,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             .then(result => {
                 // Format result: Transcription + Translation
                 const text = `
-                    <div style="margin-bottom: 8px;"><strong>${chrome.i18n.getMessage("transcriptionLabel")}:</strong><br>${result.transcription}</div>
-                    <div><strong>${chrome.i18n.getMessage("translationLabel")}:</strong><br>${result.translation}</div>
+                    <div style="margin-bottom: 8px;"><strong>${chrome.i18n.getMessage("transcriptionLabel")}:</strong><br>${escapeHtml(result.transcription || '')}</div>
+                    <div><strong>${chrome.i18n.getMessage("translationLabel")}:</strong><br>${escapeHtml(result.translation || result.transcription || '')}</div>
                 `;
                 chrome.tabs.sendMessage(sender.tab.id, {
                     action: 'show_ocr_result',
@@ -64,8 +75,23 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     error: error.message
                 });
             });
+    } else if (request.action === 'tts_speak') {
+        speakText(request.text, request.lang)
+            .then(() => sendResponse({ success: true }))
+            .catch(error => sendResponse({ success: false, error: error.message }));
+        return true;
     }
 });
+
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;')
+        .replace(/\n/g, '<br>');
+}
 
 async function handleOCR(image, targetLang) {
     await stateManager.loadState();
@@ -87,4 +113,28 @@ async function handleTranslation(text, targetLang) {
     }
 
     return await apiClient.translate(text, targetLang);
+}
+
+async function speakText(text, lang) {
+    if (!chrome.tts?.speak) {
+        throw new Error('Chrome TTS API is not available');
+    }
+
+    const { settings } = await chrome.storage.local.get('settings');
+    const effectiveLang = settings?.ttsLanguage || lang || settings?.defaultTargetLang || 'en';
+    chrome.tts.stop?.();
+
+    await new Promise((resolve, reject) => {
+        chrome.tts.speak(text, {
+            lang: effectiveLang,
+            voiceName: settings?.ttsVoiceName || undefined,
+            enqueue: false
+        }, () => {
+            if (chrome.runtime.lastError) {
+                reject(new Error(chrome.runtime.lastError.message));
+                return;
+            }
+            resolve();
+        });
+    });
 }

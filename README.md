@@ -11,17 +11,18 @@
 
 ## ✨ Features
 
-LingFlow AI is a comprehensive browser extension that brings the power of AI to your browsing experience. With support for **26 languages** and **3 powerful modes**, it's your ultimate companion for translation, text improvement, and creative prompt generation.
+LingFlow AI is a comprehensive browser extension that brings the power of AI to your browsing experience. With support for **26 languages** and a simplified two-mode workflow, it's your companion for translation, text improvement, OCR, TTS, and creative prompt generation.
 
 ### 🆕 What's new in 1.6.0
 - **Default engine upgraded to Gemini 3.1 Flash Lite** — faster and far cheaper.
 - **Live streaming responses** — results appear token by token with a typing caret, plus a **Stop** control to abort mid-generation.
-- **Tone & register control** (DeepL-style): Auto, Formal, Casual, Business, Friendly — applied to Translate & Correct.
+- **Tone & register control** (DeepL-style): Auto, Formal, Casual, Business, Friendly — applied directly in Translate.
 - **Regenerate** button to re-run any result while bypassing the cache.
 - **In-place replace** from the on-page tooltip (works in inputs, textareas and contenteditable fields), plus copy & listen actions.
 - **Side panel workspace** for longer sessions, plus a keyboard shortcut to open it fast.
-- **Per-site memory & pause controls**: remember target language per domain and pause inline translation on specific sites.
+- **Settings-driven inline language**: the language selected in Settings is the target for on-page selection translation and OCR.
 - **History power-ups**: search, mode filters, pin important items, and restore mode/tone/language in one click.
+- **Piper-compatible TTS**: use Chrome TTS voices (including installed Piper voices) and choose voice/language in Settings.
 - **Full 26-language coverage** for the AI target language and text-to-speech (previously only 8 languages were mapped, silently defaulting the rest to English).
 - **Live character counter** and `Esc` to close overlays.
 
@@ -32,19 +33,15 @@ LingFlow AI is a comprehensive browser extension that brings the power of AI to 
 - **Language Swap**: Quickly swap source and target languages
 - **Smart Caching**: Instant results for repeated translations
 
-### ✏️ Correction Mode
-- **Grammar Correction**: Fix spelling errors and typos
-- **Style Improvement**: Enhance sentence structure and flow
-- **Tone Preservation**: Maintains original meaning and author's voice
-- **Multi-language**: Available in all supported languages
-- **Smart Suggestions**: AI-powered improvements
+### ✏️ Text Improvement
+- **Same-language cleanup**: select the same source/target language in Translate to correct grammar and improve style.
+- **Tone-aware rewriting**: choose Formal, Casual, Business, or Friendly tone before translating/improving text.
+- **Meaning preservation**: the translate prompt keeps the original intent while improving fluency when the text is already in the target language.
 
 ### 🎨 Prompt Mode
-- **Image Prompts**: Generate detailed prompts for Midjourney, DALL-E, Stable Diffusion
-- **Video Prompts**: Create prompts for Sora and other video AI tools
-- **Nanobanana**: Advanced Gemini-specific generation and editing
-  - **Generation Styles**: Photorealistic, Sticker, Logo, Product, Minimalist, Comic
-  - **Editing Modes**: Modify, Retouch, Style Transfer, Composition
+- **Photo Prompts**: Photorealistic prompts built around subject, action, environment, composition, lighting, lens, and realism cues
+- **Graphic Prompts**: Prompt structure for illustrations, brand assets, posters, UI-style graphics, stickers, and layouts
+- **Prompt Expansion**: Clean up and expand an existing image prompt without changing the core intent
 - **Artistic Enhancement**: Adds visual details, style references, and technical specs
 - **Multi-language**: Translate prompts to any supported language
 - **Creative Boost**: Temperature 0.7 for maximum creativity
@@ -58,24 +55,24 @@ LingFlow AI is a comprehensive browser extension that brings the power of AI to 
 
 ### 🌐 On-Page Translation
 - **Floating Button**: Select text on any webpage to see instant translation button
-- **Context Menu**: Right-click any text to "Translate with LingFlow"
 - **Instant Tooltip**: View translations directly on the page
 - **Non-intrusive**: Dark mode design that doesn't interfere with browsing
 - **Smart Positioning**: Tooltip follows your selection
 
 ### 💾 History & Storage
-- **Persistent History**: All translations, corrections, and prompts saved
+- **Persistent History**: All translations, text improvements, and prompts saved
 - **Cross-Session**: History persists across browser restarts
 - **Auto-Cleanup**: Automatically manages history (max 100 items)
 - **Quick Restore**: Click any history item to restore it
-- **Mode Indicators**: Color-coded by mode (translate/correct/prompt)
+- **Mode Indicators**: Color-coded by mode (translate/prompt)
 
 ### ⚙️ Settings & Configuration
 - **Dual API Support**: Choose between OpenAI GPT-4o-mini or Google Gemini
 - **Custom API Keys**: Bring your own API key for full control
 - **Secure Proxy**: Free tier uses a secure proxy server to protect API keys
-- **Context Menu Language**: Configure quick translation language
-- **Secure Storage**: API keys encrypted and stored locally
+- **Default Target Language**: Configure popup, selected-text translation, and OCR target language
+- **TTS Voice Selection**: Choose Web Speech or Chrome TTS/Piper-compatible voices
+- **Local Storage**: API keys are stored locally in the browser extension storage
 
 ### 🚀 Performance & Optimization
 - **Smart Caching**: LRU cache with 100 items, 1-hour TTL
@@ -141,44 +138,37 @@ LingFlow AI is a comprehensive browser extension that brings the power of AI to 
 ### 📸 OCR (Screenshot Translation)
 
 1. Select **Translate** mode
-2. Choose target language
+2. Make sure the default target language is set in Settings
 3. Click the 📷 (Camera) icon
-4. Grant screen capture permission (first time only)
-5. Select window/tab/screen to capture
-6. Wait for processing (OCR + Translation)
-7. View both transcription and translation
-8. Copy either result or use TTS
+4. Drag over the area of the page you want to read
+5. Wait for processing (OCR + Translation)
+6. View both transcription and translation in the on-page tooltip
+7. Copy the result or use TTS
 
 **Best practices**:
 - Use clear, readable text in images
 - Avoid very small fonts
 - Good lighting improves accuracy
 
-### ✏️ Text Correction
+### ✏️ Text Improvement
 
-1. Select **Correct** mode
-2. Choose language
-3. Enter text to correct
-4. Click **Correct Grammar**
-5. Review improvements
-6. Copy corrected text
-
-**Use cases**:
-- Email proofreading
-- Social media posts
-- Academic writing
-- Professional documents
+1. Select **Translate** mode
+2. Set source and target to the same language (or keep source on Auto)
+3. Pick the tone/style you want
+4. Enter text
+5. Click **Translate**
+6. Review the corrected, cleaner version
 
 ### 🎨 Prompt Generation
 
 1. Select **Prompt** mode
 2. Choose prompt type:
-   - **Image**: For Midjourney, Imagen, Flux, Stable Diffusion
-   - **Video**: For Sora, Runway, Veo, Kling
+   - **Photo**: photorealistic Gemini/Nano Banana-style scene direction
+   - **Graphic**: illustration, poster, logo, UI-style graphic, sticker, or layout
+   - **Expand**: improve an existing image prompt without changing intent
 3. Describe what you want to see
-4. Choose target language
-5. Click **Generate Prompt**
-6. Copy enhanced prompt
+4. Click **Generate Prompt**
+5. Copy enhanced prompt
 
 **Example**:
 - Input: "sunset over mountains"
@@ -192,13 +182,7 @@ LingFlow AI is a comprehensive browser extension that brings the power of AI to 
 3. View translation in tooltip
 4. Copy if needed
 
-**Method 2: Context Menu**
-1. Select any text on a webpage
-2. Right-click
-3. Choose "Translate with LingFlow"
-4. View translation in tooltip
-
-**Tip**: Configure your preferred context menu language in Settings!
+**Tip**: The target language for selected text is the default language set in Settings.
 
 ---
 
@@ -216,8 +200,8 @@ LingFlow AI is a comprehensive browser extension that brings the power of AI to 
 ### Browser APIs
 - **Chrome Storage API**: Persistent storage
 - **Chrome Tabs API**: Screenshot capture
-- **Chrome Context Menus API**: Right-click menu
 - **Web Speech API**: Text-to-Speech
+- **Chrome TTS API**: Piper-compatible voice selection when installed
 
 ### Architecture
 - **Manifest V3**: Latest Chrome extension standard
@@ -229,7 +213,7 @@ LingFlow AI is a comprehensive browser extension that brings the power of AI to 
 
 ## 🔐 Privacy & Security
 
-- ✅ **Local Storage**: API keys stored locally and encrypted
+- ✅ **Local Storage**: API keys stored locally in browser extension storage
 - ✅ **Secure Proxy**: API requests for free tier go through a secure proxy
 - ✅ **No Telemetry**: Zero tracking or analytics
 - ✅ **Local-First**: Data stays on your device
@@ -246,7 +230,6 @@ LingFlow AI is a comprehensive browser extension that brings the power of AI to 
 | Mode | Temperature | Max Tokens | Model |
 |------|-------------|------------|-------|
 | Translation | 0.3 | 2000 | gpt-4o-mini |
-| Correction | 0.2 | 2000 | gpt-4o-mini |
 | Prompt | 0.7 | 2000 | gpt-4o-mini |
 | OCR | 0.2 | 4096 | gpt-4o-mini |
 
@@ -254,13 +237,12 @@ LingFlow AI is a comprehensive browser extension that brings the power of AI to 
 | Mode | Temperature | Max Tokens | Model |
 |------|-------------|------------|-------|
 | Translation | 0.3 | 2000 | gemini-3.1-flash-lite |
-| Correction | 0.2 | 2000 | gemini-3.1-flash-lite |
 | Prompt | 0.7 | 2000 | gemini-3.1-flash-lite |
 | OCR | 0.2 | 4096 | gemini-3.1-flash-lite |
 
 > Model IDs are stored as configuration constants in `lib/api-client.js`
 > (`DEFAULT_GEMINI_MODEL`). When the model graduates from preview to GA, this is a
-> one-line change. Translate, Correct and Prompt responses are **streamed** token
+> one-line change. Translate and Prompt responses are **streamed** token
 > by token for Gemini and OpenAI; the free tier falls back to a single response.
 
 ---

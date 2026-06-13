@@ -5,18 +5,22 @@ import { updateToneVisibility } from './tone.js';
 const MODE_STORAGE_KEY = 'lingflow_mode';
 let currentMode = localStorage.getItem(MODE_STORAGE_KEY) || 'translate';
 
+function normalizeMode(mode) {
+    return mode === 'prompt' ? 'prompt' : 'translate';
+}
+
 /**
- * Switch between translation modes (translate, correct, prompt)
+ * Switch between product modes (translate, prompt).
  */
 export function switchMode(mode) {
-    currentMode = mode;
-    localStorage.setItem(MODE_STORAGE_KEY, mode);
-    updateToneVisibility(mode);
-    window.dispatchEvent(new CustomEvent('lingflow:modechange', { detail: mode }));
+    currentMode = normalizeMode(mode);
+    localStorage.setItem(MODE_STORAGE_KEY, currentMode);
+    updateToneVisibility(currentMode);
+    window.dispatchEvent(new CustomEvent('lingflow:modechange', { detail: currentMode }));
 
     // Update Tabs UI
     elements.modeTabs.forEach(tab => {
-        if (tab.dataset.mode === mode) {
+        if (tab.dataset.mode === currentMode) {
             tab.className = 'mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-white bg-[#27272a] shadow-sm transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase';
         } else {
             tab.className = 'mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-gray-500 hover:text-gray-300 transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase';
@@ -25,21 +29,16 @@ export function switchMode(mode) {
 
     // Update Action Button
     const btnSpan = elements.actionBtn.querySelector('span');
-    elements.actionBtn.className = `relative z-10 text-white text-sm font-bold uppercase tracking-wider py-3.5 px-12 rounded-full transition-all hover:scale-105 active:scale-95 group ${MODE_COLORS[mode].btn} ${MODE_COLORS[mode].shadow}`;
-    btnSpan.textContent = MODE_COLORS[mode].text;
+    elements.actionBtn.className = `relative z-10 text-white text-sm font-bold uppercase tracking-wider py-3.5 px-12 rounded-full transition-all hover:scale-105 active:scale-95 group ${MODE_COLORS[currentMode].btn} ${MODE_COLORS[currentMode].shadow}`;
+    btnSpan.textContent = MODE_COLORS[currentMode].text;
 
     // Update UI visibility
-    if (mode === 'translate') {
+    if (currentMode === 'translate') {
         elements.promptOptions.classList.add('hidden');
         elements.ocrBtn.style.display = 'flex';
         elements.inputText.placeholder = chrome.i18n.getMessage("inputPlaceholder");
         elements.outputLabel.textContent = chrome.i18n.getMessage("outputLabel");
-    } else if (mode === 'correct') {
-        elements.promptOptions.classList.add('hidden');
-        elements.ocrBtn.style.display = 'none';
-        elements.inputText.placeholder = chrome.i18n.getMessage("inputPlaceholderCorrect");
-        elements.outputLabel.textContent = chrome.i18n.getMessage("correctMode");
-    } else if (mode === 'prompt') {
+    } else if (currentMode === 'prompt') {
         elements.promptOptions.classList.remove('hidden');
         elements.ocrBtn.style.display = 'none';
         elements.inputText.placeholder = chrome.i18n.getMessage("inputPlaceholderPrompt");
@@ -52,42 +51,13 @@ export function switchMode(mode) {
  * Update prompt type button visuals
  */
 export function updatePromptTypeVisuals(type) {
-    // Handle main type buttons
-    const mainType = type.startsWith('nanobanana') ? 'nanobanana' : type;
-
     elements.promptTypeBtns.forEach(btn => {
-        if (btn.dataset.type === mainType) {
+        if (btn.dataset.type === type) {
             btn.className = 'prompt-type-btn flex-1 py-2 px-3 text-xs font-medium rounded-lg border border-orange-500/30 bg-orange-500/10 text-orange-400 flex items-center justify-center gap-2 hover:bg-orange-500/20 transition-colors';
         } else {
             btn.className = 'prompt-type-btn flex-1 py-2 px-3 text-xs font-medium rounded-lg border border-gray-700 bg-[#1e1e1e] text-gray-500 flex items-center justify-center gap-2 hover:bg-[#252525] hover:text-gray-300 transition-colors';
         }
     });
-
-    // Show/hide Nanobanana sub-options
-    if (mainType === 'nanobanana') {
-        elements.nanoOptions.classList.remove('hidden');
-
-        // Update sub-buttons visuals
-        const subType = type === 'nanobanana-edit' ? 'edit' : 'gen';
-        elements.nanoSubBtns.forEach(btn => {
-            if (btn.dataset.subtype === subType) {
-                btn.className = 'nano-sub-btn flex-1 py-1 px-2 text-[10px] font-medium rounded border border-purple-500/30 bg-purple-500/10 text-purple-400 flex items-center justify-center gap-1 hover:bg-purple-500/20 transition-colors';
-            } else {
-                btn.className = 'nano-sub-btn flex-1 py-1 px-2 text-[10px] font-medium rounded border border-gray-700 bg-[#1e1e1e] text-gray-500 flex items-center justify-center gap-1 hover:bg-[#252525] hover:text-gray-300 transition-colors';
-            }
-        });
-
-        // Show style selector based on mode
-        if (subType === 'gen') {
-            elements.nanoStyleContainer.classList.remove('hidden');
-            elements.nanoEditStyleContainer.classList.add('hidden');
-        } else {
-            elements.nanoStyleContainer.classList.add('hidden');
-            elements.nanoEditStyleContainer.classList.remove('hidden');
-        }
-    } else {
-        elements.nanoOptions.classList.add('hidden');
-    }
 }
 
 /**
@@ -97,7 +67,7 @@ export function getSelectedPromptType() {
     for (const radio of elements.promptTypeRadios) {
         if (radio.checked) return radio.value;
     }
-    return 'image';
+    return 'image-photo';
 }
 
 /**

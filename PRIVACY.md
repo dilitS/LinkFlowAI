@@ -60,8 +60,8 @@ All of the following is stored **locally on your device** using the browser's
   when you run an action.
 - **History** of your translations/corrections/prompts (kept on-device, capped to the
   most recent entries; you can clear it at any time).
-- **Preferences**: selected provider/model, default languages, tone, and per-site
-  settings (e.g. a site you paused or a target language you set for a site).
+- **Preferences**: selected provider/model, default languages, tone, and TTS voice
+  settings.
 
 Because this data lives on your device, uninstalling the extension or clearing your
 browser data removes it.
@@ -83,9 +83,10 @@ browser data removes it.
 
 | Permission | Why the extension needs it |
 | --- | --- |
-| `storage` | Save your settings, API keys, history, and per-site preferences locally. |
+| `storage` | Save your settings, API keys, history, and voice preferences locally. |
 | `activeTab` / `tabs` | Know the current tab so OCR can capture the visible area and the workspace can target the right window. |
 | `clipboardWrite` | Copy a result to your clipboard when you press the Copy button. |
+| `tts` | List and play Chrome TTS voices, including installed Piper voices when available. |
 | `sidePanel` | Open the LingFlow workspace in the browser side panel. |
 | Host access to the AI endpoints above | Send your request to the AI provider you selected. |
 | Content script on pages (`<all_urls>`) | Show the quick-translate button and inline result tooltip on the page where you select text. It runs only to render that UI in response to your selection. |

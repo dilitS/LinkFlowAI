@@ -14,9 +14,60 @@ export function populateLanguages() {
     // Populate settings dropdowns
     // Populate settings dropdowns
     elements.settingsTargetLang.innerHTML = options;
+    if (elements.ttsLanguage) {
+        elements.ttsLanguage.innerHTML = options;
+    }
 
     // Set defaults
     elements.targetLang.value = 'en';
+}
+
+const PIPER_VOICE_HINTS = [
+    'pl_PL-gosia-medium',
+    'en_US-lessac-medium',
+    'en_GB-alan-medium',
+    'de_DE-thorsten-medium',
+    'fr_FR-siwis-medium',
+    'es_ES-sharvard-medium',
+    'it_IT-riccardo-x_low'
+];
+
+function getChromeTtsVoices() {
+    return new Promise(resolve => {
+        if (!chrome.tts?.getVoices) {
+            resolve([]);
+            return;
+        }
+        chrome.tts.getVoices(voices => resolve(voices || []));
+    });
+}
+
+async function populateTtsVoices(settings = {}) {
+    if (!elements.ttsVoice) return;
+
+    const lang = elements.ttsLanguage?.value || settings.ttsLanguage || settings.defaultTargetLang || 'en';
+    const voices = await getChromeTtsVoices();
+    const base = lang.split('-')[0].toLowerCase();
+    const filtered = voices.filter(voice => {
+        const voiceLang = String(voice.lang || '').toLowerCase();
+        return !voiceLang || voiceLang.startsWith(base);
+    });
+
+    const voiceOptions = [
+        '<option value="">Auto</option>',
+        ...filtered.map(voice => `<option value="${voice.voiceName}">${voice.voiceName}${voice.lang ? ` (${voice.lang})` : ''}</option>`)
+    ];
+
+    elements.ttsVoice.innerHTML = voiceOptions.join('');
+    if (settings.ttsVoiceName && [...elements.ttsVoice.options].some(option => option.value === settings.ttsVoiceName)) {
+        elements.ttsVoice.value = settings.ttsVoiceName;
+    }
+
+    if (elements.piperVoiceCatalog) {
+        elements.piperVoiceCatalog.innerHTML = PIPER_VOICE_HINTS.map(voice =>
+            `<span class="rounded-full border border-gray-800 bg-[#18181b] px-2 py-1">${voice}</span>`
+        ).join('');
+    }
 }
 
 /**
@@ -78,6 +129,14 @@ export function loadSettingsToInputs(state) {
         } else {
             elements.settingsTargetLang.value = 'en';
         }
+
+        if (elements.ttsEngine) {
+            elements.ttsEngine.value = state.settings.ttsEngine || 'web';
+        }
+        if (elements.ttsLanguage) {
+            elements.ttsLanguage.value = state.settings.ttsLanguage || state.settings.defaultTargetLang || 'en';
+        }
+        populateTtsVoices(state.settings);
     }
 }
 
@@ -135,7 +194,10 @@ export function setupSettingsListeners(stateManager, showToast) {
             settings: {
                 ...stateManager.state.settings,
                 defaultTargetLang: elements.settingsTargetLang.value,
-                ocrTargetLang: elements.settingsTargetLang.value
+                ocrTargetLang: elements.settingsTargetLang.value,
+                ttsEngine: elements.ttsEngine?.value || 'web',
+                ttsLanguage: elements.ttsLanguage?.value || elements.settingsTargetLang.value,
+                ttsVoiceName: elements.ttsVoice?.value || ''
             }
         };
 
@@ -156,5 +218,17 @@ export function setupSettingsListeners(stateManager, showToast) {
 
         toggleSettings();
         showToast(chrome.i18n.getMessage("settingsSaved"));
+    });
+
+    elements.ttsLanguage?.addEventListener('change', () => {
+        populateTtsVoices({
+            ...stateManager.state.settings,
+            ttsLanguage: elements.ttsLanguage.value,
+            ttsVoiceName: ''
+        });
+    });
+
+    elements.ttsEngine?.addEventListener('change', () => {
+        populateTtsVoices(stateManager.state.settings || {});
     });
 }

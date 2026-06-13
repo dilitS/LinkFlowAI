@@ -13,8 +13,6 @@ import { setupTranslationListeners } from './modules/translation.js';
 import { setupOCRListeners, closeOCRModal } from './modules/ocr.js';
 import { updateModels } from './modules/constants.js';
 import { renderTonePills } from './modules/tone.js';
-import { initSmartStarters } from './modules/smart-starters.js';
-import { initSiteContext, renderSiteContext, rememberTargetLanguageForSite } from './modules/site-context.js';
 import { initSessionMeta, renderSessionMeta } from './modules/session-meta.js';
 
 // Initialize managers
@@ -67,7 +65,6 @@ async function initialize() {
     // Populate UI
     populateLanguages();
     renderTonePills();
-    initSmartStarters();
     initSessionMeta(stateManager);
 
     // Restore input text
@@ -88,10 +85,6 @@ async function initialize() {
 
     // Initial render
     renderState(stateManager.state);
-
-    // Read active tab context (site-specific target language, pause state, sidepanel).
-    await initSiteContext(stateManager, showToast);
-    renderSiteContext(stateManager);
 
     // Fetch remote config for models
     try {
@@ -119,32 +112,11 @@ function setupEventListeners() {
     elements.promptTypeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const type = btn.dataset.type;
-            let finalType = type;
-
-            if (type === 'nanobanana') {
-                // Default to gen if just clicking main button
-                finalType = 'nanobanana-gen';
-            }
-
-            const radio = document.querySelector(`input[name="prompt-type"][value="${finalType}"]`);
+            const radio = document.querySelector(`input[name="prompt-type"][value="${type}"]`);
             if (radio) radio.checked = true;
-            updatePromptTypeVisuals(finalType);
+            updatePromptTypeVisuals(type);
         });
     });
-
-    // Nanobanana sub-buttons
-    if (elements.nanoSubBtns) {
-        elements.nanoSubBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const subtype = btn.dataset.subtype;
-                const finalType = `nanobanana-${subtype}`;
-
-                const radio = document.querySelector(`input[name="prompt-type"][value="${finalType}"]`);
-                if (radio) radio.checked = true;
-                updatePromptTypeVisuals(finalType);
-            });
-        });
-    }
 
     // Setup module-specific listeners
     setupSettingsListeners(stateManager, showToast);
@@ -164,7 +136,6 @@ function setupEventListeners() {
 
     elements.targetLang.addEventListener('change', (e) => {
         localStorage.setItem('lingflow_target_lang', e.target.value);
-        rememberTargetLanguageForSite(stateManager, e.target.value);
     });
 
     // Keyboard shortcuts
@@ -194,7 +165,6 @@ function applySurfaceMode() {
     if (surface === 'sidepanel') {
         document.body.classList.remove('w-[360px]', 'min-h-[500px]');
         document.body.classList.add('w-full', 'min-h-screen');
-        elements.openSidepanelBtn?.classList.add('hidden');
     }
 }
 
@@ -204,7 +174,6 @@ function applySurfaceMode() {
 function renderState(state) {
     renderHistory(state.history, stateManager, showToast);
     loadSettingsToInputs(state);
-    renderSiteContext(stateManager);
     renderSessionMeta(state);
 
     // Restore saved languages or apply default

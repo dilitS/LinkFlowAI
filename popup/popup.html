@@ -62,44 +62,11 @@
                     data-mode="translate">
                     <i class="fa-solid fa-globe"></i> <span data-i18n="translateMode">TŁUMACZ</span>
                 </button>
-                <button id="btn-correct"
-                    class="mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-gray-500 hover:text-gray-300 transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase"
-                    data-mode="correct">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="correctMode">KOREKTA</span>
-                </button>
                 <button id="btn-prompt"
                     class="mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-gray-500 hover:text-gray-300 transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase"
                     data-mode="prompt">
                     <i class="fa-solid fa-robot"></i> <span data-i18n="promptMode">PROMPT</span>
                 </button>
-            </div>
-        </div>
-
-        <!-- ACTIVE TAB CONTEXT -->
-        <div id="site-context-card" class="mx-4 mb-2 rounded-2xl border border-gray-800/60 bg-[#111114] px-3.5 py-3">
-            <div class="flex items-start justify-between gap-3">
-                <div class="min-w-0">
-                    <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-600" data-i18n="activeSiteTitle">AKTYWNA STRONA</div>
-                    <div class="mt-1 flex flex-wrap items-center gap-2">
-                        <span id="site-context-host"
-                            class="max-w-[180px] truncate text-sm font-semibold text-gray-200">Ładowanie…</span>
-                        <span id="site-context-status"
-                            class="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-emerald-300">Inline
-                            aktywny</span>
-                    </div>
-                    <p id="site-context-subtitle" class="mt-1 text-xs text-gray-500">Zapamiętywanie języka dla tej
-                        strony.</p>
-                </div>
-                <div class="flex shrink-0 items-center gap-2">
-                    <button id="site-pause-btn" data-i18n="siteContextPauseButton"
-                        class="rounded-xl border border-gray-700 bg-[#18181b] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-gray-300 transition-colors hover:border-gray-600 hover:bg-[#202024]">
-                        Pauza
-                    </button>
-                    <button id="open-sidepanel-btn" data-i18n="sidepanelOpenButton"
-                        class="rounded-xl border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-blue-300 transition-colors hover:bg-blue-500/20">
-                        Panel
-                    </button>
-                </div>
             </div>
         </div>
 
@@ -110,83 +77,32 @@
             <!-- PROMPT TYPE SELECTOR (Conditional) -->
             <div id="prompt-options" class="hidden py-2 flex flex-col gap-2 animate-fade-in mb-2">
                 <div class="flex gap-2">
-                    <button id="btn-p-image"
+                    <button id="btn-p-photo"
                         class="prompt-type-btn flex-1 py-1.5 px-3 text-xs font-medium rounded-lg border border-orange-500/30 bg-orange-500/10 text-orange-400 flex items-center justify-center gap-2 hover:bg-orange-500/20 transition-colors"
+                        data-type="image-photo">
+                        <i class="fa-solid fa-camera"></i> Zdjęcie
+                    </button>
+                    <button id="btn-p-graphic"
+                        class="prompt-type-btn flex-1 py-1.5 px-3 text-xs font-medium rounded-lg border border-gray-700 bg-[#1e1e1e] text-gray-500 flex items-center justify-center gap-2 hover:bg-[#252525] hover:text-gray-300 transition-colors"
+                        data-type="image-graphic">
+                        <i class="fa-solid fa-pen-nib"></i> Grafika
+                    </button>
+                    <button id="btn-p-enhance"
+                        class="prompt-type-btn flex-1 py-1.5 px-3 text-xs font-medium rounded-lg border border-gray-700 bg-[#1e1e1e] text-gray-500 flex items-center justify-center gap-2 hover:bg-[#252525] hover:text-gray-300 transition-colors"
                         data-type="image">
-                        <i class="fa-regular fa-image"></i> Obraz
-                    </button>
-                    <button id="btn-p-video"
-                        class="prompt-type-btn flex-1 py-1.5 px-3 text-xs font-medium rounded-lg border border-gray-700 bg-[#1e1e1e] text-gray-500 flex items-center justify-center gap-2 hover:bg-[#252525] hover:text-gray-300 transition-colors"
-                        data-type="video">
-                        <i class="fa-solid fa-video"></i> Wideo
-                    </button>
-                    <button id="btn-p-nano"
-                        class="prompt-type-btn flex-1 py-1.5 px-3 text-xs font-medium rounded-lg border border-gray-700 bg-[#1e1e1e] text-gray-500 flex items-center justify-center gap-2 hover:bg-[#252525] hover:text-gray-300 transition-colors"
-                        data-type="nanobanana">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i> Nano
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Rozbuduj
                     </button>
                 </div>
 
-                <!-- Nanobanana Sub-options -->
-                <div id="nano-options" class="hidden flex flex-col gap-2 pt-1 border-t border-gray-800/50">
-                    <div class="flex gap-2">
-                        <button id="btn-nano-gen"
-                            class="nano-sub-btn flex-1 py-1 px-2 text-[10px] font-medium rounded border border-purple-500/30 bg-purple-500/10 text-purple-400 flex items-center justify-center gap-1 hover:bg-purple-500/20 transition-colors"
-                            data-subtype="gen">
-                            Generowanie
-                        </button>
-                        <button id="btn-nano-edit"
-                            class="nano-sub-btn flex-1 py-1 px-2 text-[10px] font-medium rounded border border-gray-700 bg-[#1e1e1e] text-gray-500 flex items-center justify-center gap-1 hover:bg-[#252525] hover:text-gray-300 transition-colors"
-                            data-subtype="edit">
-                            Edycja
-                        </button>
-                    </div>
-
-                    <!-- Style Selector (Visible only for Generation) -->
-                    <div id="nano-style-container" class="relative">
-                        <select id="nano-style-select"
-                            class="w-full bg-[#1e1e1e] text-gray-300 text-[10px] font-medium border border-gray-700 rounded-lg p-1.5 focus:border-purple-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#252525]">
-                            <option value="photorealistic">Fotorealistyczne (Domyślne)</option>
-                            <option value="sticker">Naklejka / Ilustracja</option>
-                            <option value="logo">Logo / Tekst</option>
-                            <option value="product">Produkt / Mockup</option>
-                            <option value="minimalist">Minimalizm</option>
-                            <option value="comic">Komiks / Storyboard</option>
-                        </select>
-                        <i
-                            class="fa-solid fa-chevron-down absolute right-2 top-2 text-gray-500 text-[10px] pointer-events-none"></i>
-                    </div>
-
-                    <!-- Edit Style Selector (Visible only for Editing) -->
-                    <div id="nano-edit-style-container" class="relative hidden">
-                        <select id="nano-edit-style-select"
-                            class="w-full bg-[#1e1e1e] text-gray-300 text-[10px] font-medium border border-gray-700 rounded-lg p-1.5 focus:border-purple-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#252525]">
-                            <option value="modify">Dodaj / Usuń / Zmień</option>
-                            <option value="retouch">Retusz (Maskowanie)</option>
-                            <option value="style-transfer">Zmiana Stylu</option>
-                            <option value="composition">Kompozycja (Łączenie)</option>
-                        </select>
-                        <i
-                            class="fa-solid fa-chevron-down absolute right-2 top-2 text-gray-500 text-[10px] pointer-events-none"></i>
-                    </div>
-                </div>
-
-                <input type="radio" name="prompt-type" value="image" class="hidden" checked>
-                <input type="radio" name="prompt-type" value="video" class="hidden">
-                <input type="radio" name="prompt-type" value="nanobanana-gen" class="hidden">
-                <input type="radio" name="prompt-type" value="nanobanana-edit" class="hidden">
+                <input type="radio" name="prompt-type" value="image-photo" class="hidden" checked>
+                <input type="radio" name="prompt-type" value="image-graphic" class="hidden">
+                <input type="radio" name="prompt-type" value="image" class="hidden">
             </div>
 
-            <!-- TONE / REGISTER SELECTOR (Translate & Correct) -->
+            <!-- TONE / REGISTER SELECTOR (Translate) -->
             <div id="tone-selector"
                 class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1 pb-2 animate-fade-in">
                 <!-- Tone pills injected by JS -->
-            </div>
-
-            <!-- SMART STARTERS -->
-            <div id="smart-starters" class="space-y-2 pb-2">
-                <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-600" data-i18n="smartStartersTitle">SMART STARTERS</div>
-                <div id="smart-starters-list" class="flex flex-wrap gap-2"></div>
             </div>
 
             <!-- INPUT AREA -->
@@ -197,7 +113,7 @@
                     class="relative group bg-[#18181b] rounded-2xl border border-gray-800 hover:border-gray-700 transition-all shadow-sm input-group">
                     <textarea id="input-text" data-i18n-placeholder="inputPlaceholder"
                         placeholder="Wpisz tekst do przetłumaczenia..."
-                        class="w-full bg-transparent text-[15px] text-gray-200 placeholder-gray-600 outline-none resize-none h-32 p-3 no-scrollbar leading-relaxed rounded-2xl pb-10"
+                        class="w-full bg-transparent text-[15px] text-gray-200 placeholder-gray-600 outline-none resize-none min-h-32 max-h-[24rem] overflow-y-hidden p-3 no-scrollbar leading-relaxed rounded-2xl pb-10"
                         spellcheck="false"></textarea>
 
                     <!-- Character counter -->
@@ -309,8 +225,6 @@
                             class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-300">Wszystko</button>
                         <button data-filter="translate"
                             class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-500">Tłumacz</button>
-                        <button data-filter="correct"
-                            class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-500">Korekta</button>
                         <button data-filter="prompt"
                             class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-500">Prompt</button>
                         <button data-filter="pinned"
@@ -345,8 +259,8 @@
                 <!-- Language Settings -->
                 <div class="space-y-4 border-b border-gray-800 pb-4">
                     <div>
-                        <label class="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Język
-                            tłumaczenia zaznaczenia i OCR</label>
+                        <label class="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Domyślny język
+                            tłumaczenia (popup, zaznaczenie i OCR)</label>
                         <div class="relative">
                             <select id="settings-target-lang"
                                 class="w-full bg-[#18181b] text-gray-200 text-xs font-medium border border-gray-700 rounded-xl p-3 focus:border-blue-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#27272a]">
@@ -433,7 +347,47 @@
                     </div>
                 </div>
 
-                <!-- Context Menu Settings removed -->
+                <!-- TTS Settings -->
+                <div class="space-y-4 border-t border-gray-800 pt-4">
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Text-to-Speech</label>
+                        <select id="tts-engine"
+                            class="w-full bg-[#18181b] text-gray-200 text-xs font-medium border border-gray-700 rounded-xl p-3 focus:border-blue-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#27272a]">
+                            <option value="web">Systemowy Web Speech</option>
+                            <option value="chrome">Chrome TTS / Piper voices</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[10px] font-bold text-gray-600 uppercase tracking-widest block mb-2">Język głosu</label>
+                            <select id="tts-language"
+                                class="w-full bg-[#18181b] text-gray-200 text-xs font-medium border border-gray-700 rounded-xl p-3 focus:border-blue-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#27272a]">
+                                <!-- Populated by JS -->
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-gray-600 uppercase tracking-widest block mb-2">Głos</label>
+                            <select id="tts-voice"
+                                class="w-full bg-[#18181b] text-gray-200 text-xs font-medium border border-gray-700 rounded-xl p-3 focus:border-blue-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#27272a]">
+                                <option value="">Auto</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="rounded-2xl border border-blue-500/10 bg-blue-500/5 p-3">
+                        <div class="mb-2 flex items-center justify-between gap-3">
+                            <div>
+                                <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-300">Piper voices</p>
+                                <p class="mt-1 text-[11px] leading-relaxed text-gray-500">Pobierz głosy Piper jako osobny pakiet Chrome TTS, potem wybierz je z listy głosów.</p>
+                            </div>
+                            <a href="https://chromewebstore.google.com/detail/piper-text-to-speech-voic/ppnfahcipommelgaapjalhooaeeblmeg"
+                                target="_blank" rel="noreferrer"
+                                class="shrink-0 rounded-xl border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-blue-300 hover:bg-blue-500/20">
+                                Pobierz
+                            </a>
+                        </div>
+                        <div id="piper-voice-catalog" class="flex flex-wrap gap-1.5 text-[10px] text-gray-500"></div>
+                    </div>
+                </div>
 
                 <div class="text-center pt-2">
                     <p class="text-[10px] text-gray-700 font-mono">LingFlow AI v1.6.0</p>

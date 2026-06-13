@@ -173,7 +173,6 @@ body[data-surface="sidepanel"] #surface-root {
 
     #prompt-options,
     #tone-selector,
-    #smart-starters,
     #workspace-stack {
         grid-column: 1;
     }
@@ -194,10 +193,5 @@ body[data-surface="sidepanel"] #surface-root {
 
     #output-container {
         min-height: 180px;
-    }
-
-    #smart-starters-list {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }

@@ -49,7 +49,7 @@ export let MODELS = {
     ]
 };
 
-// Tone / register presets used by Translate & Correct modes.
+// Tone / register presets used by Translate mode.
 export const TONE_PRESETS = [
     { id: 'auto', label: 'Auto', icon: 'fa-wand-magic-sparkles' },
     { id: 'formal', label: 'Formalny', icon: 'fa-user-tie' },
@@ -71,12 +71,6 @@ export const MODE_COLORS = {
         shadow: 'shadow-[0_0_20px_rgba(37,99,235,0.4)]',
         icon: 'fa-globe',
         text: 'Tłumacz'
-    },
-    correct: {
-        btn: 'bg-purple-600',
-        shadow: 'shadow-[0_0_20px_rgba(147,51,234,0.4)]',
-        icon: 'fa-wand-magic-sparkles',
-        text: 'Popraw'
     },
     prompt: {
         btn: 'bg-orange-600',

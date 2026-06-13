@@ -44,7 +44,7 @@ export function renderSessionMeta(state) {
         getDirectionLabel()
     ];
 
-    if (mode === 'translate' || mode === 'correct') {
+    if (mode === 'translate') {
         parts.push(`Ton: ${getToneLabel(tone)}`);
     }
 
