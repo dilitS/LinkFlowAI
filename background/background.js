@@ -12,6 +12,18 @@ chrome.runtime.onInstalled.addListener(() => {
     // Context Menu removed as per user request
 });
 
+// The active tab is passed straight to the listener so we can call
+// sidePanel.open() as the FIRST async op — awaiting tabs.query() first would
+// consume the user gesture and make open() throw.
+chrome.commands?.onCommand.addListener((command, tab) => {
+    if (command !== 'open-workspace' || !chrome.sidePanel) return;
+    if (!tab?.windowId) return;
+
+    chrome.sidePanel
+        .open({ windowId: tab.windowId })
+        .catch((error) => console.error('Failed to open LingFlow workspace via shortcut:', error));
+});
+
 // Message handling
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'translate_selection') {
@@ -59,7 +71,7 @@ async function handleOCR(image, targetLang) {
     await stateManager.loadState();
     await apiClient.fetchRemoteConfig();
     if (!targetLang) {
-        targetLang = stateManager.state.settings?.targetLang || 'pl';
+        targetLang = stateManager.state.settings?.defaultTargetLang || 'pl';
     }
     return await apiClient.translateScreenshot(image, targetLang);
 }
@@ -71,7 +83,7 @@ async function handleTranslation(text, targetLang) {
 
     // If targetLang is not provided, use settings or default to 'pl'
     if (!targetLang) {
-        targetLang = stateManager.state.settings?.targetLang || 'pl';
+        targetLang = stateManager.state.settings?.defaultTargetLang || 'pl';
     }
 
     return await apiClient.translate(text, targetLang);

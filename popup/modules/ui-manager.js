@@ -1,13 +1,18 @@
 import { elements } from './dom-elements.js';
 import { MODE_COLORS } from './constants.js';
+import { updateToneVisibility } from './tone.js';
 
-let currentMode = 'translate';
+const MODE_STORAGE_KEY = 'lingflow_mode';
+let currentMode = localStorage.getItem(MODE_STORAGE_KEY) || 'translate';
 
 /**
  * Switch between translation modes (translate, correct, prompt)
  */
 export function switchMode(mode) {
     currentMode = mode;
+    localStorage.setItem(MODE_STORAGE_KEY, mode);
+    updateToneVisibility(mode);
+    window.dispatchEvent(new CustomEvent('lingflow:modechange', { detail: mode }));
 
     // Update Tabs UI
     elements.modeTabs.forEach(tab => {
@@ -108,18 +113,24 @@ export function showToast(msg) {
 }
 
 /**
- * Set loading state on action button
+ * Set loading state on action button.
+ * While processing the button turns into a clickable "Stop" control so the
+ * user can abort an in-flight (streaming) request.
+ * @param {boolean} isLoading
+ * @param {boolean} [streaming=false] - true once tokens start arriving
  */
-export function setLoading(isLoading) {
+export function setLoading(isLoading, streaming = false) {
     const btnSpan = elements.actionBtn.querySelector('span');
     if (isLoading) {
-        elements.actionBtn.disabled = true;
-        btnSpan.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
-        elements.actionBtn.classList.add('opacity-75', 'cursor-not-allowed');
+        elements.actionBtn.classList.add('is-processing');
+        if (streaming) {
+            btnSpan.innerHTML = '<i class="fa-solid fa-stop text-xs"></i> STOP';
+        } else {
+            btnSpan.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+        }
     } else {
-        elements.actionBtn.disabled = false;
+        elements.actionBtn.classList.remove('is-processing');
         btnSpan.textContent = MODE_COLORS[currentMode].text;
-        elements.actionBtn.classList.remove('opacity-75', 'cursor-not-allowed');
     }
 }
 

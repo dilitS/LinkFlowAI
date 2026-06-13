@@ -7,11 +7,15 @@ import { ScreenshotManager } from '../lib/screenshot-manager.js';
 // Import modules
 import { elements } from './modules/dom-elements.js';
 import { switchMode, updatePromptTypeVisuals, showToast } from './modules/ui-manager.js';
-import { populateLanguages, setupSettingsListeners, loadSettingsToInputs } from './modules/settings.js';
+import { populateLanguages, setupSettingsListeners, loadSettingsToInputs, toggleSettings } from './modules/settings.js';
 import { setupHistoryListeners, renderHistory } from './modules/history.js';
 import { setupTranslationListeners } from './modules/translation.js';
-import { setupOCRListeners } from './modules/ocr.js';
+import { setupOCRListeners, closeOCRModal } from './modules/ocr.js';
 import { updateModels } from './modules/constants.js';
+import { renderTonePills } from './modules/tone.js';
+import { initSmartStarters } from './modules/smart-starters.js';
+import { initSiteContext, renderSiteContext, rememberTargetLanguageForSite } from './modules/site-context.js';
+import { initSessionMeta, renderSessionMeta } from './modules/session-meta.js';
 
 // Initialize managers
 const stateManager = new StateManager();
@@ -55,11 +59,16 @@ function initI18n() {
  * Initialize application
  */
 async function initialize() {
+    applySurfaceMode();
+
     // Initialize i18n translations
     initI18n();
 
     // Populate UI
     populateLanguages();
+    renderTonePills();
+    initSmartStarters();
+    initSessionMeta(stateManager);
 
     // Restore input text
     const savedInput = localStorage.getItem('lingflow_input_text');
@@ -70,12 +79,19 @@ async function initialize() {
     // Setup all event listeners
     setupEventListeners();
 
+    // Restore last active mode (syncs tabs, action button, tone & prompt options)
+    switchMode(localStorage.getItem('lingflow_mode') || 'translate');
+
 
     // Subscribe to state changes
     stateManager.subscribe(renderState);
 
     // Initial render
     renderState(stateManager.state);
+
+    // Read active tab context (site-specific target language, pause state, sidepanel).
+    await initSiteContext(stateManager, showToast);
+    renderSiteContext(stateManager);
 
     // Fetch remote config for models
     try {
@@ -132,7 +148,7 @@ function setupEventListeners() {
 
     // Setup module-specific listeners
     setupSettingsListeners(stateManager, showToast);
-    setupHistoryListeners(stateManager);
+    setupHistoryListeners(stateManager, showToast);
     setupTranslationListeners(apiClient, stateManager, ttsManager);
     setupOCRListeners(apiClient, screenshotManager, ttsManager);
 
@@ -148,6 +164,7 @@ function setupEventListeners() {
 
     elements.targetLang.addEventListener('change', (e) => {
         localStorage.setItem('lingflow_target_lang', e.target.value);
+        rememberTargetLanguageForSite(stateManager, e.target.value);
     });
 
     // Keyboard shortcuts
@@ -157,6 +174,28 @@ function setupEventListeners() {
             elements.actionBtn.click();
         }
     });
+
+    // Global Escape: close any open overlay (settings panel / OCR modal)
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        if (!elements.ocrModal.classList.contains('hidden')) {
+            closeOCRModal();
+        } else if (!elements.settingsView.classList.contains('translate-y-full')) {
+            toggleSettings();
+        }
+    });
+}
+
+function applySurfaceMode() {
+    const params = new URLSearchParams(window.location.search);
+    const surface = params.get('surface') || 'popup';
+
+    document.body.dataset.surface = surface;
+    if (surface === 'sidepanel') {
+        document.body.classList.remove('w-[360px]', 'min-h-[500px]');
+        document.body.classList.add('w-full', 'min-h-screen');
+        elements.openSidepanelBtn?.classList.add('hidden');
+    }
 }
 
 /**
@@ -165,6 +204,8 @@ function setupEventListeners() {
 function renderState(state) {
     renderHistory(state.history, stateManager, showToast);
     loadSettingsToInputs(state);
+    renderSiteContext(stateManager);
+    renderSessionMeta(state);
 
     // Restore saved languages or apply default
     const savedSourceLang = localStorage.getItem('lingflow_source_lang');

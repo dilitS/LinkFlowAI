@@ -41,11 +41,22 @@ export let MODELS = {
         { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo' }
     ],
     gemini: [
-        { id: 'gemini-2.0-flash-exp', name: 'Gemini 2.0 Flash' },
-        { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash' },
-        { id: 'gemini-1.5-pro', name: 'Gemini 1.5 Pro' }
+        { id: 'gemini-3.1-flash-lite', name: 'Gemini 3.1 Flash Lite' },
+        { id: 'gemini-3.1-flash-lite-preview', name: 'Gemini 3.1 Flash Lite (Preview)' },
+        { id: 'gemini-3-flash-preview', name: 'Gemini 3 Flash (Preview)' },
+        { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash' },
+        { id: 'gemini-2.0-flash', name: 'Gemini 2.0 Flash' }
     ]
 };
+
+// Tone / register presets used by Translate & Correct modes.
+export const TONE_PRESETS = [
+    { id: 'auto', label: 'Auto', icon: 'fa-wand-magic-sparkles' },
+    { id: 'formal', label: 'Formalny', icon: 'fa-user-tie' },
+    { id: 'casual', label: 'Swobodny', icon: 'fa-face-smile' },
+    { id: 'professional', label: 'Biznesowy', icon: 'fa-briefcase' },
+    { id: 'friendly', label: 'Przyjazny', icon: 'fa-heart' }
+];
 
 export function updateModels(provider, newModels) {
     if (MODELS[provider]) {

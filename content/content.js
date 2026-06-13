@@ -4,6 +4,12 @@ let floatingBtn = null;
 let tooltip = null;
 let currentSelection = null;
 
+// Result state (for tooltip actions: copy / listen / replace)
+let currentResult = '';
+let currentResultLang = 'pl';
+let replaceContext = null;
+let sitePreference = {};
+
 // OCR Selection State
 let isSelecting = false;
 let selectionStart = null;
@@ -11,12 +17,115 @@ let selectionOverlay = null;
 let selectionBox = null;
 let ocrTargetLang = 'pl';
 
+/**
+ * Read the user's configured target language from extension storage.
+ */
+async function getTargetLang() {
+    try {
+        const { settings, sitePreferences } = await chrome.storage.local.get(['settings', 'sitePreferences']);
+        const hostname = window.location.hostname;
+        const siteTarget = sitePreferences?.[hostname]?.targetLang;
+        return siteTarget || settings?.defaultTargetLang || 'pl';
+    } catch (e) {
+        return 'pl';
+    }
+}
+
+async function loadSitePreference() {
+    try {
+        const { sitePreferences } = await chrome.storage.local.get('sitePreferences');
+        sitePreference = sitePreferences?.[window.location.hostname] || {};
+    } catch (e) {
+        sitePreference = {};
+    }
+}
+
+async function updateSitePreference(patch) {
+    try {
+        const hostname = window.location.hostname;
+        const { sitePreferences } = await chrome.storage.local.get('sitePreferences');
+        const next = {
+            ...(sitePreferences || {}),
+            [hostname]: {
+                ...(sitePreferences?.[hostname] || {}),
+                ...patch
+            }
+        };
+        await chrome.storage.local.set({ sitePreferences: next });
+        sitePreference = next[hostname] || {};
+    } catch (e) {
+        console.error('Failed to update site preference', e);
+    }
+}
+
+/**
+ * Capture enough context to replace the current selection in place,
+ * supporting <input>/<textarea> fields and contenteditable regions.
+ * Returns null when the selection is not editable.
+ */
+function captureReplaceContext() {
+    const active = document.activeElement;
+    if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) {
+        if (active.selectionStart != null && active.selectionStart !== active.selectionEnd) {
+            return { type: 'field', el: active, start: active.selectionStart, end: active.selectionEnd };
+        }
+    }
+
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0 && !sel.isCollapsed) {
+        let node = sel.getRangeAt(0).commonAncestorContainer;
+        node = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
+        if (node && node.isContentEditable) {
+            return { type: 'range', range: sel.getRangeAt(0).cloneRange() };
+        }
+    }
+    return null;
+}
+
+/**
+ * Replace the originally selected text with the provided string.
+ */
+function performReplace(ctx, text) {
+    if (!ctx) return false;
+    try {
+        if (ctx.type === 'field') {
+            const el = ctx.el;
+            const value = el.value;
+            el.value = value.slice(0, ctx.start) + text + value.slice(ctx.end);
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+            el.focus();
+            return true;
+        }
+        if (ctx.type === 'range') {
+            const range = ctx.range;
+            range.deleteContents();
+            range.insertNode(document.createTextNode(text));
+            return true;
+        }
+    } catch (e) {
+        console.error('LingFlow replace failed:', e);
+    }
+    return false;
+}
+
 // Initialize UI
 function init() {
+    loadSitePreference();
     createFloatingButton();
     createTooltip();
     document.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('keydown', handleKeyDown);
+
+    chrome.storage.onChanged.addListener((changes, areaName) => {
+        if (areaName !== 'local' || !changes.sitePreferences) return;
+        const next = changes.sitePreferences.newValue || {};
+        sitePreference = next[window.location.hostname] || {};
+        if (sitePreference.paused) {
+            hideFloatingButton();
+            hideTooltip();
+        }
+    });
 
     // Listen for messages from background (e.g. Context Menu results)
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -30,9 +139,16 @@ function init() {
         } else if (request.action === 'process_ocr_crop') {
             processOCRCrop(request.image, request.area);
         } else if (request.action === 'show_ocr_result') {
-            renderTooltipResult(request.text);
+            renderTooltipHtml(request.text);
         }
     });
+}
+
+function handleKeyDown(e) {
+    if (e.key === 'Escape') {
+        hideFloatingButton();
+        hideTooltip();
+    }
 }
 
 function showResultFromBackground(translation) {
@@ -212,6 +328,11 @@ function handleMouseUp(e) {
     // Ignore if clicking inside our UI
     if (floatingBtn.contains(e.target) || tooltip.contains(e.target)) return;
     if (isSelecting) return; // Ignore if selecting for OCR
+    if (sitePreference.paused) {
+        hideFloatingButton();
+        hideTooltip();
+        return;
+    }
 
     const selection = window.getSelection();
     const text = selection.toString().trim();
@@ -287,6 +408,11 @@ function hideTooltip() {
 async function handleTranslateClick(e) {
     e.stopPropagation(); // Prevent deselection
 
+    // Capture replacement context BEFORE the selection is lost.
+    replaceContext = captureReplaceContext();
+    const targetLang = await getTargetLang();
+    currentResultLang = targetLang;
+
     // Start pulsing
     floatingBtn.classList.add('pulsing');
 
@@ -294,7 +420,8 @@ async function handleTranslateClick(e) {
         // Send message to background
         const response = await chrome.runtime.sendMessage({
             action: 'translate_selection',
-            text: currentSelection
+            text: currentSelection,
+            targetLang
         });
 
         // Stop pulsing and hide button
@@ -321,14 +448,97 @@ async function handleTranslateClick(e) {
     }
 }
 
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+/**
+ * Render pre-formatted HTML content (e.g. OCR transcription + translation).
+ * No action bar — the markup is trusted output produced by the extension.
+ */
+function renderTooltipHtml(html) {
+    tooltip.innerHTML = `<div class="lingflow-content">${html}</div>`;
+}
+
 function renderTooltipResult(translation) {
+    currentResult = typeof translation === 'string' ? translation : '';
+    const canReplace = !!replaceContext;
+
     tooltip.innerHTML = `
-        <div class="lingflow-content">
-            ${translation}
+        <div class="lingflow-content">${escapeHtml(currentResult)}</div>
+        <div class="lingflow-actions">
+            <button class="lingflow-action-btn" data-action="copy" title="${chrome.i18n.getMessage('toastCopied') || 'Copy'}">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
+            <button class="lingflow-action-btn" data-action="listen" title="Listen">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+            </button>
+            ${canReplace ? `
+            <button class="lingflow-action-btn lingflow-action-replace" data-action="replace" title="Replace">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            </button>` : ''}
+            <button class="lingflow-action-btn" data-action="pause" title="Pause on this site">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect></svg>
+            </button>
+            <button class="lingflow-action-btn" data-action="close" title="Close">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
         </div>
     `;
 
-    // Add event listeners
+    const copyBtn = tooltip.querySelector('[data-action="copy"]');
+    const listenBtn = tooltip.querySelector('[data-action="listen"]');
+    const replaceBtn = tooltip.querySelector('[data-action="replace"]');
+    const pauseBtn = tooltip.querySelector('[data-action="pause"]');
+    const closeBtn = tooltip.querySelector('[data-action="close"]');
+
+    if (copyBtn) {
+        copyBtn.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            navigator.clipboard.writeText(currentResult);
+            copyBtn.classList.add('lingflow-action-done');
+            setTimeout(() => copyBtn.classList.remove('lingflow-action-done'), 1200);
+        });
+    }
+
+    if (listenBtn) {
+        listenBtn.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            try {
+                window.speechSynthesis.cancel();
+                const utt = new SpeechSynthesisUtterance(currentResult);
+                utt.lang = currentResultLang;
+                window.speechSynthesis.speak(utt);
+            } catch (e) { /* no-op */ }
+        });
+    }
+
+    if (replaceBtn) {
+        replaceBtn.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            if (performReplace(replaceContext, currentResult)) {
+                hideTooltip();
+            }
+        });
+    }
+
+    if (pauseBtn) {
+        pauseBtn.addEventListener('click', async (ev) => {
+            ev.stopPropagation();
+            await updateSitePreference({ paused: true });
+            hideFloatingButton();
+            hideTooltip();
+        });
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            hideTooltip();
+        });
+    }
 }
 
 function renderTooltipError(error) {

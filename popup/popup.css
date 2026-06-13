@@ -5,6 +5,10 @@ body {
     background-color: #0f0f0f;
 }
 
+#surface-root {
+    container-type: inline-size;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 5px;
@@ -49,6 +53,32 @@ body {
     }
 }
 
+@keyframes surfaceShake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-4px);
+    }
+
+    40% {
+        transform: translateX(4px);
+    }
+
+    60% {
+        transform: translateX(-3px);
+    }
+
+    80% {
+        transform: translateX(3px);
+    }
+}
+
+.surface-shake {
+    animation: surfaceShake 280ms ease-in-out;
+}
+
 /* Input highlight */
 .input-group:focus-within {
     border-color: rgba(59, 130, 246, 0.5);
@@ -77,4 +107,97 @@ body {
     animation: speakPulse 1s infinite;
     color: #60a5fa;
     /* blue-400 */
+}
+
+/* Streaming caret: blinking block appended while tokens stream in */
+#output-container.is-streaming #output-text::after {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 1.05em;
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    background: #60a5fa;
+    border-radius: 1px;
+    animation: caretBlink 1s steps(1) infinite;
+}
+
+@keyframes caretBlink {
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    50.01%,
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Action button while a request is running (acts as a Stop control) */
+#action-btn.is-processing {
+    cursor: pointer;
+    filter: saturate(0.85) brightness(0.95);
+}
+
+#action-btn.is-processing:hover {
+    filter: saturate(1) brightness(1.05);
+}
+
+/* Tone pills: hide horizontal scrollbar but keep scrollability */
+#tone-selector {
+    scrollbar-width: none;
+}
+
+#tone-selector::-webkit-scrollbar {
+    display: none;
+}
+
+/* Sidepanel/popup adaptive layout */
+body[data-surface="sidepanel"] {
+    background-color: #09090b;
+}
+
+body[data-surface="sidepanel"] #surface-root {
+    min-height: 100vh;
+}
+
+@container (min-width: 760px) {
+    #main-content {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+        gap: 16px;
+        align-content: start;
+    }
+
+    #prompt-options,
+    #tone-selector,
+    #smart-starters,
+    #workspace-stack {
+        grid-column: 1;
+    }
+
+    #history-panel {
+        grid-column: 2;
+        grid-row: 1 / span 4;
+        margin-top: 0;
+        padding-top: 0;
+        border-top: 0;
+    }
+
+    #history-list {
+        max-height: calc(100vh - 240px);
+        overflow: auto;
+        padding-right: 4px;
+    }
+
+    #output-container {
+        min-height: 180px;
+    }
+
+    #smart-starters-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }

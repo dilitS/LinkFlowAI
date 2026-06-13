@@ -127,5 +127,53 @@
     },
     "toastAutoLanguageSwapError": {
         "message": "Select a specific source language to swap."
+    },
+    "toastStopped": {
+        "message": "Stopped"
+    },
+    "activeSiteTitle": {
+        "message": "ACTIVE SITE"
+    },
+    "smartStartersTitle": {
+        "message": "SMART STARTERS"
+    },
+    "historySearchPlaceholder": {
+        "message": "Search history"
+    },
+    "sidepanelOpenButton": {
+        "message": "Panel"
+    },
+    "sidepanelOpenError": {
+        "message": "Unable to open side panel"
+    },
+    "siteContextUnavailableTitle": {
+        "message": "Unsupported page"
+    },
+    "siteContextUnavailableStatus": {
+        "message": "N/A"
+    },
+    "siteContextUnavailableBody": {
+        "message": "This works on regular HTTP/HTTPS pages."
+    },
+    "siteContextActiveStatus": {
+        "message": "Inline active"
+    },
+    "siteContextPausedStatus": {
+        "message": "Paused"
+    },
+    "siteContextSubtitlePrefix": {
+        "message": "Language for this site:"
+    },
+    "siteContextPauseButton": {
+        "message": "Pause"
+    },
+    "siteContextResumeButton": {
+        "message": "Resume"
+    },
+    "siteContextPausedToast": {
+        "message": "Inline translation paused on this site"
+    },
+    "siteContextResumedToast": {
+        "message": "Inline translation resumed on this site"
     }
 }

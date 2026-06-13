@@ -127,5 +127,53 @@
     },
     "toastAutoLanguageSwapError": {
         "message": "Wybierz konkretny język źródłowy, aby zamienić."
+    },
+    "toastStopped": {
+        "message": "Zatrzymano"
+    },
+    "activeSiteTitle": {
+        "message": "AKTYWNA STRONA"
+    },
+    "smartStartersTitle": {
+        "message": "SMART STARTERS"
+    },
+    "historySearchPlaceholder": {
+        "message": "Szukaj w historii"
+    },
+    "sidepanelOpenButton": {
+        "message": "Panel"
+    },
+    "sidepanelOpenError": {
+        "message": "Nie można otworzyć side panelu"
+    },
+    "siteContextUnavailableTitle": {
+        "message": "Strona niedostępna"
+    },
+    "siteContextUnavailableStatus": {
+        "message": "Brak"
+    },
+    "siteContextUnavailableBody": {
+        "message": "To działa na zwykłych stronach HTTP/HTTPS."
+    },
+    "siteContextActiveStatus": {
+        "message": "Inline aktywny"
+    },
+    "siteContextPausedStatus": {
+        "message": "Pauza"
+    },
+    "siteContextSubtitlePrefix": {
+        "message": "Język dla tej strony:"
+    },
+    "siteContextPauseButton": {
+        "message": "Pauza"
+    },
+    "siteContextResumeButton": {
+        "message": "Wznów"
+    },
+    "siteContextPausedToast": {
+        "message": "Wstrzymano inline translation na tej stronie"
+    },
+    "siteContextResumedToast": {
+        "message": "Wznowiono inline translation na tej stronie"
     }
 }

@@ -15,7 +15,7 @@
 <body class="bg-[#09090b] text-gray-100 w-[360px] min-h-[500px]">
 
     <!-- EXTENSION CONTAINER -->
-    <div
+    <div id="surface-root"
         class="w-full h-full bg-[#09090b] overflow-hidden flex flex-col relative font-sans transition-all duration-300">
 
         <!-- HEADER: GLOBAL LANGUAGE SELECTOR -->
@@ -72,6 +72,34 @@
                     data-mode="prompt">
                     <i class="fa-solid fa-robot"></i> <span data-i18n="promptMode">PROMPT</span>
                 </button>
+            </div>
+        </div>
+
+        <!-- ACTIVE TAB CONTEXT -->
+        <div id="site-context-card" class="mx-4 mb-2 rounded-2xl border border-gray-800/60 bg-[#111114] px-3.5 py-3">
+            <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0">
+                    <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-600" data-i18n="activeSiteTitle">AKTYWNA STRONA</div>
+                    <div class="mt-1 flex flex-wrap items-center gap-2">
+                        <span id="site-context-host"
+                            class="max-w-[180px] truncate text-sm font-semibold text-gray-200">Ładowanie…</span>
+                        <span id="site-context-status"
+                            class="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-emerald-300">Inline
+                            aktywny</span>
+                    </div>
+                    <p id="site-context-subtitle" class="mt-1 text-xs text-gray-500">Zapamiętywanie języka dla tej
+                        strony.</p>
+                </div>
+                <div class="flex shrink-0 items-center gap-2">
+                    <button id="site-pause-btn" data-i18n="siteContextPauseButton"
+                        class="rounded-xl border border-gray-700 bg-[#18181b] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-gray-300 transition-colors hover:border-gray-600 hover:bg-[#202024]">
+                        Pauza
+                    </button>
+                    <button id="open-sidepanel-btn" data-i18n="sidepanelOpenButton"
+                        class="rounded-xl border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-blue-300 transition-colors hover:bg-blue-500/20">
+                        Panel
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -149,8 +177,20 @@
                 <input type="radio" name="prompt-type" value="nanobanana-edit" class="hidden">
             </div>
 
+            <!-- TONE / REGISTER SELECTOR (Translate & Correct) -->
+            <div id="tone-selector"
+                class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1 pb-2 animate-fade-in">
+                <!-- Tone pills injected by JS -->
+            </div>
+
+            <!-- SMART STARTERS -->
+            <div id="smart-starters" class="space-y-2 pb-2">
+                <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-600" data-i18n="smartStartersTitle">SMART STARTERS</div>
+                <div id="smart-starters-list" class="flex flex-wrap gap-2"></div>
+            </div>
+
             <!-- INPUT AREA -->
-            <div class="space-y-4">
+            <div class="space-y-4" id="workspace-stack">
 
                 <!-- Source Input Container -->
                 <div
@@ -159,6 +199,11 @@
                         placeholder="Wpisz tekst do przetłumaczenia..."
                         class="w-full bg-transparent text-[15px] text-gray-200 placeholder-gray-600 outline-none resize-none h-32 p-3 no-scrollbar leading-relaxed rounded-2xl pb-10"
                         spellcheck="false"></textarea>
+
+                    <!-- Character counter -->
+                    <span id="char-counter"
+                        class="absolute bottom-3 left-3 text-[10px] font-mono text-gray-600 tabular-nums pointer-events-none select-none">0
+                        / 5000</span>
 
                     <!-- Floating Actions inside Input -->
                     <div class="absolute bottom-3 right-3 flex gap-2 items-center">
@@ -201,9 +246,18 @@
                 <div id="output-container"
                     class="bg-[#18181b] rounded-2xl p-4 border border-gray-800 relative transition-all duration-300 min-h-[100px] hover:border-gray-700 group">
                     <div class="flex justify-between items-start mb-3">
-                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]" id="output-label"
-                            data-i18n="outputLabel">WYNIK</span>
-                        <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div class="min-w-0">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]" id="output-label"
+                                data-i18n="outputLabel">WYNIK</span>
+                            <div id="output-meta" class="mt-1 text-[10px] text-gray-600 truncate"></div>
+                        </div>
+                        <div class="flex gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity">
+                            <!-- Regenerate Button -->
+                            <button id="regenerate-btn"
+                                class="text-gray-500 hover:text-orange-400 transition-colors w-7 h-7 flex items-center justify-center rounded hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed"
+                                title="Generuj ponownie">
+                                <i class="fa-solid fa-rotate-right text-xs"></i>
+                            </button>
                             <!-- Speak Button -->
                             <button id="output-tts-btn"
                                 class="text-gray-500 hover:text-blue-400 transition-colors w-7 h-7 flex items-center justify-center rounded hover:bg-white/5"
@@ -225,7 +279,7 @@
             </div>
 
             <!-- COLLAPSIBLE HISTORY SECTION -->
-            <div class="mt-4 border-t border-gray-800/50 pt-3">
+            <div class="mt-4 border-t border-gray-800/50 pt-3" id="history-panel">
                 <div class="flex items-center justify-between cursor-pointer group select-none mb-3"
                     id="toggle-history-btn">
                     <div class="flex items-center gap-3">
@@ -241,6 +295,26 @@
                             id="clear-history-btn" data-i18n="clearHistoryButton">Wyczyść</button>
                         <i class="fa-solid fa-chevron-up text-xs text-gray-600 group-hover:text-white transition-transform duration-300"
                             id="history-arrow"></i>
+                    </div>
+                </div>
+
+                <div id="history-toolbar" class="hidden mb-3 space-y-2">
+                    <div class="relative">
+                        <input id="history-search" type="text" data-i18n-placeholder="historySearchPlaceholder" placeholder="Szukaj w historii"
+                            class="w-full rounded-xl border border-gray-800 bg-[#131316] py-2.5 pl-9 pr-3 text-xs text-gray-200 outline-none transition-colors placeholder:text-gray-600 focus:border-gray-600">
+                        <i class="fa-solid fa-magnifying-glass pointer-events-none absolute left-3 top-3 text-[11px] text-gray-600"></i>
+                    </div>
+                    <div id="history-filters" class="flex flex-wrap gap-1.5">
+                        <button data-filter="all"
+                            class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-300">Wszystko</button>
+                        <button data-filter="translate"
+                            class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-500">Tłumacz</button>
+                        <button data-filter="correct"
+                            class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-500">Korekta</button>
+                        <button data-filter="prompt"
+                            class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-500">Prompt</button>
+                        <button data-filter="pinned"
+                            class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-500">Przypięte</button>
                     </div>
                 </div>
 
@@ -362,7 +436,7 @@
                 <!-- Context Menu Settings removed -->
 
                 <div class="text-center pt-2">
-                    <p class="text-[10px] text-gray-700 font-mono">LinguaFlowAI v1.5.0</p>
+                    <p class="text-[10px] text-gray-700 font-mono">LingFlow AI v1.6.0</p>
                 </div>
             </div>
         </div>

@@ -125,7 +125,50 @@
 .lingflow-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 8px;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #27272a;
+}
+
+.lingflow-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: #27272a;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: #a1a1aa;
+    cursor: pointer;
+    transition: color 0.15s, background-color 0.15s, border-color 0.15s, transform 0.1s;
+    padding: 0;
+}
+
+.lingflow-action-btn:hover {
+    color: #fff;
+    background: #3f3f46;
+}
+
+.lingflow-action-btn:active {
+    transform: scale(0.92);
+}
+
+.lingflow-action-replace {
+    color: #93c5fd;
+}
+
+.lingflow-action-replace:hover {
+    color: #fff;
+    background: #2563eb;
+    border-color: #3b82f6;
+}
+
+.lingflow-action-done {
+    color: #4ade80 !important;
+    background: rgba(74, 222, 128, 0.12) !important;
 }
 
 .lingflow-btn {

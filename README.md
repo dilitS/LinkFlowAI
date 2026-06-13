@@ -2,7 +2,7 @@
 
 > **AI-powered translation, text correction, and prompt engineering browser extension**
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.6.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-ready%20for%20release-success)
 ![Sprints](https://img.shields.io/badge/sprints-9%2F9%20completed-brightgreen)
@@ -12,6 +12,18 @@
 ## ✨ Features
 
 LingFlow AI is a comprehensive browser extension that brings the power of AI to your browsing experience. With support for **26 languages** and **3 powerful modes**, it's your ultimate companion for translation, text improvement, and creative prompt generation.
+
+### 🆕 What's new in 1.6.0
+- **Default engine upgraded to Gemini 3.1 Flash Lite** — faster and far cheaper.
+- **Live streaming responses** — results appear token by token with a typing caret, plus a **Stop** control to abort mid-generation.
+- **Tone & register control** (DeepL-style): Auto, Formal, Casual, Business, Friendly — applied to Translate & Correct.
+- **Regenerate** button to re-run any result while bypassing the cache.
+- **In-place replace** from the on-page tooltip (works in inputs, textareas and contenteditable fields), plus copy & listen actions.
+- **Side panel workspace** for longer sessions, plus a keyboard shortcut to open it fast.
+- **Per-site memory & pause controls**: remember target language per domain and pause inline translation on specific sites.
+- **History power-ups**: search, mode filters, pin important items, and restore mode/tone/language in one click.
+- **Full 26-language coverage** for the AI target language and text-to-speech (previously only 8 languages were mapped, silently defaulting the rest to English).
+- **Live character counter** and `Esc` to close overlays.
 
 ### 🌍 Translation Mode
 - **Multi-language Support**: Translate between 26 languages (Polish, English, German, Spanish, French, Italian, Portuguese, Dutch, Ukrainian, Czech, Slovak, Hungarian, Romanian, Bulgarian, Greek, Turkish, Swedish, Norwegian, Danish, Finnish, Japanese, Korean, Chinese, Russian, Arabic, Hindi)
@@ -198,8 +210,8 @@ LingFlow AI is a comprehensive browser extension that brings the power of AI to 
 - **JavaScript**: Vanilla ES6+ (no frameworks)
 
 ### APIs
-- **OpenAI GPT-4o-mini**: Text + Vision
-- **Google Gemini 1.5 Flash**: Text + Vision
+- **OpenAI GPT-4o-mini**: Text + Vision (streaming)
+- **Google Gemini 3.1 Flash Lite**: Text + Vision (streaming)
 
 ### Browser APIs
 - **Chrome Storage API**: Persistent storage
@@ -238,13 +250,18 @@ LingFlow AI is a comprehensive browser extension that brings the power of AI to 
 | Prompt | 0.7 | 2000 | gpt-4o-mini |
 | OCR | 0.2 | 4096 | gpt-4o-mini |
 
-### Google Gemini (1.5 Flash)
+### Google Gemini (3.1 Flash Lite — default)
 | Mode | Temperature | Max Tokens | Model |
 |------|-------------|------------|-------|
-| Translation | 0.3 | 2000 | gemini-1.5-flash |
-| Correction | 0.2 | 2000 | gemini-1.5-flash |
-| Prompt | 0.7 | 2000 | gemini-1.5-flash |
-| OCR | 0.2 | 4096 | gemini-1.5-flash |
+| Translation | 0.3 | 2000 | gemini-3.1-flash-lite |
+| Correction | 0.2 | 2000 | gemini-3.1-flash-lite |
+| Prompt | 0.7 | 2000 | gemini-3.1-flash-lite |
+| OCR | 0.2 | 4096 | gemini-3.1-flash-lite |
+
+> Model IDs are stored as configuration constants in `lib/api-client.js`
+> (`DEFAULT_GEMINI_MODEL`). When the model graduates from preview to GA, this is a
+> one-line change. Translate, Correct and Prompt responses are **streamed** token
+> by token for Gemini and OpenAI; the free tier falls back to a single response.
 
 ---
 
