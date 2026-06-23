@@ -53,7 +53,11 @@ export function switchMode(mode) {
 export function updatePromptTypeVisuals(type) {
     elements.promptTypeBtns.forEach(btn => {
         if (btn.dataset.type === type) {
-            btn.className = 'prompt-type-btn flex-1 py-2 px-3 text-xs font-medium rounded-lg border border-orange-500/30 bg-orange-500/10 text-orange-400 flex items-center justify-center gap-2 hover:bg-orange-500/20 transition-colors';
+            if (type === 'image-universal') {
+                btn.className = 'prompt-type-btn flex-1 py-2 px-3 text-xs font-medium rounded-lg border border-green-500/30 bg-green-500/10 text-green-400 flex items-center justify-center gap-2 hover:bg-green-500/20 transition-colors';
+            } else {
+                btn.className = 'prompt-type-btn flex-1 py-2 px-3 text-xs font-medium rounded-lg border border-orange-500/30 bg-orange-500/10 text-orange-400 flex items-center justify-center gap-2 hover:bg-orange-500/20 transition-colors';
+            }
         } else {
             btn.className = 'prompt-type-btn flex-1 py-2 px-3 text-xs font-medium rounded-lg border border-gray-700 bg-[#1e1e1e] text-gray-500 flex items-center justify-center gap-2 hover:bg-[#252525] hover:text-gray-300 transition-colors';
         }
