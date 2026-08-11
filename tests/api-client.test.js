@@ -1,6 +1,19 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { APIClient, CHROME_AI_PROVIDER, CHROME_AI_MODEL_ID } from '../lib/api-client.js';
 import { MODELS, DEPRECATED_MODELS, DEFAULT_MODELS } from '../popup/modules/constants.js';
+import { PerformanceOptimizer } from '../lib/performance-optimizer.js';
+
+const mockModels = {
+    generateContent: vi.fn().mockResolvedValue({ text: 'gemini response' }),
+    generateContentStream: vi.fn().mockImplementation(() => (async function*() {
+        yield { text: 'chunk1' };
+        yield { text: 'chunk2' };
+    })()),
+};
+
+vi.mock('@google/genai', () => ({
+    GoogleGenAI: vi.fn().mockImplementation(function () { this.models = mockModels; })
+}));
 
 const makeClient = (state = {}) => new APIClient({ state });
 
@@ -127,6 +140,63 @@ describe('APIClient operation routing', () => {
     });
 });
 
+describe('Gemini SDK integration', () => {
+    function makeGeminiClient(state = {}) {
+        const client = makeClient({
+            apiProvider: 'gemini',
+            geminiApiKey: 'test-key',
+            ...state
+        });
+        client.optimizer = {
+            generateCacheKey: () => Math.random().toString(),
+            getCache: () => null,
+            setCache: () => {},
+            retryWithBackoff: (fn) => fn()
+        };
+        return client;
+    }
+
+    it('uses @google/genai (not the legacy SDK)', async () => {
+        const { GoogleGenAI } = await import('@google/genai');
+        const client = makeGeminiClient();
+        await client.callGemini('system', 'prompt');
+        expect(GoogleGenAI).toHaveBeenCalled();
+    });
+
+    it('callGemini returns text from non-streaming response', async () => {
+        const client = makeGeminiClient();
+        const result = await client.callGemini('system', 'translate this');
+        expect(result).toBe('gemini response');
+    });
+
+    it('callGemini streams chunks via onStream callback', async () => {
+        const client = makeGeminiClient();
+        const chunks = [];
+        await client.callGemini('system', 'stream this', {
+            onStream: (acc, delta) => chunks.push(delta)
+        });
+        expect(chunks).toEqual(['chunk1', 'chunk2']);
+    });
+
+    it('callGemini passes abortSignal to config', async () => {
+        const client = makeGeminiClient();
+        const controller = new AbortController();
+        await client.callGemini('system', 'prompt', { signal: controller.signal });
+        const callArgs = mockModels.generateContent.mock.calls.at(-1)[0];
+        expect(callArgs.config.abortSignal).toBe(controller.signal);
+    });
+
+    it('callGeminiVision sends inline image data', async () => {
+        const client = makeGeminiClient();
+        const result = await client.callGeminiVision('describe', 'what is this', 'data:image/png;base64,abc123', { model: 'gemini-3.5-flash' });
+        expect(result).toBe('gemini response');
+        const callArgs = mockModels.generateContent.mock.calls.at(-1)[0];
+        expect(callArgs.contents).toEqual(expect.arrayContaining([
+            expect.objectContaining({ inlineData: { mimeType: 'image/png', data: 'abc123' } })
+        ]));
+    });
+});
+
 describe('APIClient.validateInput', () => {
     const client = makeClient();
 
@@ -145,5 +215,66 @@ describe('APIClient.validateInput', () => {
         expect(thrown).toBeInstanceOf(Error);
         expect(thrown.code).toBe('INPUT_TOO_LONG');
         expect(thrown.limit).toBe(5000);
+    });
+});
+
+describe('PerformanceOptimizer.isRetryable', () => {
+    it('does not retry AbortError', () => {
+        const err = new Error('Aborted');
+        err.name = 'AbortError';
+        expect(PerformanceOptimizer.isRetryable(err)).toBe(false);
+    });
+
+    it('does not retry 401 (auth)', () => {
+        const err = new Error('Unauthorized');
+        err.status = 401;
+        expect(PerformanceOptimizer.isRetryable(err)).toBe(false);
+    });
+
+    it('does not retry 400 (bad request)', () => {
+        const err = new Error('Bad request');
+        err.status = 400;
+        expect(PerformanceOptimizer.isRetryable(err)).toBe(false);
+    });
+
+    it('does not retry errors with application code', () => {
+        const err = new Error('No key');
+        err.code = 'NO_API_KEY';
+        expect(PerformanceOptimizer.isRetryable(err)).toBe(false);
+    });
+
+    it('retries 429 (rate limit)', () => {
+        const err = new Error('Rate limited');
+        err.status = 429;
+        expect(PerformanceOptimizer.isRetryable(err)).toBe(true);
+    });
+
+    it('retries 500 (server error)', () => {
+        const err = new Error('Internal');
+        err.status = 500;
+        expect(PerformanceOptimizer.isRetryable(err)).toBe(true);
+    });
+
+    it('retries network errors', () => {
+        const err = new Error('Failed to fetch');
+        expect(PerformanceOptimizer.isRetryable(err)).toBe(true);
+    });
+});
+
+describe('Cache key includes provider and model', () => {
+    it('produces different keys for different models with same input', () => {
+        const optimizer = new PerformanceOptimizer();
+        const params = { text: 'hello', targetLang: 'pl' };
+        const key1 = optimizer.generateCacheKey('translate', { ...params, provider: 'openai', model: 'gpt-5.6-luna' });
+        const key2 = optimizer.generateCacheKey('translate', { ...params, provider: 'openai', model: 'gpt-5.6-terra' });
+        expect(key1).not.toBe(key2);
+    });
+
+    it('produces different keys for different providers with same input', () => {
+        const optimizer = new PerformanceOptimizer();
+        const params = { text: 'hello', targetLang: 'pl', model: 'any' };
+        const key1 = optimizer.generateCacheKey('translate', { ...params, provider: 'openai' });
+        const key2 = optimizer.generateCacheKey('translate', { ...params, provider: 'gemini' });
+        expect(key1).not.toBe(key2);
     });
 });

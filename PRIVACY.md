@@ -83,13 +83,13 @@ browser data removes it.
 
 | Permission | Why the extension needs it |
 | --- | --- |
-| `storage` | Save your settings, API keys, history, and voice preferences locally. |
-| `activeTab` / `tabs` | Know the current tab so OCR can capture the visible area and the workspace can target the right window. |
+| `storage` | Save your settings, API keys, history, and voice preferences locally. Keys and history are isolated to trusted extension contexts. |
+| `activeTab` | Know the current tab so OCR can capture the visible area. |
 | `clipboardWrite` | Copy a result to your clipboard when you press the Copy button. |
 | `tts` | List and play Chrome TTS voices for the text-to-speech feature. |
 | `sidePanel` | Open the LingFlow workspace in the browser side panel. |
-| Host access to the AI endpoints above | Send your request to the AI provider you selected. |
-| Content script on pages (`<all_urls>`) | Show the quick-translate button and inline result tooltip on the page where you select text. It runs only to render that UI in response to your selection. |
+| Host access to the AI endpoints above | Send your request directly to the AI provider you selected. |
+| Content script on `http://` and `https://` pages | Show the quick-translate button and inline result tooltip on web pages where you select text. Does not inject on local files, extensions, or browser-internal pages. |
 
 ## 6. Data retention
 

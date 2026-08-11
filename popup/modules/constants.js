@@ -38,8 +38,9 @@ export const MODELS = {
         { id: CHROME_AI_MODEL_ID, name: 'Gemini Nano (on-device)' }
     ],
     openai: [
-        { id: 'gpt-4o-mini', name: 'GPT-4o mini' },
-        { id: 'gpt-4o', name: 'GPT-4o' }
+        { id: 'gpt-5.6-luna', name: 'GPT-5.6 Luna' },
+        { id: 'gpt-5.6-terra', name: 'GPT-5.6 Terra' },
+        { id: 'gpt-5.6-sol', name: 'GPT-5.6 Sol' }
     ],
     gemini: [
         { id: 'gemini-3.5-flash-lite', name: 'Gemini 3.5 Flash Lite' },
@@ -49,7 +50,7 @@ export const MODELS = {
 };
 
 export const DEFAULT_MODELS = {
-    openai: 'gpt-4o-mini',
+    openai: 'gpt-5.6-luna',
     gemini: 'gemini-3.5-flash-lite'
 };
 
@@ -57,6 +58,8 @@ export const DEFAULT_MODELS = {
 export const DEPRECATED_MODELS = [
     'gpt-3.5-turbo',
     'gpt-3.5-turbo-0125',
+    'gpt-4o-mini',
+    'gpt-4o',
     'gemini-2.0-flash',
     'gemini-2.0-flash-001',
     'gemini-2.0-flash-lite',

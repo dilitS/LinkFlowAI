@@ -62,22 +62,27 @@ function pickVoice(lang) {
 }
 
 /**
+ * Fetch user preferences through the service worker (never reads storage
+ * directly — keys and history stay in TRUSTED_CONTEXTS).
+ */
+async function getPreferences() {
+    try {
+        return await chrome.runtime.sendMessage({ action: 'get_preferences' });
+    } catch {
+        return { targetLang: 'pl', apiProvider: 'chrome-ai', ttsEngine: 'web' };
+    }
+}
+
+/**
  * Speak text from the inline tooltip. Defaults to the page Web Speech API
  * (which exposes the user's good system voices). Only routes through Chrome
  * TTS when the user explicitly selected that engine in Settings.
  */
 async function speakInline(text, lang) {
-    let settings = {};
-    try {
-        const stored = await chrome.storage.local.get('settings');
-        settings = stored.settings || {};
-    } catch (e) {
-        settings = {};
-    }
+    const prefs = await getPreferences();
+    const effectiveLang = prefs.ttsLanguage || lang || 'en';
 
-    const effectiveLang = settings.ttsLanguage || lang || 'en';
-
-    if (settings.ttsEngine === 'chrome') {
+    if (prefs.ttsEngine === 'chrome') {
         try {
             const res = await chrome.runtime.sendMessage({
                 action: 'tts_speak',
@@ -85,7 +90,7 @@ async function speakInline(text, lang) {
                 lang: effectiveLang
             });
             if (res?.success) return;
-        } catch (e) {
+        } catch {
             // Fall back to Web Speech below.
         }
     }
@@ -96,24 +101,20 @@ async function speakInline(text, lang) {
         const voice = pickVoice(effectiveLang);
         if (voice) utt.voice = voice;
         utt.lang = voice ? voice.lang : toBcp47(effectiveLang);
-        utt.rate = 1;
+        utt.rate = prefs.ttsSpeed ?? 1;
         utt.pitch = 1;
         window.speechSynthesis.speak(utt);
-    } catch (e) {
+    } catch {
         /* no-op */
     }
 }
 
 /**
- * Read the user's configured target language from extension storage.
+ * Read the user's configured target language.
  */
 async function getTargetLang() {
-    try {
-        const { settings } = await chrome.storage.local.get('settings');
-        return settings?.defaultTargetLang || 'pl';
-    } catch (e) {
-        return 'pl';
-    }
+    const prefs = await getPreferences();
+    return prefs.targetLang || 'pl';
 }
 
 /**
@@ -539,8 +540,8 @@ async function handleTranslateClick(e) {
     try {
         let provider = 'chrome-ai';
         try {
-            const stored = await chrome.storage.local.get(['apiProvider']);
-            provider = stored.apiProvider || 'chrome-ai';
+            const prefs = await getPreferences();
+            provider = prefs.apiProvider || 'chrome-ai';
             if (provider !== 'openai' && provider !== 'gemini') provider = 'chrome-ai';
         } catch { /* default to chrome-ai */ }
 
