@@ -1,8 +1,10 @@
 node_modules/
 dist/
+releases/
 *.log
 .DS_Store
 .env
 server/
 docs/
 !docs/ADR-*.md
+test-results/
