@@ -1,5 +1,5 @@
 import { elements } from './dom-elements.js';
-import { SUPPORTED_LANGUAGES, MODELS } from './constants.js';
+import { SUPPORTED_LANGUAGES, MODELS, getLanguageLabel } from './constants.js';
 import { escapeHtml } from '../../lib/sanitize.js';
 import { ChromeAIProvider, CHROME_AI_STATUS } from '../../lib/chrome-ai-provider.js';
 import { getCurrentMode } from './ui-manager.js';
@@ -9,7 +9,7 @@ import { updateToneVisibility } from './tone.js';
  * Populate language dropdowns
  */
 export function populateLanguages() {
-    const createOption = (lang) => `<option value="${lang.code}">${lang.name}</option>`;
+    const createOption = (lang) => `<option value="${lang.code}">${escapeHtml(getLanguageLabel(lang.code))}</option>`;
     const options = SUPPORTED_LANGUAGES.map(createOption).join('');
 
     elements.sourceLang.innerHTML = `<option value="auto">${chrome.i18n.getMessage("detectLanguageOption")}</option>` + options;
@@ -96,13 +96,17 @@ function normalizeProvider(provider) {
 const chromeAI = new ChromeAIProvider();
 let chromeAiStatusChecked = false;
 
+function t(key, fallback) {
+    return chrome.i18n?.getMessage?.(key) || fallback;
+}
+
 async function updateChromeAiStatus() {
     if (!elements.chromeAiStatus) return;
     if (chromeAiStatusChecked) return;
     chromeAiStatusChecked = true;
 
     if (!chromeAI.isSupported()) {
-        elements.chromeAiStatus.textContent = 'Niedostępne w tej przeglądarce. Wymagany Chrome 138+ z obsługą AI.';
+        elements.chromeAiStatus.textContent = t('chromeAiStatusUnsupported', 'Not available in this browser. Chrome 138+ with built-in AI is required.');
         elements.chromeAiStatus.classList.remove('hidden');
         elements.chromeAiStatus.classList.add('text-red-400');
         return;
@@ -113,23 +117,23 @@ async function updateChromeAiStatus() {
         const states = [status.translator, status.languageModel];
 
         if (states.includes(CHROME_AI_STATUS.DOWNLOADING)) {
-            elements.chromeAiStatus.textContent = 'Pobieranie modelu AI...';
+            elements.chromeAiStatus.textContent = t('chromeAiStatusDownloading', 'Downloading the AI model…');
             elements.chromeAiStatus.classList.remove('hidden');
             elements.chromeAiProgress.classList.remove('hidden');
         } else if (states.includes(CHROME_AI_STATUS.DOWNLOADABLE)) {
-            elements.chromeAiStatus.textContent = 'Model wymaga pobrania (~1 GB). Pobieranie rozpocznie się przy pierwszym użyciu.';
+            elements.chromeAiStatus.textContent = t('chromeAiStatusDownloadable', 'The model needs to be downloaded (~1 GB). Download starts on first use.');
             elements.chromeAiStatus.classList.remove('hidden');
         } else if (states.every(s => s === CHROME_AI_STATUS.UNAVAILABLE)) {
-            elements.chromeAiStatus.textContent = 'Niedostępne — sprzęt lub konfiguracja nie obsługują AI na urządzeniu.';
+            elements.chromeAiStatus.textContent = t('chromeAiStatusUnavailable', 'Not available — this hardware or configuration does not support on-device AI.');
             elements.chromeAiStatus.classList.remove('hidden');
             elements.chromeAiStatus.classList.add('text-yellow-400');
         } else {
-            elements.chromeAiStatus.textContent = 'Gotowe do użycia';
+            elements.chromeAiStatus.textContent = t('chromeAiStatusReady', 'Ready to use');
             elements.chromeAiStatus.classList.remove('hidden');
             elements.chromeAiStatus.classList.add('text-green-400');
         }
     } catch {
-        elements.chromeAiStatus.textContent = 'Nie udało się sprawdzić dostępności Chrome AI.';
+        elements.chromeAiStatus.textContent = t('chromeAiStatusCheckFailed', 'Could not check Chrome AI availability.');
         elements.chromeAiStatus.classList.remove('hidden');
     }
 }

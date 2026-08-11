@@ -310,5 +310,50 @@
     },
     "btnDelete": {
         "message": "Delete"
+    },
+    "toneAuto": {
+        "message": "Auto"
+    },
+    "toneFormal": {
+        "message": "Formal"
+    },
+    "toneCasual": {
+        "message": "Casual"
+    },
+    "toneProfessional": {
+        "message": "Business"
+    },
+    "toneFriendly": {
+        "message": "Friendly"
+    },
+    "promptTypePhoto": {
+        "message": "Photo"
+    },
+    "promptTypeGraphic": {
+        "message": "Graphic"
+    },
+    "promptTypeEnhance": {
+        "message": "Enhance"
+    },
+    "promptTypeUniversal": {
+        "message": "Universal"
+    },
+    "chromeAiStatusUnsupported": {
+        "message": "Not available in this browser. Chrome 138+ with built-in AI is required."
+    },
+    "chromeAiStatusDownloading": {
+        "message": "Downloading the AI model…"
+    },
+    "chromeAiStatusDownloadable": {
+        "message": "The model needs to be downloaded (~1 GB). Download starts on first use."
+    },
+    "chromeAiStatusUnavailable": {
+        "message": "Not available — this hardware or configuration does not support on-device AI."
+    },
+    "chromeAiStatusReady": {
+        "message": "Ready to use"
+    },
+    "chromeAiStatusCheckFailed": {
+        "message": "Could not check Chrome AI availability."
     }
 }

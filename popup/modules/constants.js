@@ -1,32 +1,66 @@
-// Supported languages configuration
+// Supported languages configuration.
+// `name` is the English fallback; the UI renders `getLanguageLabel()`, which
+// localizes the name into the browser's UI locale.
 export const SUPPORTED_LANGUAGES = [
-    { code: 'pl', name: 'Polski', flag: '🇵🇱' },
-    { code: 'en', name: 'Angielski', flag: '🇬🇧' },
-    { code: 'de', name: 'Niemiecki', flag: '🇩🇪' },
-    { code: 'es', name: 'Hiszpański', flag: '🇪🇸' },
-    { code: 'fr', name: 'Francuski', flag: '🇫🇷' },
-    { code: 'it', name: 'Włoski', flag: '🇮🇹' },
-    { code: 'pt', name: 'Portugalski', flag: '🇵🇹' },
-    { code: 'nl', name: 'Holenderski', flag: '🇳🇱' },
-    { code: 'uk', name: 'Ukraiński', flag: '🇺🇦' },
-    { code: 'cs', name: 'Czeski', flag: '🇨🇿' },
-    { code: 'sk', name: 'Słowacki', flag: '🇸🇰' },
-    { code: 'hu', name: 'Węgierski', flag: '🇭🇺' },
-    { code: 'ro', name: 'Rumuński', flag: '🇷🇴' },
-    { code: 'bg', name: 'Bułgarski', flag: '🇧🇬' },
-    { code: 'el', name: 'Grecki', flag: '🇬🇷' },
-    { code: 'tr', name: 'Turecki', flag: '🇹🇷' },
-    { code: 'sv', name: 'Szwedzki', flag: '🇸🇪' },
-    { code: 'no', name: 'Norweski', flag: '🇳🇴' },
-    { code: 'da', name: 'Duński', flag: '🇩🇰' },
-    { code: 'fi', name: 'Fiński', flag: '🇫🇮' },
-    { code: 'ja', name: 'Japoński', flag: '🇯🇵' },
-    { code: 'ko', name: 'Koreański', flag: '🇰🇷' },
-    { code: 'zh', name: 'Chiński', flag: '🇨🇳' },
-    { code: 'ru', name: 'Rosyjski', flag: '🇷🇺' },
-    { code: 'ar', name: 'Arabski', flag: '🇸🇦' },
+    { code: 'pl', name: 'Polish', flag: '🇵🇱' },
+    { code: 'en', name: 'English', flag: '🇬🇧' },
+    { code: 'de', name: 'German', flag: '🇩🇪' },
+    { code: 'es', name: 'Spanish', flag: '🇪🇸' },
+    { code: 'fr', name: 'French', flag: '🇫🇷' },
+    { code: 'it', name: 'Italian', flag: '🇮🇹' },
+    { code: 'pt', name: 'Portuguese', flag: '🇵🇹' },
+    { code: 'nl', name: 'Dutch', flag: '🇳🇱' },
+    { code: 'uk', name: 'Ukrainian', flag: '🇺🇦' },
+    { code: 'cs', name: 'Czech', flag: '🇨🇿' },
+    { code: 'sk', name: 'Slovak', flag: '🇸🇰' },
+    { code: 'hu', name: 'Hungarian', flag: '🇭🇺' },
+    { code: 'ro', name: 'Romanian', flag: '🇷🇴' },
+    { code: 'bg', name: 'Bulgarian', flag: '🇧🇬' },
+    { code: 'el', name: 'Greek', flag: '🇬🇷' },
+    { code: 'tr', name: 'Turkish', flag: '🇹🇷' },
+    { code: 'sv', name: 'Swedish', flag: '🇸🇪' },
+    { code: 'no', name: 'Norwegian', flag: '🇳🇴' },
+    { code: 'da', name: 'Danish', flag: '🇩🇰' },
+    { code: 'fi', name: 'Finnish', flag: '🇫🇮' },
+    { code: 'ja', name: 'Japanese', flag: '🇯🇵' },
+    { code: 'ko', name: 'Korean', flag: '🇰🇷' },
+    { code: 'zh', name: 'Chinese', flag: '🇨🇳' },
+    { code: 'ru', name: 'Russian', flag: '🇷🇺' },
+    { code: 'ar', name: 'Arabic', flag: '🇸🇦' },
     { code: 'hi', name: 'Hindi', flag: '🇮🇳' }
 ];
+
+let displayNames;
+
+function languageDisplayNames() {
+    if (displayNames !== undefined) return displayNames;
+    try {
+        const uiLocale = globalThis.chrome?.i18n?.getUILanguage?.() || 'en';
+        displayNames = new Intl.DisplayNames([uiLocale], { type: 'language' });
+    } catch {
+        displayNames = null;
+    }
+    return displayNames;
+}
+
+/**
+ * Localized name of a language, in the browser's UI locale.
+ * Falls back to the English name when Intl has nothing for the code.
+ * @param {string} code
+ * @returns {string}
+ */
+export function getLanguageLabel(code) {
+    const fallback = SUPPORTED_LANGUAGES.find(l => l.code === code)?.name || code;
+    let label = fallback;
+    try {
+        label = languageDisplayNames()?.of(code) || fallback;
+    } catch {
+        label = fallback;
+    }
+    // Intl lowercases language names in many locales ("polski"); dropdowns read
+    // better capitalized.
+    return label.charAt(0).toUpperCase() + label.slice(1);
+}
 
 // Bump when system prompts change so cached results are invalidated.
 export const PROMPT_VERSION = 1;
@@ -73,13 +107,23 @@ export const DEPRECATED_MODELS = [
 ];
 
 // Tone / register presets used by Translate mode.
+// `label` is the English fallback; `i18nKey` resolves through chrome.i18n.
 export const TONE_PRESETS = [
-    { id: 'auto', label: 'Auto', icon: 'fa-wand-magic-sparkles' },
-    { id: 'formal', label: 'Formalny', icon: 'fa-user-tie' },
-    { id: 'casual', label: 'Swobodny', icon: 'fa-face-smile' },
-    { id: 'professional', label: 'Biznesowy', icon: 'fa-briefcase' },
-    { id: 'friendly', label: 'Przyjazny', icon: 'fa-heart' }
+    { id: 'auto', label: 'Auto', i18nKey: 'toneAuto', icon: 'fa-wand-magic-sparkles' },
+    { id: 'formal', label: 'Formal', i18nKey: 'toneFormal', icon: 'fa-user-tie' },
+    { id: 'casual', label: 'Casual', i18nKey: 'toneCasual', icon: 'fa-face-smile' },
+    { id: 'professional', label: 'Business', i18nKey: 'toneProfessional', icon: 'fa-briefcase' },
+    { id: 'friendly', label: 'Friendly', i18nKey: 'toneFriendly', icon: 'fa-heart' }
 ];
+
+/**
+ * Localized tone label, falling back to the English default.
+ * @param {{ i18nKey?: string, label: string }} preset
+ * @returns {string}
+ */
+export function getToneLabel(preset) {
+    return (preset.i18nKey && globalThis.chrome?.i18n?.getMessage?.(preset.i18nKey)) || preset.label;
+}
 
 // Mode colors and configuration
 export const MODE_COLORS = {

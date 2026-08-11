@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { ChromeAIProvider, CHROME_AI_ERRORS, PROMPT_API_LANGUAGES } from '../lib/chrome-ai-provider.js';
+import { ChromeAIProvider, CHROME_AI_ERRORS, PROMPT_API_LANGUAGES, expectedInputLanguages } from '../lib/chrome-ai-provider.js';
 
 const GLOBAL_KEYS = ['Translator', 'LanguageDetector', 'LanguageModel'];
 
@@ -104,6 +104,28 @@ describe('ChromeAIProvider language validation', () => {
         expect(PROMPT_API_LANGUAGES).toContain('ja');
         expect(PROMPT_API_LANGUAGES.length).toBeGreaterThanOrEqual(5);
     });
+
+    it('always declares the English system prompt alongside the input language', () => {
+        expect(expectedInputLanguages('de')).toEqual(['en', 'de']);
+        expect(expectedInputLanguages('en')).toEqual(['en']);
+        expect(expectedInputLanguages(undefined)).toEqual(['en']);
+        expect(expectedInputLanguages('auto')).toEqual(['en']);
+        expect(expectedInputLanguages('de', 'de')).toEqual(['en', 'de']);
+    });
+
+    it('declares en + input language on both availability and create', async () => {
+        const availability = vi.fn().mockResolvedValue('available');
+        const create = vi.fn().mockResolvedValue({ prompt: vi.fn().mockResolvedValue('ok'), destroy: vi.fn() });
+        globalThis.LanguageModel = { availability, create };
+
+        const provider = new ChromeAIProvider();
+        await provider.generateText({ prompt: 'test', inputLang: 'de', outputLang: 'de' });
+
+        for (const args of [availability.mock.calls[0][0], create.mock.calls[0][0]]) {
+            expect(args.expectedInputs[0].languages).toEqual(['en', 'de']);
+            expect(args.expectedOutputs[0].languages).toEqual(['de']);
+        }
+    });
 });
 
 describe('ChromeAIProvider.run', () => {
@@ -127,6 +149,55 @@ describe('ChromeAIProvider.run', () => {
 
         expect(out).toBe('prompt-translation');
         expect(prompt).toHaveBeenCalled();
+    });
+
+    it('passes the detected language to the Prompt API when the source is auto', async () => {
+        globalThis.Translator = { availability: vi.fn().mockResolvedValue('unavailable'), create: vi.fn() };
+        globalThis.LanguageDetector = {
+            availability: vi.fn().mockResolvedValue('available'),
+            create: vi.fn().mockResolvedValue({
+                detect: vi.fn().mockResolvedValue([{ detectedLanguage: 'de', confidence: 0.9 }]),
+                destroy: vi.fn()
+            })
+        };
+        const create = vi.fn().mockResolvedValue({ prompt: vi.fn().mockResolvedValue('ok'), destroy: vi.fn() });
+        globalThis.LanguageModel = { availability: vi.fn().mockResolvedValue('available'), create };
+
+        const provider = new ChromeAIProvider();
+        await provider.run({
+            kind: 'translate',
+            text: 'Guten Tag',
+            sourceLang: 'auto',
+            targetLang: 'ja',
+            systemInstruction: 'translate this',
+            prompt: 'Translate: Guten Tag'
+        });
+
+        expect(create.mock.calls[0][0].expectedInputs[0].languages).toEqual(['en', 'de']);
+    });
+
+    it('resolves auto for prompt generation before hitting the Prompt API', async () => {
+        globalThis.LanguageDetector = {
+            availability: vi.fn().mockResolvedValue('available'),
+            create: vi.fn().mockResolvedValue({
+                detect: vi.fn().mockResolvedValue([{ detectedLanguage: 'es', confidence: 0.9 }]),
+                destroy: vi.fn()
+            })
+        };
+        const create = vi.fn().mockResolvedValue({ prompt: vi.fn().mockResolvedValue('ok'), destroy: vi.fn() });
+        globalThis.LanguageModel = { availability: vi.fn().mockResolvedValue('available'), create };
+
+        const provider = new ChromeAIProvider();
+        await provider.run({
+            kind: 'generate',
+            text: 'una idea',
+            sourceLang: 'auto',
+            targetLang: 'en',
+            systemInstruction: 'sys',
+            prompt: 'go'
+        });
+
+        expect(create.mock.calls[0][0].expectedInputs[0].languages).toEqual(['en', 'es']);
     });
 
     it('blocks correct for unsupported Prompt API language', async () => {

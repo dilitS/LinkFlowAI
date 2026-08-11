@@ -2,6 +2,23 @@
 
 All notable changes to LingFlow AI will be documented in this file.
 
+## [2.0.0-rc.2] - 2026-08-11
+
+### Fixed
+- `manifest.json` `version` is now the Chrome-legal `2.0.0`; the RC label moved to `version_name` (a `-rc.1` suffix made Chrome refuse to load the extension, which is why local E2E timed out waiting for the service worker)
+- CI runs Playwright under `xvfb-run` — extensions need a headed browser and GitHub runners have no display server
+- Prompt API sessions declare `['en', <input language>]` in `expectedInputs`, since the system instruction is always English
+- `generatePrompt()` forwards the user-selected source language instead of the target language
+- Translator API → Prompt API fallback and prompt generation resolve `auto` through the Language Detector before declaring languages
+- Remaining hardcoded Polish UI strings localized: language names (via `Intl.DisplayNames`), tone presets, prompt types, Chrome AI status messages
+- Popup footer reads the version from the manifest instead of a hardcoded `v2.0.0`
+
+### Added
+- `scripts/verify.js` validates the Chrome version format and manifest/package.json version agreement
+- Message validation requires `sender.id` and a `data:image/…;base64,…` payload for OCR
+- Regression test rejecting hardcoded Polish strings in UI source
+- 15 i18n keys for tone presets, prompt types, and Chrome AI status (en, pl)
+
 ## [2.0.0-rc.1] - 2026-08-11
 
 ### Added
@@ -34,9 +51,9 @@ All notable changes to LingFlow AI will be documented in this file.
 - Cache key generation includes provider and model
 - Message validation schema with size limits in background script
 - `chrome.storage.local.setAccessLevel('TRUSTED_CONTEXTS')` for API key isolation
-- 163 unit tests (Vitest) covering all core modules
+- 121 unit tests (Vitest) covering all core modules
 - 11 end-to-end browser tests (Playwright)
-- i18n completeness test ensuring all 26 locales match English keys
+- i18n completeness test ensuring the shipped UI locales (en, pl) match key-for-key
 - 49 new i18n keys for buttons, labels, filters, settings, and error messages
 - Accessibility: ARIA roles, labels, live regions, keyboard navigation, focus-visible rings
 - `prefers-reduced-motion` support

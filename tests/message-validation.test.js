@@ -19,6 +19,11 @@ describe('validateSender', () => {
     it('accepts matching extension id', () => {
         expect(validateSender({ id: EXT_ID }, EXT_ID)).toEqual({ valid: true });
     });
+
+    it('rejects a sender without an extension id', () => {
+        expect(validateSender({ tab: { id: 1 } }, EXT_ID))
+            .toMatchObject({ valid: false, code: 'INVALID_SENDER' });
+    });
 });
 
 describe('validateMessage — happy paths', () => {
@@ -103,9 +108,29 @@ describe('validateMessage — rejection cases', () => {
     });
 
     it('rejects oversize image payload', () => {
+        const prefix = 'data:image/png;base64,';
         expect(validateMessage({
             action: 'perform_ocr',
-            image: 'a'.repeat(10 * 1024 * 1024 + 1)
+            image: prefix + 'a'.repeat(10 * 1024 * 1024 + 1 - prefix.length)
         }, contentSender(), EXT_ID)).toMatchObject({ valid: false, code: 'IMAGE_TOO_LARGE' });
+    });
+
+    it('rejects image that is not a base64 image data URL', () => {
+        expect(validateMessage({
+            action: 'perform_ocr',
+            image: 'https://evil.example/pixel.png'
+        }, contentSender(), EXT_ID)).toMatchObject({ valid: false, code: 'INVALID_IMAGE' });
+
+        expect(validateMessage({
+            action: 'perform_ocr',
+            image: 'data:text/html;base64,PHNjcmlwdD4='
+        }, contentSender(), EXT_ID)).toMatchObject({ valid: false, code: 'INVALID_IMAGE' });
+    });
+
+    it('accepts a well-formed PNG data URL', () => {
+        expect(validateMessage({
+            action: 'perform_ocr',
+            image: 'data:image/png;base64,iVBORw0KGgo='
+        }, contentSender(), EXT_ID)).toEqual({ valid: true });
     });
 });

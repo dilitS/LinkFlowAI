@@ -1,5 +1,6 @@
 import { elements } from './dom-elements.js';
-import { TONE_PRESETS } from './constants.js';
+import { escapeHtml } from '../../lib/sanitize.js';
+import { TONE_PRESETS, getToneLabel } from './constants.js';
 
 const STORAGE_KEY = 'lingflow_tone';
 let currentTone = localStorage.getItem(STORAGE_KEY) || 'auto';
@@ -17,7 +18,7 @@ export function renderTonePills() {
 
     elements.toneSelector.innerHTML = TONE_PRESETS.map(t => `
         <button type="button" class="${t.id === currentTone ? ACTIVE_CLASS : INACTIVE_CLASS}" data-tone="${t.id}">
-            <i class="fa-solid ${t.icon} text-[9px]"></i><span>${t.label}</span>
+            <i class="fa-solid ${t.icon} text-[9px]"></i><span>${escapeHtml(getToneLabel(t))}</span>
         </button>
     `).join('');
 

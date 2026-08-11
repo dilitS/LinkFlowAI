@@ -2,7 +2,24 @@ import { describe, test, expect } from 'vitest';
 import fs from 'fs';
 import path from 'path';
 
-const LOCALES_DIR = path.resolve(import.meta.dirname || __dirname, '..', '_locales');
+const ROOT = path.resolve(import.meta.dirname || __dirname, '..');
+const LOCALES_DIR = path.join(ROOT, '_locales');
+
+// Source directories that ship UI strings. Anything user-visible in here must
+// come from chrome.i18n, so localized text has no business being hardcoded.
+const UI_DIRS = ['popup', 'content', 'background', 'sidepanel', 'lib'];
+const UI_EXTENSIONS = ['.js', '.html'];
+const POLISH_CHARS = /[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/;
+
+function walkUiFiles(dir, out = []) {
+    if (!fs.existsSync(dir)) return out;
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) walkUiFiles(full, out);
+        else if (UI_EXTENSIONS.some(ext => entry.name.endsWith(ext))) out.push(full);
+    }
+    return out;
+}
 
 function loadLocale(locale) {
     const filePath = path.join(LOCALES_DIR, locale, 'messages.json');
@@ -64,5 +81,23 @@ describe('i18n locale completeness', () => {
             expect(value, `Key "${key}" must be an object`).toBeTypeOf('object');
             expect(value.message, `Key "${key}" must have a "message" field`).toBeDefined();
         }
+    });
+});
+
+describe('UI source carries no hardcoded localized strings', () => {
+    test('no Polish text outside _locales', () => {
+        const offenders = [];
+        for (const dir of UI_DIRS) {
+            for (const file of walkUiFiles(path.join(ROOT, dir))) {
+                const lines = fs.readFileSync(file, 'utf-8').split('\n');
+                lines.forEach((line, i) => {
+                    if (POLISH_CHARS.test(line)) {
+                        offenders.push(`${path.relative(ROOT, file)}:${i + 1}: ${line.trim()}`);
+                    }
+                });
+            }
+        }
+
+        expect(offenders, `Hardcoded Polish strings:\n${offenders.join('\n')}`).toEqual([]);
     });
 });

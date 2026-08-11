@@ -310,5 +310,50 @@
     },
     "btnDelete": {
         "message": "Usuń"
+    },
+    "toneAuto": {
+        "message": "Auto"
+    },
+    "toneFormal": {
+        "message": "Formalny"
+    },
+    "toneCasual": {
+        "message": "Swobodny"
+    },
+    "toneProfessional": {
+        "message": "Biznesowy"
+    },
+    "toneFriendly": {
+        "message": "Przyjazny"
+    },
+    "promptTypePhoto": {
+        "message": "Zdjęcie"
+    },
+    "promptTypeGraphic": {
+        "message": "Grafika"
+    },
+    "promptTypeEnhance": {
+        "message": "Rozbuduj"
+    },
+    "promptTypeUniversal": {
+        "message": "Uniwersalny"
+    },
+    "chromeAiStatusUnsupported": {
+        "message": "Niedostępne w tej przeglądarce. Wymagany Chrome 138+ z obsługą AI."
+    },
+    "chromeAiStatusDownloading": {
+        "message": "Pobieranie modelu AI…"
+    },
+    "chromeAiStatusDownloadable": {
+        "message": "Model wymaga pobrania (~1 GB). Pobieranie rozpocznie się przy pierwszym użyciu."
+    },
+    "chromeAiStatusUnavailable": {
+        "message": "Niedostępne — sprzęt lub konfiguracja nie obsługują AI na urządzeniu."
+    },
+    "chromeAiStatusReady": {
+        "message": "Gotowe do użycia"
+    },
+    "chromeAiStatusCheckFailed": {
+        "message": "Nie udało się sprawdzić dostępności Chrome AI."
     }
 }

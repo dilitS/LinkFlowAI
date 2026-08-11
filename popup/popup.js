@@ -53,6 +53,17 @@ function initI18n() {
 }
 
 /**
+ * Show the shipped version, so prerelease builds are identifiable in the UI.
+ */
+function renderAppVersion() {
+    const el = document.getElementById('app-version');
+    if (!el) return;
+    const manifest = chrome.runtime?.getManifest?.() || {};
+    const version = manifest.version_name || manifest.version;
+    el.textContent = version ? `LingFlow AI v${version}` : 'LingFlow AI';
+}
+
+/**
  * Initialize application
  */
 async function initialize() {
@@ -60,6 +71,7 @@ async function initialize() {
 
     // Initialize i18n translations
     initI18n();
+    renderAppVersion();
 
     // Populate UI
     populateLanguages();

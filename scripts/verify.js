@@ -28,8 +28,39 @@ try {
     process.exit(1);
 }
 
-if (!manifest.version) fail('manifest missing "version"');
-else pass(`version: ${manifest.version}`);
+// Chrome accepts 1–4 dot-separated integers, each 0–65535, no leading zeros.
+// Prerelease suffixes like "-rc.1" belong in version_name, not version.
+const CHROME_VERSION_RE = /^(0|[1-9]\d*)(\.(0|[1-9]\d*)){0,3}$/;
+
+function isValidChromeVersion(value) {
+    if (typeof value !== 'string' || !CHROME_VERSION_RE.test(value)) return false;
+    return value.split('.').every(part => Number(part) <= 65535);
+}
+
+if (!manifest.version) {
+    fail('manifest missing "version"');
+} else if (!isValidChromeVersion(manifest.version)) {
+    fail(
+        `manifest "version" is not a valid Chrome version: "${manifest.version}" ` +
+        '(1–4 dot-separated integers 0–65535; put prerelease labels in "version_name")'
+    );
+} else {
+    pass(`version: ${manifest.version}${manifest.version_name ? ` (version_name: ${manifest.version_name})` : ''}`);
+}
+
+// package.json may carry a semver prerelease tag; its release core must match
+// the manifest so the packaged ZIP name and the store version stay in sync.
+const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf-8'));
+const pkgCore = String(pkg.version || '').split('-')[0];
+if (pkgCore !== manifest.version) {
+    fail(`package.json version "${pkg.version}" does not match manifest version "${manifest.version}"`);
+} else {
+    pass(`package.json version ${pkg.version} matches manifest`);
+}
+
+if (manifest.version_name && manifest.version_name !== pkg.version) {
+    fail(`manifest version_name "${manifest.version_name}" does not match package.json version "${pkg.version}"`);
+}
 
 if (!manifest.manifest_version || manifest.manifest_version !== 3)
     fail('manifest_version must be 3');

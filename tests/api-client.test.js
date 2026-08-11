@@ -110,14 +110,15 @@ describe('APIClient operation routing', () => {
     function makeAiClient(state = {}) {
         const client = makeClient(state);
         const kinds = [];
-        client.chromeAI.run = async (args) => { kinds.push(args.kind); return 'out'; };
+        const calls = [];
+        client.chromeAI.run = async (args) => { kinds.push(args.kind); calls.push(args); return 'out'; };
         client.optimizer = {
             generateCacheKey: () => Math.random().toString(),
             getCache: () => null,
             setCache: () => {},
             retryWithBackoff: (fn) => fn()
         };
-        return { client, kinds };
+        return { client, kinds, calls };
     }
 
     it('correct() uses the correct chromeAI kind', async () => {
@@ -130,6 +131,24 @@ describe('APIClient operation routing', () => {
         const { client, kinds } = makeAiClient({ apiProvider: 'chrome-ai' });
         await client.translate('hello', 'pl');
         expect(kinds).toContain('translate');
+    });
+
+    it('correct() declares the text language on both sides and forwards the text', async () => {
+        const { client, calls } = makeAiClient({ apiProvider: 'chrome-ai' });
+        await client.correct('tekst', 'pl');
+        expect(calls[0]).toMatchObject({ kind: 'correct', sourceLang: 'pl', targetLang: 'pl', text: 'tekst' });
+    });
+
+    it('generatePrompt() forwards the user-selected source language, not the target', async () => {
+        const { client, calls } = makeAiClient({ apiProvider: 'chrome-ai' });
+        await client.generatePrompt('pomysł na zdjęcie', 'en', 'image-photo', { sourceLang: 'pl' });
+        expect(calls[0]).toMatchObject({ kind: 'generate', sourceLang: 'pl', text: 'pomysł na zdjęcie' });
+    });
+
+    it('generatePrompt() defaults to auto when no source language is given', async () => {
+        const { client, calls } = makeAiClient({ apiProvider: 'chrome-ai' });
+        await client.generatePrompt('an idea', 'en', 'image-photo');
+        expect(calls[0].sourceLang).toBe('auto');
     });
 
     it('correct() and translate() invoke different operations', async () => {
