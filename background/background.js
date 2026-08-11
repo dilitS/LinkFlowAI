@@ -27,8 +27,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'translate_selection') {
         handleTranslation(request.text, request.targetLang)
             .then(result => sendResponse({ success: true, data: result }))
-            .catch(error => sendResponse({ success: false, error: error.message }));
-        return true; // Will respond asynchronously
+            .catch(error => sendResponse({ success: false, error: error.message, code: error.code }));
+        return true;
     } else if (request.action === 'ocr_area_selected') {
         // Capture visible tab
         chrome.tabs.captureVisibleTab(null, { format: 'png' }, (dataUrl) => {
@@ -78,11 +78,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             .then(() => sendResponse({ success: true }))
             .catch(error => sendResponse({ success: false, error: error.message }));
         return true;
-    } else if (request.action === 'piper_speak') {
-        playPiperTTS(request.text, request.voiceId)
-            .then(() => sendResponse({ success: true }))
-            .catch(error => sendResponse({ success: false, error: error.message }));
-        return true;
     } else if (request.action === 'stop_tts') {
         stopTTS();
         sendResponse({ success: true });
@@ -90,41 +85,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
 });
 
-let creatingOffscreenPromise = null;
-const OFFSCREEN_PATH = 'offscreen/offscreen.html';
-
-async function setupOffscreenDocument() {
-    if (await chrome.offscreen.hasDocument()) return;
-    if (creatingOffscreenPromise) {
-        await creatingOffscreenPromise;
-        return;
-    }
-    creatingOffscreenPromise = chrome.offscreen.createDocument({
-        url: OFFSCREEN_PATH,
-        reasons: ['AUDIO_PLAYBACK'],
-        justification: 'Synthesize and play offline Piper TTS audio'
-    });
-    await creatingOffscreenPromise;
-    creatingOffscreenPromise = null;
-}
-
-async function playPiperTTS(text, voiceId) {
-    await setupOffscreenDocument();
-    const response = await chrome.runtime.sendMessage({
-        action: 'play_piper_tts',
-        text,
-        voiceId
-    });
-    if (response && !response.success) {
-        throw new Error(response.error);
-    }
-}
-
 async function stopTTS() {
     chrome.tts.stop?.();
-    if (await chrome.offscreen.hasDocument()) {
-        chrome.runtime.sendMessage({ action: 'stop_tts' }).catch(() => {});
-    }
 }
 
 async function handleOCR(image, targetLang) {
@@ -136,12 +98,17 @@ async function handleOCR(image, targetLang) {
 }
 
 async function handleTranslation(text, targetLang) {
-    // Ensure state is loaded
     await stateManager.loadState();
 
-    // If targetLang is not provided, use settings or default to 'pl'
     if (!targetLang) {
         targetLang = stateManager.state.settings?.defaultTargetLang || 'pl';
+    }
+
+    const provider = stateManager.state.apiProvider;
+    if (provider !== 'openai' && provider !== 'gemini') {
+        const error = new Error('Chrome AI runs in the page context, not the service worker. Inline translation should use the content script path.');
+        error.code = 'CHROME_AI_WRONG_CONTEXT';
+        throw error;
     }
 
     return await apiClient.translate(text, targetLang);

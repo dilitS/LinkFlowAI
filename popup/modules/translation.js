@@ -88,7 +88,14 @@ async function runAction(apiClient, stateManager, force = false) {
         if (mode === 'prompt') {
             result = await apiClient.generatePrompt(text, targetLang, resolvePromptType(), options);
         } else {
-            result = await apiClient.translate(text, targetLang, options);
+            const sourceLang = elements.sourceLang.value;
+            const isSameLanguage = sourceLang !== 'auto' && sourceLang === targetLang;
+
+            if (isSameLanguage) {
+                result = await apiClient.correct(text, targetLang, options);
+            } else {
+                result = await apiClient.translate(text, targetLang, options);
+            }
         }
 
         // If the user hit Stop on a non-streaming provider, keep partial state.

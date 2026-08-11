@@ -5,3 +5,4 @@ dist/
 .env
 server/
 docs/
+!docs/ADR-*.md

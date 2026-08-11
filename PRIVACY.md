@@ -1,6 +1,6 @@
 # Privacy Policy — LingFlow AI
 
-_Last updated: June 13, 2026_
+_Last updated: August 11, 2026_
 
 LingFlow AI ("the extension", "we", "us") is a browser extension that translates,
 corrects, and rewrites text and generates AI prompts. This policy explains exactly
@@ -8,10 +8,10 @@ what data the extension handles, where it goes, and what it never does.
 
 **Short version:** LingFlow AI has no servers that store your content, no analytics,
 no trackers, and no ads. Your API keys and history stay on your device. The **free tier
-runs entirely on-device** using Chrome's built-in AI (Gemini Nano) — your text never
-leaves your browser. If you choose to bring your own API key (OpenAI or Gemini), your
-text goes **directly** from your browser to that provider. LingFlow operates no proxy
-and hosts no API of its own.
+runs on-device** using Chrome's built-in AI (Gemini Nano) — your text is never sent to
+external servers (the browser may download the model itself on first use). If you choose
+to bring your own API key (OpenAI or Gemini), your text goes **directly** from your
+browser to that provider. LingFlow operates no proxy and hosts no API of its own.
 
 ---
 
@@ -33,13 +33,14 @@ Nothing is sent unless you explicitly start an action.
 
 | Tier / Provider | Destination | When it is used |
 | --- | --- | --- |
-| **Chrome Built-in AI (Free)** | On-device (no network request) | Default free tier. Text is processed locally by Chrome's built-in model; it does not leave your device. |
+| **Chrome Built-in AI (Free)** | On-device | Default free tier. Text is processed locally by Chrome's built-in model; it does not leave your device. The browser may need a network connection to download the on-device model on first use. |
 | OpenAI | `https://api.openai.com` | When you select OpenAI and provide your own API key |
 | Google Gemini | `https://generativelanguage.googleapis.com` | When you select Gemini and provide your own API key |
 
-The **free tier is fully on-device**: translation, correction, and prompt generation run
-through Chrome's built-in AI and make no network request. (Screenshot/OCR is the one
-feature that is vision-only and therefore requires a bring-your-own-key provider.)
+The **free tier runs on-device**: translation, correction, and prompt generation run
+through Chrome's built-in AI and your text is not sent to external servers. The browser
+may use the network to download the model itself on first use. Screenshot/OCR is
+vision-only and requires a bring-your-own-key provider.
 
 When you use your **own API key**, your request is sent directly from your browser to
 that provider, is governed by their privacy policy, and makes you their direct customer:
@@ -85,9 +86,8 @@ browser data removes it.
 | `storage` | Save your settings, API keys, history, and voice preferences locally. |
 | `activeTab` / `tabs` | Know the current tab so OCR can capture the visible area and the workspace can target the right window. |
 | `clipboardWrite` | Copy a result to your clipboard when you press the Copy button. |
-| `tts` | List and play Chrome TTS voices, including installed Piper voices when available. |
+| `tts` | List and play Chrome TTS voices for the text-to-speech feature. |
 | `sidePanel` | Open the LingFlow workspace in the browser side panel. |
-| `offscreen` | Host a hidden background document strictly for offline Piper TTS audio playback (since Manifest V3 service workers cannot play audio). |
 | Host access to the AI endpoints above | Send your request to the AI provider you selected. |
 | Content script on pages (`<all_urls>`) | Show the quick-translate button and inline result tooltip on the page where you select text. It runs only to render that UI in response to your selection. |
 
@@ -112,10 +112,6 @@ store listing.
 ## 9. Contact
 
 Questions or requests about privacy: **privacy@lingflow.ai**
-
-> Maintainer note: replace the address above with a real, monitored inbox before
-> publishing, and host this file at a stable public URL (for example a GitHub raw link or
-> GitHub Pages) to use as the "Privacy policy" URL in the Chrome Web Store dashboard.
 
 ---
 

@@ -283,9 +283,17 @@
                         <label class="cursor-pointer relative group col-span-2">
                             <input type="radio" name="api-provider-select" value="chrome-ai" class="peer sr-only" checked>
                             <div
-                                class="p-3 rounded-xl border border-gray-700 bg-[#18181b] text-gray-400 peer-checked:border-purple-500 peer-checked:bg-purple-500/5 peer-checked:text-purple-400 transition-all text-center flex flex-row items-center justify-center gap-3 hover:bg-[#27272a]">
-                                <i class="fa-solid fa-microchip" style="font-size: 16px; flex-shrink: 0;"></i>
-                                <span class="text-xs font-medium" data-i18n="providerChromeAi">Chrome AI · za darmo, na urządzeniu</span>
+                                class="p-3 rounded-xl border border-gray-700 bg-[#18181b] text-gray-400 peer-checked:border-purple-500 peer-checked:bg-purple-500/5 peer-checked:text-purple-400 transition-all text-center flex flex-col items-center justify-center gap-1 hover:bg-[#27272a]">
+                                <div class="flex items-center gap-3">
+                                    <i class="fa-solid fa-microchip" style="font-size: 16px; flex-shrink: 0;"></i>
+                                    <span class="text-xs font-medium" data-i18n="providerChromeAi">Chrome AI · za darmo, na urządzeniu</span>
+                                </div>
+                                <div id="chrome-ai-status" class="text-[10px] text-gray-500 hidden"></div>
+                                <div id="chrome-ai-progress" class="w-full hidden mt-1">
+                                    <div class="w-full bg-gray-800 rounded-full h-1 overflow-hidden">
+                                        <div id="chrome-ai-progress-bar" class="bg-purple-500 h-1 rounded-full transition-all duration-300" style="width: 0%"></div>
+                                    </div>
+                                </div>
                             </div>
                         </label>
                         <label class="cursor-pointer relative group">
@@ -349,7 +357,6 @@
                             class="w-full bg-[#18181b] text-gray-200 text-xs font-medium border border-gray-700 rounded-xl p-3 focus:border-blue-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#27272a]">
                             <option value="web">Systemowy (Web Speech API)</option>
                             <option value="chrome">Zewnętrzny (Chrome TTS)</option>
-                            <option value="piper">Piper (Wysoka jakość, Offline)</option>
                         </select>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
@@ -368,26 +375,10 @@
                             </select>
                         </div>
                     </div>
-                    <div id="piper-voice-catalog" class="hidden rounded-2xl border border-blue-500/10 bg-[#18181b] p-3 mt-3">
-                        <label class="text-[10px] font-bold text-gray-600 uppercase tracking-widest block mb-2">Menedżer Głosów Piper</label>
-                        <div class="text-[10px] text-gray-400 mb-2" id="piper-status-text">Wybierz głos z listy i kliknij pobierz. Modele zajmują ok. 20 MB.</div>
-                        <button id="download-piper-voice-btn" type="button" class="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 disabled:cursor-not-allowed text-white text-[10px] font-bold uppercase py-2 rounded-lg transition-colors flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-cloud-arrow-down"></i> Pobierz model offline
-                        </button>
-                        <button id="delete-piper-voice-btn" type="button" class="hidden w-full mt-2 bg-red-900/30 hover:bg-red-900/60 text-red-400 border border-red-900/50 text-[10px] font-bold uppercase py-2 rounded-lg transition-colors flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-trash-can"></i> Usuń z dysku
-                        </button>
-                        <div id="piper-download-progress" class="hidden mt-2">
-                            <div class="w-full bg-gray-800 rounded-full h-1 mb-1 overflow-hidden">
-                                <div id="piper-progress-bar" class="bg-blue-500 h-1 rounded-full transition-all duration-300" style="width: 0%"></div>
-                            </div>
-                            <div class="text-[10px] text-gray-500 text-right font-mono" id="piper-progress-text">0%</div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="text-center pt-2">
-                    <p class="text-[10px] text-gray-700 font-mono">LingFlow AI v1.6.0</p>
+                    <p class="text-[10px] text-gray-700 font-mono">LingFlow AI v2.0.0-dev</p>
                 </div>
             </div>
         </div>

@@ -467,48 +467,114 @@ function withTimeout(promise, ms) {
     return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
 }
 
-async function handleTranslateClick(e) {
-    e.stopPropagation(); // Prevent deselection
+/**
+ * Translate text using Chrome's on-device Translator API (content script
+ * page context). Falls back to Language Detector + Translator.create().
+ * @returns {Promise<string>} translated text
+ */
+async function translateWithChromeAI(text, targetLang) {
+    if (!('Translator' in globalThis)) {
+        throw new Error('Chrome AI translation is not available in this browser.');
+    }
 
-    // Capture replacement context BEFORE the selection is lost.
+    let sourceLang = null;
+    if ('LanguageDetector' in globalThis) {
+        try {
+            const detAvail = await globalThis.LanguageDetector.availability();
+            if (detAvail !== 'unavailable') {
+                const detector = await globalThis.LanguageDetector.create();
+                try {
+                    const results = await detector.detect(text);
+                    const top = Array.isArray(results) ? results[0] : null;
+                    if (top?.detectedLanguage && top.detectedLanguage !== 'und') {
+                        sourceLang = top.detectedLanguage;
+                    }
+                } finally {
+                    detector.destroy?.();
+                }
+            }
+        } catch { /* best-effort detection */ }
+    }
+
+    if (!sourceLang) {
+        throw new Error('Could not determine source language for on-device translation.');
+    }
+
+    if (sourceLang === targetLang) return text;
+
+    const availability = await globalThis.Translator.availability({
+        sourceLanguage: sourceLang,
+        targetLanguage: targetLang
+    });
+    if (availability === 'unavailable') {
+        throw new Error(`On-device translation does not support ${sourceLang} → ${targetLang}.`);
+    }
+
+    const translator = await globalThis.Translator.create({
+        sourceLanguage: sourceLang,
+        targetLanguage: targetLang
+    });
+    try {
+        return await translator.translate(text);
+    } finally {
+        translator.destroy?.();
+    }
+}
+
+async function handleTranslateClick(e) {
+    e.stopPropagation();
+
     replaceContext = captureReplaceContext();
     const targetLang = await getTargetLang();
     currentResultLang = targetLang;
 
-    // Start pulsing and record the anchor while the button is still visible.
     floatingBtn.classList.add('pulsing');
     const btnRect = floatingBtn.getBoundingClientRect();
     const anchorX = btnRect.left + window.scrollX;
     const anchorY = btnRect.top + window.scrollY;
 
-    // Render loading state immediately
     renderTooltipLoading(chrome.i18n.getMessage('processingText') || 'Przetwarzanie...');
     showTooltip(anchorX, anchorY, btnRect);
 
     try {
-        const response = await withTimeout(
-            chrome.runtime.sendMessage({
-                action: 'translate_selection',
-                text: currentSelection,
-                targetLang
-            }),
-            TRANSLATE_TIMEOUT_MS
-        );
+        let provider = 'chrome-ai';
+        try {
+            const stored = await chrome.storage.local.get(['apiProvider']);
+            provider = stored.apiProvider || 'chrome-ai';
+            if (provider !== 'openai' && provider !== 'gemini') provider = 'chrome-ai';
+        } catch { /* default to chrome-ai */ }
 
-        if (response && response.success) {
-            renderTooltipResult(response.data);
+        let result;
+        if (provider === 'chrome-ai') {
+            result = await withTimeout(
+                translateWithChromeAI(currentSelection, targetLang),
+                TRANSLATE_TIMEOUT_MS
+            );
         } else {
-            renderTooltipError((response && response.error) || chrome.i18n.getMessage('communicationError'));
+            const response = await withTimeout(
+                chrome.runtime.sendMessage({
+                    action: 'translate_selection',
+                    text: currentSelection,
+                    targetLang
+                }),
+                TRANSLATE_TIMEOUT_MS
+            );
+            if (response && response.success) {
+                result = response.data;
+            } else {
+                throw new Error((response && response.error) || chrome.i18n.getMessage('communicationError'));
+            }
         }
+
+        renderTooltipResult(result);
         showTooltip(anchorX, anchorY, btnRect);
     } catch (error) {
         const message = error?.code === 'TIMEOUT'
             ? (chrome.i18n.getMessage('errorTimeout') || 'Request timed out. Please try again.')
-            : chrome.i18n.getMessage('communicationError');
+            : (error?.message || chrome.i18n.getMessage('communicationError'));
         renderTooltipError(message);
         showTooltip(anchorX, anchorY, btnRect);
     } finally {
-        // Lifecycle guarantee: always return the icon to rest.
         floatingBtn.classList.remove('pulsing');
         hideFloatingButton();
     }

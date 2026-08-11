@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { ChromeAIProvider, CHROME_AI_ERRORS } from '../lib/chrome-ai-provider.js';
+import { ChromeAIProvider, CHROME_AI_ERRORS, PROMPT_API_LANGUAGES } from '../lib/chrome-ai-provider.js';
 
 const GLOBAL_KEYS = ['Translator', 'LanguageDetector', 'LanguageModel'];
 
@@ -70,6 +70,39 @@ describe('ChromeAIProvider.generateText', () => {
         const out = await provider.generateText({ systemInstruction: 'sys', prompt: 'go' });
         expect(out).toBe('result');
         expect(prompt).toHaveBeenCalled();
+    });
+});
+
+describe('ChromeAIProvider language validation', () => {
+    it('passes expectedInputs/expectedOutputs to availability', async () => {
+        const availabilitySpy = vi.fn().mockResolvedValue('available');
+        globalThis.LanguageModel = {
+            availability: availabilitySpy,
+            create: vi.fn().mockResolvedValue({ prompt: vi.fn().mockResolvedValue('ok'), destroy: vi.fn() })
+        };
+        const provider = new ChromeAIProvider();
+        await provider.generateText({ prompt: 'test', inputLang: 'en', outputLang: 'ja' });
+        const calledWith = availabilitySpy.mock.calls[0][0];
+        expect(calledWith.expectedInputs).toBeDefined();
+        expect(calledWith.expectedOutputs).toBeDefined();
+        expect(calledWith.expectedOutputs[0].languages).toContain('ja');
+    });
+
+    it('throws when model reports unavailable for language', async () => {
+        globalThis.LanguageModel = {
+            availability: vi.fn().mockResolvedValue('unavailable'),
+            create: vi.fn()
+        };
+        const provider = new ChromeAIProvider();
+        await expect(
+            provider.generateText({ prompt: 'test', inputLang: 'pl', outputLang: 'pl' })
+        ).rejects.toMatchObject({ code: CHROME_AI_ERRORS.UNAVAILABLE });
+    });
+
+    it('lists known supported languages', () => {
+        expect(PROMPT_API_LANGUAGES).toContain('en');
+        expect(PROMPT_API_LANGUAGES).toContain('ja');
+        expect(PROMPT_API_LANGUAGES.length).toBeGreaterThanOrEqual(5);
     });
 });
 

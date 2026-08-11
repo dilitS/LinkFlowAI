@@ -15,8 +15,7 @@
     "tabs",
     "clipboardWrite",
     "tts",
-    "sidePanel",
-    "offscreen"
+    "sidePanel"
   ],
   "host_permissions": [
     "https://generativelanguage.googleapis.com/*",

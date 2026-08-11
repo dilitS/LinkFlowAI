@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { APIClient, CHROME_AI_PROVIDER, CHROME_AI_MODEL_ID } from '../lib/api-client.js';
+import { MODELS, DEPRECATED_MODELS, DEFAULT_MODELS } from '../popup/modules/constants.js';
 
 const makeClient = (state = {}) => new APIClient({ state });
 
@@ -59,6 +60,70 @@ describe('APIClient helpers', () => {
         expect(client.getToneInstruction('formal')).toContain('formal register');
         expect(client.getToneInstruction('auto')).toBe('');
         expect(client.getToneInstruction(undefined)).toBe('');
+    });
+});
+
+describe('Model registry', () => {
+    const allModelIds = Object.values(MODELS).flatMap(arr => arr.map(m => m.id));
+
+    it('never contains a deprecated model', () => {
+        const overlap = allModelIds.filter(id => DEPRECATED_MODELS.includes(id));
+        expect(overlap).toEqual([]);
+    });
+
+    it('has at least one model per provider', () => {
+        for (const [provider, models] of Object.entries(MODELS)) {
+            expect(models.length).toBeGreaterThan(0);
+        }
+    });
+
+    it('default models exist in their provider lists', () => {
+        for (const [provider, defaultId] of Object.entries(DEFAULT_MODELS)) {
+            expect(MODELS[provider].find(m => m.id === defaultId)).toBeTruthy();
+        }
+    });
+
+    it('migrates an unknown/deprecated stored model to the provider default', async () => {
+        const config = await makeClient({
+            apiProvider: 'gemini',
+            geminiApiKey: 'test-key',
+            selectedModel: 'gemini-2.0-flash'
+        }).getEffectiveConfig();
+        expect(config.model).toBe(DEFAULT_MODELS.gemini);
+    });
+});
+
+describe('APIClient operation routing', () => {
+    function makeAiClient(state = {}) {
+        const client = makeClient(state);
+        const kinds = [];
+        client.chromeAI.run = async (args) => { kinds.push(args.kind); return 'out'; };
+        client.optimizer = {
+            generateCacheKey: () => Math.random().toString(),
+            getCache: () => null,
+            setCache: () => {},
+            retryWithBackoff: (fn) => fn()
+        };
+        return { client, kinds };
+    }
+
+    it('correct() uses the correct chromeAI kind', async () => {
+        const { client, kinds } = makeAiClient({ apiProvider: 'chrome-ai' });
+        await client.correct('test text', 'en');
+        expect(kinds).toContain('correct');
+    });
+
+    it('translate() uses the translate chromeAI kind', async () => {
+        const { client, kinds } = makeAiClient({ apiProvider: 'chrome-ai' });
+        await client.translate('hello', 'pl');
+        expect(kinds).toContain('translate');
+    });
+
+    it('correct() and translate() invoke different operations', async () => {
+        const { client, kinds } = makeAiClient({ apiProvider: 'chrome-ai' });
+        await client.translate('hi', 'en');
+        await client.correct('hi', 'en');
+        expect(kinds[0]).not.toBe(kinds[1]);
     });
 });
 

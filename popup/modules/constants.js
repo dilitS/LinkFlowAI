@@ -28,24 +28,43 @@ export const SUPPORTED_LANGUAGES = [
     { code: 'hi', name: 'Hindi', flag: '🇮🇳' }
 ];
 
-// Available AI models (should match api-client.js)
+// Single source of truth for available AI models.
+// Both the popup UI and APIClient import from here.
+export const CHROME_AI_PROVIDER = 'chrome-ai';
+export const CHROME_AI_MODEL_ID = 'gemini-nano';
+
 export const MODELS = {
-    'chrome-ai': [
-        { id: 'gemini-nano', name: 'Gemini Nano (on-device)' }
+    [CHROME_AI_PROVIDER]: [
+        { id: CHROME_AI_MODEL_ID, name: 'Gemini Nano (on-device)' }
     ],
     openai: [
         { id: 'gpt-4o-mini', name: 'GPT-4o mini' },
-        { id: 'gpt-4o', name: 'GPT-4o' },
-        { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo' }
+        { id: 'gpt-4o', name: 'GPT-4o' }
     ],
     gemini: [
-        { id: 'gemini-3.1-flash-lite', name: 'Gemini 3.1 Flash Lite' },
-        { id: 'gemini-3.1-flash-lite-preview', name: 'Gemini 3.1 Flash Lite (Preview)' },
-        { id: 'gemini-3-flash-preview', name: 'Gemini 3 Flash (Preview)' },
-        { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash' },
-        { id: 'gemini-2.0-flash', name: 'Gemini 2.0 Flash' }
+        { id: 'gemini-3.5-flash-lite', name: 'Gemini 3.5 Flash Lite' },
+        { id: 'gemini-3.5-flash', name: 'Gemini 3.5 Flash' },
+        { id: 'gemini-3.6-flash', name: 'Gemini 3.6 Flash' }
     ]
 };
+
+export const DEFAULT_MODELS = {
+    openai: 'gpt-4o-mini',
+    gemini: 'gemini-3.5-flash-lite'
+};
+
+// Models with known shutdown dates — block re-introduction.
+export const DEPRECATED_MODELS = [
+    'gpt-3.5-turbo',
+    'gpt-3.5-turbo-0125',
+    'gemini-2.0-flash',
+    'gemini-2.0-flash-001',
+    'gemini-2.0-flash-lite',
+    'gemini-2.5-flash',
+    'gemini-3.1-flash-lite',
+    'gemini-3.1-flash-lite-preview',
+    'gemini-3-flash-preview'
+];
 
 // Tone / register presets used by Translate mode.
 export const TONE_PRESETS = [
