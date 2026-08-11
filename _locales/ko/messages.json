@@ -1,164 +1,311 @@
 {
-  "extensionName": {
-    "message": "LingFlow AI"
-  },
-  "extensionDescription": {
-    "message": "번역 및 교정을 위한 지능형 언어 도우미."
-  },
-  "settingsTitle": {
-    "message": "설정"
-  },
-  "translateMode": {
-    "message": "번역"
-  },
-  "correctMode": {
-    "message": "교정"
-  },
-  "promptMode": {
-    "message": "프롬프트"
-  },
-  "inputPlaceholder": {
-    "message": "번역할 텍스트 입력..."
-  },
-  "actionButtonTranslate": {
-    "message": "번역"
-  },
-  "actionButtonCorrect": {
-    "message": "교정"
-  },
-  "actionButtonGenerate": {
-    "message": "생성"
-  },
-  "outputLabel": {
-    "message": "결과"
-  },
-  "outputTextPlaceholder": {
-    "message": "결과가 여기에 표시됩니다..."
-  },
-  "historyTitle": {
-    "message": "번역 기록"
-  },
-  "clearHistoryButton": {
-    "message": "지우기"
-  },
-  "emptyHistoryMessage": {
-    "message": "기록 없음"
-  },
-  "ocrTitle": {
-    "message": "OCR (텍스트 인식)"
-  },
-  "ocrDescription": {
-    "message": "텍스트를 복사하려면 화면에서 영역을 선택하세요."
-  },
-  "ocrButton": {
-    "message": "영역 선택"
-  },
-  "ocrLanguageLabel": {
-    "message": "텍스트 언어:"
-  },
-  "ocrAutoLanguage": {
-    "message": "자동 감지"
-  },
-  "inputPlaceholderCorrect": {
-    "message": "확인할 텍스트 붙여넣기..."
-  },
-  "inputPlaceholderPrompt": {
-    "message": "생성할 내용을 설명하세요..."
-  },
-  "toastCopied": {
-    "message": "클립보드에 복사됨"
-  },
-  "toastDeleted": {
-    "message": "항목 삭제됨"
-  },
-  "promptImage": {
-    "message": "이미지 프롬프트"
-  },
-  "confirmClearHistory": {
-    "message": "전체 기록을 지우시겠습니까?"
-  },
-  "detectLanguageOption": {
-    "message": "감지"
-  },
-  "apiKeyNotRequired": {
-    "message": "API 키 필요 없음"
-  },
-  "settingsSaved": {
-    "message": "설정 저장됨"
-  },
-  "ocrApiRequired": {
-    "message": "OCR은 자체 API 키(Gemini/OpenAI)가 필요합니다. 설정에서 구성하십시오."
-  },
-  "ocrInitError": {
-    "message": "OCR 초기화 오류: "
-  },
-  "toastTranscriptionCopied": {
-    "message": "전사 복사됨"
-  },
-  "toastTranslationCopied": {
-    "message": "번역 복사됨"
-  },
-  "toastEnterText": {
-    "message": "텍스트 입력"
-  },
-  "processingText": {
-    "message": "처리 중..."
-  },
-  "errorPrefix": {
-    "message": "오류: "
-  },
-  "toastError": {
-    "message": "오류가 발생했습니다"
-  },
-  "ocrLoadingText": {
-    "message": "OCR 번역..."
-  },
-  "imageProcessingFailed": {
-    "message": "이미지 처리 실패"
-  },
-  "communicationError": {
-    "message": "통신 오류"
-  },
-  "transcriptionLabel": {
-    "message": "전사"
-  },
-  "translationLabel": {
-    "message": "번역"
-  },
-  "providerChromeAi": {
-    "message": "Chrome AI · free, on-device"
-  },
-  "errorNoApiKey": {
-    "message": "API key required. Add your OpenAI or Gemini key in Settings."
-  },
-  "errorInputTooLong": {
-    "message": "Your text exceeds the 5000-character limit. Please shorten it."
-  },
-  "errorChromeAiUnavailable": {
-    "message": "On-device AI is unavailable here. Update Chrome, or pick OpenAI/Gemini with your own key in Settings."
-  },
-  "errorOcrRequiresKey": {
-    "message": "OCR needs your own API key (OpenAI or Gemini). Add one in Settings."
-  },
-  "errorRateLimited": {
-    "message": "Too many requests. Please wait a moment and try again."
-  },
-  "errorQuotaExceeded": {
-    "message": "API quota exceeded. Check your provider billing and limits."
-  },
-  "errorNetwork": {
-    "message": "Network error. Check your connection and try again."
-  },
-  "errorTimeout": {
-    "message": "Request timed out. Please try again with a shorter text."
-  },
-  "errorContentTooLarge": {
-    "message": "Text is too long for the model. Please try a shorter text."
-  },
-  "errorContentFiltered": {
-    "message": "The response was filtered for safety. Try rephrasing your text."
-  },
-  "errorGeneric": {
-    "message": "Something went wrong. Please try again."
-  }
+    "extensionName": {
+        "message": "LingFlow AI"
+    },
+    "extensionDescription": {
+        "message": "번역 및 교정을 위한 지능형 언어 도우미."
+    },
+    "settingsTitle": {
+        "message": "설정"
+    },
+    "translateMode": {
+        "message": "번역"
+    },
+    "correctMode": {
+        "message": "교정"
+    },
+    "promptMode": {
+        "message": "프롬프트"
+    },
+    "inputPlaceholder": {
+        "message": "번역할 텍스트 입력..."
+    },
+    "actionButtonTranslate": {
+        "message": "번역"
+    },
+    "actionButtonCorrect": {
+        "message": "교정"
+    },
+    "actionButtonGenerate": {
+        "message": "생성"
+    },
+    "outputLabel": {
+        "message": "결과"
+    },
+    "outputTextPlaceholder": {
+        "message": "결과가 여기에 표시됩니다..."
+    },
+    "historyTitle": {
+        "message": "번역 기록"
+    },
+    "clearHistoryButton": {
+        "message": "지우기"
+    },
+    "emptyHistoryMessage": {
+        "message": "기록 없음"
+    },
+    "ocrTitle": {
+        "message": "OCR (텍스트 인식)"
+    },
+    "ocrDescription": {
+        "message": "텍스트를 복사하려면 화면에서 영역을 선택하세요."
+    },
+    "ocrButton": {
+        "message": "영역 선택"
+    },
+    "ocrLanguageLabel": {
+        "message": "텍스트 언어:"
+    },
+    "ocrAutoLanguage": {
+        "message": "자동 감지"
+    },
+    "inputPlaceholderCorrect": {
+        "message": "확인할 텍스트 붙여넣기..."
+    },
+    "inputPlaceholderPrompt": {
+        "message": "생성할 내용을 설명하세요..."
+    },
+    "toastCopied": {
+        "message": "클립보드에 복사됨"
+    },
+    "toastDeleted": {
+        "message": "항목 삭제됨"
+    },
+    "promptImage": {
+        "message": "이미지 프롬프트"
+    },
+    "confirmClearHistory": {
+        "message": "전체 기록을 지우시겠습니까?"
+    },
+    "detectLanguageOption": {
+        "message": "감지"
+    },
+    "apiKeyNotRequired": {
+        "message": "API 키 필요 없음"
+    },
+    "settingsSaved": {
+        "message": "설정 저장됨"
+    },
+    "ocrApiRequired": {
+        "message": "OCR은 자체 API 키(Gemini/OpenAI)가 필요합니다. 설정에서 구성하십시오."
+    },
+    "ocrInitError": {
+        "message": "OCR 초기화 오류: "
+    },
+    "toastTranscriptionCopied": {
+        "message": "전사 복사됨"
+    },
+    "toastTranslationCopied": {
+        "message": "번역 복사됨"
+    },
+    "toastEnterText": {
+        "message": "텍스트 입력"
+    },
+    "processingText": {
+        "message": "처리 중..."
+    },
+    "errorPrefix": {
+        "message": "오류: "
+    },
+    "toastError": {
+        "message": "오류가 발생했습니다"
+    },
+    "ocrLoadingText": {
+        "message": "OCR 번역..."
+    },
+    "imageProcessingFailed": {
+        "message": "이미지 처리 실패"
+    },
+    "communicationError": {
+        "message": "통신 오류"
+    },
+    "transcriptionLabel": {
+        "message": "전사"
+    },
+    "translationLabel": {
+        "message": "번역"
+    },
+    "providerChromeAi": {
+        "message": "Chrome AI · free, on-device"
+    },
+    "errorNoApiKey": {
+        "message": "API key required. Add your OpenAI or Gemini key in Settings."
+    },
+    "errorInputTooLong": {
+        "message": "Your text exceeds the 5000-character limit. Please shorten it."
+    },
+    "errorChromeAiUnavailable": {
+        "message": "On-device AI is unavailable here. Update Chrome, or pick OpenAI/Gemini with your own key in Settings."
+    },
+    "errorOcrRequiresKey": {
+        "message": "OCR needs your own API key (OpenAI or Gemini). Add one in Settings."
+    },
+    "errorRateLimited": {
+        "message": "Too many requests. Please wait a moment and try again."
+    },
+    "errorQuotaExceeded": {
+        "message": "API quota exceeded. Check your provider billing and limits."
+    },
+    "errorNetwork": {
+        "message": "Network error. Check your connection and try again."
+    },
+    "errorTimeout": {
+        "message": "Request timed out. Please try again with a shorter text."
+    },
+    "errorContentTooLarge": {
+        "message": "Text is too long for the model. Please try a shorter text."
+    },
+    "errorContentFiltered": {
+        "message": "The response was filtered for safety. Try rephrasing your text."
+    },
+    "errorGeneric": {
+        "message": "Something went wrong. Please try again."
+    },
+    "toastAutoLanguageSwapError": {
+        "message": "Select a specific source language to swap."
+    },
+    "toastStopped": {
+        "message": "Stopped"
+    },
+    "activeSiteTitle": {
+        "message": "ACTIVE SITE"
+    },
+    "smartStartersTitle": {
+        "message": "SMART STARTERS"
+    },
+    "historySearchPlaceholder": {
+        "message": "Search history"
+    },
+    "sidepanelOpenButton": {
+        "message": "Panel"
+    },
+    "sidepanelOpenError": {
+        "message": "Unable to open side panel"
+    },
+    "siteContextUnavailableTitle": {
+        "message": "Unsupported page"
+    },
+    "siteContextUnavailableStatus": {
+        "message": "N/A"
+    },
+    "siteContextUnavailableBody": {
+        "message": "This works on regular HTTP/HTTPS pages."
+    },
+    "siteContextActiveStatus": {
+        "message": "Inline active"
+    },
+    "siteContextPausedStatus": {
+        "message": "Paused"
+    },
+    "siteContextSubtitlePrefix": {
+        "message": "Language for this site:"
+    },
+    "siteContextPauseButton": {
+        "message": "Pause"
+    },
+    "siteContextResumeButton": {
+        "message": "Resume"
+    },
+    "siteContextPausedToast": {
+        "message": "Inline translation paused on this site"
+    },
+    "siteContextResumedToast": {
+        "message": "Inline translation resumed on this site"
+    },
+    "btnListenSource": {
+        "message": "Listen to source text"
+    },
+    "btnOcrCapture": {
+        "message": "OCR: Translate from screen"
+    },
+    "btnPaste": {
+        "message": "Paste"
+    },
+    "btnClear": {
+        "message": "Clear"
+    },
+    "btnRegenerate": {
+        "message": "Regenerate"
+    },
+    "btnListenOutput": {
+        "message": "Listen (TTS)"
+    },
+    "btnCopy": {
+        "message": "Copy"
+    },
+    "btnSave": {
+        "message": "Save"
+    },
+    "settingsDefaultLangLabel": {
+        "message": "Default translation language (popup, selection & OCR)"
+    },
+    "settingsAiEngine": {
+        "message": "AI Engine"
+    },
+    "settingsModelLabel": {
+        "message": "Model"
+    },
+    "apiKeyPlaceholder": {
+        "message": "API Key not required"
+    },
+    "settingsTtsLabel": {
+        "message": "Text-to-Speech"
+    },
+    "ttsEngineWeb": {
+        "message": "System (Web Speech API)"
+    },
+    "ttsEngineChrome": {
+        "message": "External (Chrome TTS)"
+    },
+    "ttsLanguageLabel": {
+        "message": "Voice language"
+    },
+    "ttsVoiceLabel": {
+        "message": "Voice"
+    },
+    "ttsVoiceAuto": {
+        "message": "Auto"
+    },
+    "filterAll": {
+        "message": "All"
+    },
+    "filterTranslate": {
+        "message": "Translate"
+    },
+    "filterPrompt": {
+        "message": "Prompt"
+    },
+    "filterPinned": {
+        "message": "Pinned"
+    },
+    "historyNoResults": {
+        "message": "No results"
+    },
+    "historyNoResultsHint": {
+        "message": "Try changing the filter or search term."
+    },
+    "ocrModalTitle": {
+        "message": "Screenshot Translation"
+    },
+    "ocrProcessing": {
+        "message": "Processing screenshot..."
+    },
+    "ocrCopyBtn": {
+        "message": "Copy"
+    },
+    "ocrListenBtn": {
+        "message": "Listen"
+    },
+    "modeTextTranslate": {
+        "message": "Translate"
+    },
+    "modeTextGenerate": {
+        "message": "Generate"
+    },
+    "btnPin": {
+        "message": "Pin"
+    },
+    "btnDelete": {
+        "message": "Delete"
+    }
 }

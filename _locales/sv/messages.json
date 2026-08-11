@@ -1,164 +1,311 @@
 {
-  "extensionName": {
-    "message": "LingFlow AI"
-  },
-  "extensionDescription": {
-    "message": "Intelligent språkassistent för översättning och korrigering."
-  },
-  "settingsTitle": {
-    "message": "Inställningar"
-  },
-  "translateMode": {
-    "message": "ÖVERSÄTT"
-  },
-  "correctMode": {
-    "message": "KORRIGERA"
-  },
-  "promptMode": {
-    "message": "PROMPT"
-  },
-  "inputPlaceholder": {
-    "message": "Ange text att översätta..."
-  },
-  "actionButtonTranslate": {
-    "message": "Översätt"
-  },
-  "actionButtonCorrect": {
-    "message": "Korrigera"
-  },
-  "actionButtonGenerate": {
-    "message": "Generera"
-  },
-  "outputLabel": {
-    "message": "RESULTAT"
-  },
-  "outputTextPlaceholder": {
-    "message": "Resultatet visas här..."
-  },
-  "historyTitle": {
-    "message": "Översättningshistorik"
-  },
-  "clearHistoryButton": {
-    "message": "Rensa"
-  },
-  "emptyHistoryMessage": {
-    "message": "Ingen historik"
-  },
-  "ocrTitle": {
-    "message": "OCR (Textigenkänning)"
-  },
-  "ocrDescription": {
-    "message": "Välj ett område på skärmen för att kopiera text."
-  },
-  "ocrButton": {
-    "message": "Välj område"
-  },
-  "ocrLanguageLabel": {
-    "message": "Textspråk:"
-  },
-  "ocrAutoLanguage": {
-    "message": "Upptäck automatiskt"
-  },
-  "inputPlaceholderCorrect": {
-    "message": "Klistra in text för att kontrollera..."
-  },
-  "inputPlaceholderPrompt": {
-    "message": "Beskriv vad du vill generera..."
-  },
-  "toastCopied": {
-    "message": "Kopierat till urklipp"
-  },
-  "toastDeleted": {
-    "message": "Objekt raderat"
-  },
-  "promptImage": {
-    "message": "Bildprompt"
-  },
-  "confirmClearHistory": {
-    "message": "Är du säker på att du vill rensa hela historiken?"
-  },
-  "detectLanguageOption": {
-    "message": "Upptäck"
-  },
-  "apiKeyNotRequired": {
-    "message": "API-nyckel krävs inte"
-  },
-  "settingsSaved": {
-    "message": "Inställningar sparade"
-  },
-  "ocrApiRequired": {
-    "message": "OCR kräver din egen API-nyckel (Gemini/OpenAI). Konfigurera i inställningar."
-  },
-  "ocrInitError": {
-    "message": "OCR-initieringsfel: "
-  },
-  "toastTranscriptionCopied": {
-    "message": "Transkription kopierad"
-  },
-  "toastTranslationCopied": {
-    "message": "Översättning kopierad"
-  },
-  "toastEnterText": {
-    "message": "Ange text"
-  },
-  "processingText": {
-    "message": "Bearbetar..."
-  },
-  "errorPrefix": {
-    "message": "Fel: "
-  },
-  "toastError": {
-    "message": "Ett fel inträffade"
-  },
-  "ocrLoadingText": {
-    "message": "OCR Översättning..."
-  },
-  "imageProcessingFailed": {
-    "message": "Bildbehandling misslyckades"
-  },
-  "communicationError": {
-    "message": "Kommunikationsfel"
-  },
-  "transcriptionLabel": {
-    "message": "Transkription"
-  },
-  "translationLabel": {
-    "message": "Översättning"
-  },
-  "providerChromeAi": {
-    "message": "Chrome AI · free, on-device"
-  },
-  "errorNoApiKey": {
-    "message": "API key required. Add your OpenAI or Gemini key in Settings."
-  },
-  "errorInputTooLong": {
-    "message": "Your text exceeds the 5000-character limit. Please shorten it."
-  },
-  "errorChromeAiUnavailable": {
-    "message": "On-device AI is unavailable here. Update Chrome, or pick OpenAI/Gemini with your own key in Settings."
-  },
-  "errorOcrRequiresKey": {
-    "message": "OCR needs your own API key (OpenAI or Gemini). Add one in Settings."
-  },
-  "errorRateLimited": {
-    "message": "Too many requests. Please wait a moment and try again."
-  },
-  "errorQuotaExceeded": {
-    "message": "API quota exceeded. Check your provider billing and limits."
-  },
-  "errorNetwork": {
-    "message": "Network error. Check your connection and try again."
-  },
-  "errorTimeout": {
-    "message": "Request timed out. Please try again with a shorter text."
-  },
-  "errorContentTooLarge": {
-    "message": "Text is too long for the model. Please try a shorter text."
-  },
-  "errorContentFiltered": {
-    "message": "The response was filtered for safety. Try rephrasing your text."
-  },
-  "errorGeneric": {
-    "message": "Something went wrong. Please try again."
-  }
+    "extensionName": {
+        "message": "LingFlow AI"
+    },
+    "extensionDescription": {
+        "message": "Intelligent språkassistent för översättning och korrigering."
+    },
+    "settingsTitle": {
+        "message": "Inställningar"
+    },
+    "translateMode": {
+        "message": "ÖVERSÄTT"
+    },
+    "correctMode": {
+        "message": "KORRIGERA"
+    },
+    "promptMode": {
+        "message": "PROMPT"
+    },
+    "inputPlaceholder": {
+        "message": "Ange text att översätta..."
+    },
+    "actionButtonTranslate": {
+        "message": "Översätt"
+    },
+    "actionButtonCorrect": {
+        "message": "Korrigera"
+    },
+    "actionButtonGenerate": {
+        "message": "Generera"
+    },
+    "outputLabel": {
+        "message": "RESULTAT"
+    },
+    "outputTextPlaceholder": {
+        "message": "Resultatet visas här..."
+    },
+    "historyTitle": {
+        "message": "Översättningshistorik"
+    },
+    "clearHistoryButton": {
+        "message": "Rensa"
+    },
+    "emptyHistoryMessage": {
+        "message": "Ingen historik"
+    },
+    "ocrTitle": {
+        "message": "OCR (Textigenkänning)"
+    },
+    "ocrDescription": {
+        "message": "Välj ett område på skärmen för att kopiera text."
+    },
+    "ocrButton": {
+        "message": "Välj område"
+    },
+    "ocrLanguageLabel": {
+        "message": "Textspråk:"
+    },
+    "ocrAutoLanguage": {
+        "message": "Upptäck automatiskt"
+    },
+    "inputPlaceholderCorrect": {
+        "message": "Klistra in text för att kontrollera..."
+    },
+    "inputPlaceholderPrompt": {
+        "message": "Beskriv vad du vill generera..."
+    },
+    "toastCopied": {
+        "message": "Kopierat till urklipp"
+    },
+    "toastDeleted": {
+        "message": "Objekt raderat"
+    },
+    "promptImage": {
+        "message": "Bildprompt"
+    },
+    "confirmClearHistory": {
+        "message": "Är du säker på att du vill rensa hela historiken?"
+    },
+    "detectLanguageOption": {
+        "message": "Upptäck"
+    },
+    "apiKeyNotRequired": {
+        "message": "API-nyckel krävs inte"
+    },
+    "settingsSaved": {
+        "message": "Inställningar sparade"
+    },
+    "ocrApiRequired": {
+        "message": "OCR kräver din egen API-nyckel (Gemini/OpenAI). Konfigurera i inställningar."
+    },
+    "ocrInitError": {
+        "message": "OCR-initieringsfel: "
+    },
+    "toastTranscriptionCopied": {
+        "message": "Transkription kopierad"
+    },
+    "toastTranslationCopied": {
+        "message": "Översättning kopierad"
+    },
+    "toastEnterText": {
+        "message": "Ange text"
+    },
+    "processingText": {
+        "message": "Bearbetar..."
+    },
+    "errorPrefix": {
+        "message": "Fel: "
+    },
+    "toastError": {
+        "message": "Ett fel inträffade"
+    },
+    "ocrLoadingText": {
+        "message": "OCR Översättning..."
+    },
+    "imageProcessingFailed": {
+        "message": "Bildbehandling misslyckades"
+    },
+    "communicationError": {
+        "message": "Kommunikationsfel"
+    },
+    "transcriptionLabel": {
+        "message": "Transkription"
+    },
+    "translationLabel": {
+        "message": "Översättning"
+    },
+    "providerChromeAi": {
+        "message": "Chrome AI · free, on-device"
+    },
+    "errorNoApiKey": {
+        "message": "API key required. Add your OpenAI or Gemini key in Settings."
+    },
+    "errorInputTooLong": {
+        "message": "Your text exceeds the 5000-character limit. Please shorten it."
+    },
+    "errorChromeAiUnavailable": {
+        "message": "On-device AI is unavailable here. Update Chrome, or pick OpenAI/Gemini with your own key in Settings."
+    },
+    "errorOcrRequiresKey": {
+        "message": "OCR needs your own API key (OpenAI or Gemini). Add one in Settings."
+    },
+    "errorRateLimited": {
+        "message": "Too many requests. Please wait a moment and try again."
+    },
+    "errorQuotaExceeded": {
+        "message": "API quota exceeded. Check your provider billing and limits."
+    },
+    "errorNetwork": {
+        "message": "Network error. Check your connection and try again."
+    },
+    "errorTimeout": {
+        "message": "Request timed out. Please try again with a shorter text."
+    },
+    "errorContentTooLarge": {
+        "message": "Text is too long for the model. Please try a shorter text."
+    },
+    "errorContentFiltered": {
+        "message": "The response was filtered for safety. Try rephrasing your text."
+    },
+    "errorGeneric": {
+        "message": "Something went wrong. Please try again."
+    },
+    "toastAutoLanguageSwapError": {
+        "message": "Select a specific source language to swap."
+    },
+    "toastStopped": {
+        "message": "Stopped"
+    },
+    "activeSiteTitle": {
+        "message": "ACTIVE SITE"
+    },
+    "smartStartersTitle": {
+        "message": "SMART STARTERS"
+    },
+    "historySearchPlaceholder": {
+        "message": "Search history"
+    },
+    "sidepanelOpenButton": {
+        "message": "Panel"
+    },
+    "sidepanelOpenError": {
+        "message": "Unable to open side panel"
+    },
+    "siteContextUnavailableTitle": {
+        "message": "Unsupported page"
+    },
+    "siteContextUnavailableStatus": {
+        "message": "N/A"
+    },
+    "siteContextUnavailableBody": {
+        "message": "This works on regular HTTP/HTTPS pages."
+    },
+    "siteContextActiveStatus": {
+        "message": "Inline active"
+    },
+    "siteContextPausedStatus": {
+        "message": "Paused"
+    },
+    "siteContextSubtitlePrefix": {
+        "message": "Language for this site:"
+    },
+    "siteContextPauseButton": {
+        "message": "Pause"
+    },
+    "siteContextResumeButton": {
+        "message": "Resume"
+    },
+    "siteContextPausedToast": {
+        "message": "Inline translation paused on this site"
+    },
+    "siteContextResumedToast": {
+        "message": "Inline translation resumed on this site"
+    },
+    "btnListenSource": {
+        "message": "Listen to source text"
+    },
+    "btnOcrCapture": {
+        "message": "OCR: Translate from screen"
+    },
+    "btnPaste": {
+        "message": "Paste"
+    },
+    "btnClear": {
+        "message": "Clear"
+    },
+    "btnRegenerate": {
+        "message": "Regenerate"
+    },
+    "btnListenOutput": {
+        "message": "Listen (TTS)"
+    },
+    "btnCopy": {
+        "message": "Copy"
+    },
+    "btnSave": {
+        "message": "Save"
+    },
+    "settingsDefaultLangLabel": {
+        "message": "Default translation language (popup, selection & OCR)"
+    },
+    "settingsAiEngine": {
+        "message": "AI Engine"
+    },
+    "settingsModelLabel": {
+        "message": "Model"
+    },
+    "apiKeyPlaceholder": {
+        "message": "API Key not required"
+    },
+    "settingsTtsLabel": {
+        "message": "Text-to-Speech"
+    },
+    "ttsEngineWeb": {
+        "message": "System (Web Speech API)"
+    },
+    "ttsEngineChrome": {
+        "message": "External (Chrome TTS)"
+    },
+    "ttsLanguageLabel": {
+        "message": "Voice language"
+    },
+    "ttsVoiceLabel": {
+        "message": "Voice"
+    },
+    "ttsVoiceAuto": {
+        "message": "Auto"
+    },
+    "filterAll": {
+        "message": "All"
+    },
+    "filterTranslate": {
+        "message": "Translate"
+    },
+    "filterPrompt": {
+        "message": "Prompt"
+    },
+    "filterPinned": {
+        "message": "Pinned"
+    },
+    "historyNoResults": {
+        "message": "No results"
+    },
+    "historyNoResultsHint": {
+        "message": "Try changing the filter or search term."
+    },
+    "ocrModalTitle": {
+        "message": "Screenshot Translation"
+    },
+    "ocrProcessing": {
+        "message": "Processing screenshot..."
+    },
+    "ocrCopyBtn": {
+        "message": "Copy"
+    },
+    "ocrListenBtn": {
+        "message": "Listen"
+    },
+    "modeTextTranslate": {
+        "message": "Translate"
+    },
+    "modeTextGenerate": {
+        "message": "Generate"
+    },
+    "btnPin": {
+        "message": "Pin"
+    },
+    "btnDelete": {
+        "message": "Delete"
+    }
 }

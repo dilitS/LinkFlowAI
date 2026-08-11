@@ -26,20 +26,21 @@
                 class="flex items-center justify-between bg-[#18181b] rounded-xl p-1 border border-gray-800/50 flex-1 h-8">
                 <!-- Source Language -->
                 <div class="relative flex-1 group h-full flex items-center justify-center">
-                    <select id="source-lang"
+                    <select id="source-lang" aria-label="Source language"
                         class="w-full h-full appearance-none bg-transparent text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors text-center outline-none cursor-pointer">
                         <!-- Populated by JS -->
                     </select>
                 </div>
 
                 <button id="swap-lang-btn"
-                    class="w-6 h-6 flex items-center justify-center text-gray-500 hover:text-white transition-colors cursor-pointer hover:rotate-180 duration-300">
-                    <i class="fa-solid fa-arrow-right-arrow-left text-xs"></i>
+                    class="w-6 h-6 flex items-center justify-center text-gray-500 hover:text-white transition-colors cursor-pointer hover:rotate-180 duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                    aria-label="Swap languages">
+                    <i class="fa-solid fa-arrow-right-arrow-left text-xs" aria-hidden="true"></i>
                 </button>
 
                 <!-- Target Language -->
                 <div class="relative flex-1 group h-full flex items-center justify-center">
-                    <select id="target-lang"
+                    <select id="target-lang" aria-label="Target language"
                         class="w-full h-full appearance-none bg-transparent text-xs font-bold text-gray-200 hover:text-white transition-colors text-center outline-none cursor-pointer">
                         <!-- Populated by JS -->
                     </select>
@@ -48,24 +49,24 @@
 
             <!-- Settings Toggle -->
             <button id="settings-btn"
-                class="w-8 h-8 rounded-xl hover:bg-[#18181b] border border-transparent hover:border-gray-800 flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200"
-                title="__MSG_settingsTitle__">
-                <i class="fa-solid fa-gear text-sm"></i>
+                class="w-8 h-8 rounded-xl hover:bg-[#18181b] border border-transparent hover:border-gray-800 flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                title="__MSG_settingsTitle__" aria-label="Settings">
+                <i class="fa-solid fa-gear text-sm" aria-hidden="true"></i>
             </button>
         </div>
 
         <!-- MODE SWITCHER TABS -->
         <div class="px-4 pb-2 bg-[#09090b] z-10">
-            <div class="bg-[#18181b] p-1 rounded-xl flex relative border border-gray-800/50">
+            <div class="bg-[#18181b] p-1 rounded-xl flex relative border border-gray-800/50" role="tablist">
                 <button id="btn-translate"
                     class="mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-white bg-[#27272a] shadow-sm transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase"
-                    data-mode="translate">
-                    <i class="fa-solid fa-globe"></i> <span data-i18n="translateMode">TŁUMACZ</span>
+                    data-mode="translate" role="tab" aria-selected="true" tabindex="0">
+                    <i class="fa-solid fa-globe" aria-hidden="true"></i> <span data-i18n="translateMode">TRANSLATE</span>
                 </button>
                 <button id="btn-prompt"
                     class="mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-gray-500 hover:text-gray-300 transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase"
-                    data-mode="prompt">
-                    <i class="fa-solid fa-robot"></i> <span data-i18n="promptMode">PROMPT</span>
+                    data-mode="prompt" role="tab" aria-selected="false" tabindex="-1">
+                    <i class="fa-solid fa-robot" aria-hidden="true"></i> <span data-i18n="promptMode">PROMPT</span>
                 </button>
             </div>
         </div>
@@ -118,7 +119,7 @@
                 <div
                     class="relative group bg-[#18181b] rounded-2xl border border-gray-800 hover:border-gray-700 transition-all shadow-sm input-group">
                     <textarea id="input-text" data-i18n-placeholder="inputPlaceholder"
-                        placeholder="Wpisz tekst do przetłumaczenia..."
+                        placeholder="Enter text to translate..."
                         class="w-full bg-transparent text-[15px] text-gray-200 placeholder-gray-600 outline-none resize-none min-h-32 max-h-[24rem] overflow-y-hidden p-3 no-scrollbar leading-relaxed rounded-2xl pb-10"
                         spellcheck="false"></textarea>
 
@@ -130,24 +131,24 @@
                     <!-- Floating Actions inside Input -->
                     <div class="absolute bottom-3 right-3 flex gap-2 items-center">
                         <button id="input-tts-btn"
-                            class="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors"
-                            title="Odsłuchaj tekst źródłowy">
-                            <i class="fa-solid fa-volume-high text-xs"></i>
+                            class="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                            data-i18n-title="btnListenSource" title="Listen to source text" aria-label="Listen to source text">
+                            <i class="fa-solid fa-volume-high text-xs" aria-hidden="true"></i>
                         </button>
                         <button id="ocr-btn"
-                            class="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors"
-                            title="OCR: Tłumacz z ekranu">
-                            <i class="fa-solid fa-crop-simple text-xs"></i>
+                            class="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                            data-i18n-title="btnOcrCapture" title="OCR: Translate from screen" aria-label="OCR: Translate from screen">
+                            <i class="fa-solid fa-crop-simple text-xs" aria-hidden="true"></i>
                         </button>
                         <button id="paste-btn"
-                            class="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors"
-                            title="Wklej">
-                            <i class="fa-regular fa-paste text-xs"></i>
+                            class="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                            data-i18n-title="btnPaste" title="Paste" aria-label="Paste">
+                            <i class="fa-regular fa-paste text-xs" aria-hidden="true"></i>
                         </button>
                         <button id="clear-input-btn"
-                            class="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors"
-                            title="Wyczyść">
-                            <i class="fa-solid fa-xmark text-sm"></i>
+                            class="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                            data-i18n-title="btnClear" title="Clear" aria-label="Clear">
+                            <i class="fa-solid fa-xmark text-sm" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
@@ -160,7 +161,7 @@
                     <button
                         class="relative z-10 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold uppercase tracking-wider py-3 px-10 rounded-full shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all hover:scale-105 active:scale-95 group"
                         id="action-btn">
-                        <span data-i18n="actionButtonTranslate">Tłumacz</span>
+                        <span data-i18n="actionButtonTranslate">Translate</span>
                     </button>
                 </div>
 
@@ -170,31 +171,29 @@
                     <div class="flex justify-between items-start mb-3">
                         <div class="min-w-0">
                             <span class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]" id="output-label"
-                                data-i18n="outputLabel">WYNIK</span>
+                                data-i18n="outputLabel">RESULT</span>
                         </div>
                         <div class="flex gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity">
                             <!-- Regenerate Button -->
                             <button id="regenerate-btn"
-                                class="text-gray-500 hover:text-orange-400 transition-colors w-7 h-7 flex items-center justify-center rounded hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed"
-                                title="Generuj ponownie">
-                                <i class="fa-solid fa-rotate-right text-xs"></i>
+                                class="text-gray-500 hover:text-orange-400 transition-colors w-7 h-7 flex items-center justify-center rounded hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                                data-i18n-title="btnRegenerate" title="Regenerate" aria-label="Regenerate">
+                                <i class="fa-solid fa-rotate-right text-xs" aria-hidden="true"></i>
                             </button>
-                            <!-- Speak Button -->
                             <button id="output-tts-btn"
-                                class="text-gray-500 hover:text-blue-400 transition-colors w-7 h-7 flex items-center justify-center rounded hover:bg-white/5"
-                                title="Odsłuchaj (TTS)">
-                                <i class="fa-solid fa-volume-high text-xs"></i>
+                                class="text-gray-500 hover:text-blue-400 transition-colors w-7 h-7 flex items-center justify-center rounded hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                                data-i18n-title="btnListenOutput" title="Listen (TTS)" aria-label="Listen (TTS)">
+                                <i class="fa-solid fa-volume-high text-xs" aria-hidden="true"></i>
                             </button>
-                            <!-- Copy Button -->
                             <button id="copy-btn"
-                                class="text-gray-500 hover:text-white transition-colors w-7 h-7 flex items-center justify-center rounded hover:bg-white/5"
-                                title="Kopiuj">
-                                <i class="fa-regular fa-copy text-xs"></i>
+                                class="text-gray-500 hover:text-white transition-colors w-7 h-7 flex items-center justify-center rounded hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                                data-i18n-title="btnCopy" title="Copy" aria-label="Copy">
+                                <i class="fa-regular fa-copy text-xs" aria-hidden="true"></i>
                             </button>
                         </div>
                     </div>
-                    <p class="text-gray-500 text-[14px] leading-relaxed break-words italic" id="output-text">
-                        <span data-i18n="outputTextPlaceholder">Wynik pojawi się tutaj...</span>
+                    <p class="text-gray-500 text-[14px] leading-relaxed break-words italic" id="output-text" aria-live="polite" role="status">
+                        <span data-i18n="outputTextPlaceholder">The result will appear here...</span>
                     </p>
                 </div>
             </div>
@@ -206,14 +205,14 @@
                     <div class="flex items-center gap-3">
                         <span
                             class="text-xs font-bold text-gray-500 group-hover:text-gray-300 transition-colors uppercase tracking-widest"
-                            data-i18n="historyTitle">HISTORIA</span>
+                            data-i18n="historyTitle">Translation History</span>
                         <span id="history-badge"
                             class="hidden text-[10px] bg-[#27272a] text-gray-400 px-2 py-0.5 rounded-full font-mono">0</span>
                     </div>
                     <div class="flex items-center gap-3">
                         <button
                             class="text-[10px] font-bold text-gray-600 hover:text-gray-400 transition-colors hidden uppercase tracking-wider"
-                            id="clear-history-btn" data-i18n="clearHistoryButton">Wyczyść</button>
+                            id="clear-history-btn" data-i18n="clearHistoryButton">Clear</button>
                         <i class="fa-solid fa-chevron-up text-xs text-gray-600 group-hover:text-white transition-transform duration-300"
                             id="history-arrow"></i>
                     </div>
@@ -221,19 +220,19 @@
 
                 <div id="history-toolbar" class="hidden mb-3 space-y-2">
                     <div class="relative">
-                        <input id="history-search" type="text" data-i18n-placeholder="historySearchPlaceholder" placeholder="Szukaj w historii"
+                        <input id="history-search" type="text" data-i18n-placeholder="historySearchPlaceholder" placeholder="Search history"
                             class="w-full rounded-xl border border-gray-800 bg-[#131316] py-2.5 pl-9 pr-3 text-xs text-gray-200 outline-none transition-colors placeholder:text-gray-600 focus:border-gray-600">
                         <i class="fa-solid fa-magnifying-glass pointer-events-none absolute left-3 top-3 text-[11px] text-gray-600"></i>
                     </div>
                     <div id="history-filters" class="flex flex-wrap gap-1.5">
                         <button data-filter="all"
-                            class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-300">Wszystko</button>
+                            class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-300" data-i18n="filterAll">All</button>
                         <button data-filter="translate"
-                            class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-500">Tłumacz</button>
+                            class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-500" data-i18n="filterTranslate">Translate</button>
                         <button data-filter="prompt"
-                            class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-500">Prompt</button>
+                            class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-500" data-i18n="filterPrompt">Prompt</button>
                         <button data-filter="pinned"
-                            class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-500">Przypięte</button>
+                            class="history-filter-btn rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-gray-500" data-i18n="filterPinned">Pinned</button>
                     </div>
                 </div>
 
@@ -241,21 +240,22 @@
                 <div id="history-list" class="space-y-2 pb-4 animate-fade-in">
                     <!-- History items will be injected here -->
                     <div class="text-center py-4 text-gray-600 text-xs italic" id="empty-history-msg">
-                        <span data-i18n="emptyHistoryMessage">Brak historii</span>
+                        <span data-i18n="emptyHistoryMessage">No history</span>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- SETTINGS PANEL (Overlay) -->
-        <div id="settings-view"
-            class="absolute inset-0 bg-[#09090b]/95 backdrop-blur-md z-50 transform translate-y-full transition-transform duration-300 cubic-bezier(0.32, 0.72, 0, 1) flex flex-col">
+        <div id="settings-view" role="dialog" aria-modal="true" aria-label="Settings"
+            class="absolute inset-0 bg-[#09090b]/95 backdrop-blur-md z-50 transform translate-y-full transition-transform duration-300 cubic-bezier(0.32, 0.72, 0, 1) flex flex-col motion-reduce:transition-none">
             <!-- Settings Header -->
             <div class="px-5 py-4 border-b border-gray-800 flex justify-between items-center bg-[#09090b]">
-                <h2 class="text-lg font-semibold text-white" data-i18n="settingsTitle">Ustawienia</h2>
+                <h2 class="text-lg font-semibold text-white" data-i18n="settingsTitle">Settings</h2>
                 <button id="close-settings-btn"
-                    class="w-8 h-8 flex items-center justify-center rounded-full bg-[#18181b] text-gray-400 hover:text-white hover:bg-gray-700 transition-colors">
-                    <i class="fa-solid fa-xmark text-sm"></i>
+                    class="w-8 h-8 flex items-center justify-center rounded-full bg-[#18181b] text-gray-400 hover:text-white hover:bg-gray-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                    aria-label="Close settings">
+                    <i class="fa-solid fa-xmark text-sm" aria-hidden="true"></i>
                 </button>
             </div>
 
@@ -264,8 +264,8 @@
                 <!-- Language Settings -->
                 <div class="space-y-4 border-b border-gray-800 pb-4">
                     <div>
-                        <label class="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Domyślny język
-                            tłumaczenia (popup, zaznaczenie i OCR)</label>
+                        <label class="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2"
+                            data-i18n="settingsDefaultLangLabel">Default translation language (popup, selection &amp; OCR)</label>
                         <div class="relative">
                             <select id="settings-target-lang"
                                 class="w-full bg-[#18181b] text-gray-200 text-xs font-medium border border-gray-700 rounded-xl p-3 focus:border-blue-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#27272a]">
@@ -278,7 +278,7 @@
                 </div>
 
                 <div class="space-y-3">
-                    <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Silnik AI</label>
+                    <label class="text-xs font-bold text-gray-500 uppercase tracking-widest" data-i18n="settingsAiEngine">AI Engine</label>
                     <div class="grid grid-cols-2 gap-3">
                         <label class="cursor-pointer relative group col-span-2">
                             <input type="radio" name="api-provider-select" value="chrome-ai" class="peer sr-only" checked>
@@ -322,7 +322,7 @@
                     <!-- Model Selection -->
                     <div class="mt-3 mb-1">
                         <label
-                            class="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Model</label>
+                            class="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2" data-i18n="settingsModelLabel">Model</label>
                         <div class="relative">
                             <select id="model-select"
                                 class="w-full bg-[#18181b] text-gray-200 text-xs font-medium border border-gray-700 rounded-xl p-3 focus:border-blue-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#27272a]">
@@ -342,64 +342,65 @@
                     <div class="relative">
                         <input type="password" id="api-key"
                             class="w-full bg-[#18181b] border border-gray-700 text-white text-sm rounded-xl p-3 pl-10 focus:border-gray-500 focus:outline-none transition-colors placeholder-gray-600 shadow-inner"
-                            placeholder="Klucz nie jest wymagany" disabled>
+                            data-i18n-placeholder="apiKeyPlaceholder" placeholder="API Key not required" disabled>
                         <i class="fa-solid fa-key absolute left-3.5 top-3.5 text-gray-500"></i>
                         <button id="save-settings-btn"
-                            class="absolute right-2 top-2 bg-gray-700 hover:bg-white text-white hover:text-black text-[10px] font-bold uppercase px-3 py-1 rounded-lg transition-colors">Zapisz</button>
+                            class="absolute right-2 top-2 bg-gray-700 hover:bg-white text-white hover:text-black text-[10px] font-bold uppercase px-3 py-1 rounded-lg transition-colors" data-i18n="btnSave">Save</button>
                     </div>
                 </div>
 
                 <!-- TTS Settings -->
                 <div class="space-y-4 border-t border-gray-800 pt-4">
                     <div>
-                        <label class="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Text-to-Speech</label>
+                        <label class="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2" data-i18n="settingsTtsLabel">Text-to-Speech</label>
                         <select id="tts-engine"
                             class="w-full bg-[#18181b] text-gray-200 text-xs font-medium border border-gray-700 rounded-xl p-3 focus:border-blue-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#27272a]">
-                            <option value="web">Systemowy (Web Speech API)</option>
-                            <option value="chrome">Zewnętrzny (Chrome TTS)</option>
+                            <option value="web" data-i18n="ttsEngineWeb">System (Web Speech API)</option>
+                            <option value="chrome" data-i18n="ttsEngineChrome">External (Chrome TTS)</option>
                         </select>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="text-[10px] font-bold text-gray-600 uppercase tracking-widest block mb-2">Język głosu</label>
+                            <label class="text-[10px] font-bold text-gray-600 uppercase tracking-widest block mb-2" data-i18n="ttsLanguageLabel">Voice language</label>
                             <select id="tts-language"
                                 class="w-full bg-[#18181b] text-gray-200 text-xs font-medium border border-gray-700 rounded-xl p-3 focus:border-blue-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#27272a]">
                                 <!-- Populated by JS -->
                             </select>
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold text-gray-600 uppercase tracking-widest block mb-2">Głos</label>
+                            <label class="text-[10px] font-bold text-gray-600 uppercase tracking-widest block mb-2" data-i18n="ttsVoiceLabel">Voice</label>
                             <select id="tts-voice"
                                 class="w-full bg-[#18181b] text-gray-200 text-xs font-medium border border-gray-700 rounded-xl p-3 focus:border-blue-500 outline-none appearance-none cursor-pointer transition-colors hover:bg-[#27272a]">
-                                <option value="">Auto</option>
+                                <option value="" data-i18n="ttsVoiceAuto">Auto</option>
                             </select>
                         </div>
                     </div>
                 </div>
 
                 <div class="text-center pt-2">
-                    <p class="text-[10px] text-gray-700 font-mono">LingFlow AI v2.0.0-dev</p>
+                    <p class="text-[10px] text-gray-700 font-mono">LingFlow AI v2.0.0</p>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- TOAST NOTIFICATION -->
-    <div id="toast"
-        class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-xl border border-white/10 text-white px-4 py-2.5 rounded-full shadow-2xl flex items-center gap-2.5 transform translate-y-24 opacity-0 transition-all duration-300 z-[60]">
+    <div id="toast" role="alert" aria-live="assertive"
+        class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-xl border border-white/10 text-white px-4 py-2.5 rounded-full shadow-2xl flex items-center gap-2.5 transform translate-y-24 opacity-0 transition-all duration-300 motion-reduce:transition-none z-[60]">
         <i class="fa-solid fa-check text-green-400 text-sm"></i>
-        <span class="text-xs font-medium tracking-wide">Skopiowano do schowka</span>
+        <span class="text-xs font-medium tracking-wide" id="toast-text" data-i18n="toastCopied">Copied to clipboard</span>
     </div>
 
     <!-- OCR Modal -->
-    <div id="ocr-modal"
+    <div id="ocr-modal" role="dialog" aria-modal="true" aria-label="OCR Screenshot Translation"
         class="hidden fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
         <div
             class="bg-[#18181b] border border-gray-700 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
             <div class="sticky top-0 bg-[#18181b] border-b border-gray-700 p-4 flex justify-between items-center z-10">
-                <h3 class="text-lg font-bold text-white">Screenshot Translation</h3>
-                <button id="close-ocr-modal" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fa-solid fa-xmark text-xl"></i>
+                <h3 class="text-lg font-bold text-white" data-i18n="ocrModalTitle">Screenshot Translation</h3>
+                <button id="close-ocr-modal" class="text-gray-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                    aria-label="Close OCR modal">
+                    <i class="fa-solid fa-xmark text-xl" aria-hidden="true"></i>
                 </button>
             </div>
 
@@ -409,15 +410,15 @@
                 </div>
                 <div id="ocr-loading" class="hidden text-center py-12">
                     <i class="fa-solid fa-circle-notch fa-spin text-4xl text-blue-500 mb-4"></i>
-                    <p class="text-gray-400 animate-pulse">Processing screenshot...</p>
+                    <p class="text-gray-400 animate-pulse" data-i18n="ocrProcessing">Processing screenshot...</p>
                 </div>
                 <div id="ocr-results" class="hidden space-y-6">
                     <div>
                         <div class="flex justify-between items-center mb-2">
-                            <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Transcription</h4>
+                            <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider" data-i18n="transcriptionLabel">Transcription</h4>
                             <button id="copy-transcription"
                                 class="text-xs text-blue-400 hover:text-blue-300 transition-colors">
-                                <i class="fa-regular fa-copy mr-1"></i>Copy
+                                <i class="fa-regular fa-copy mr-1"></i><span data-i18n="ocrCopyBtn">Copy</span>
                             </button>
                         </div>
                         <div class="bg-black/30 border border-gray-700 rounded-xl p-4">
@@ -427,15 +428,15 @@
                     </div>
                     <div>
                         <div class="flex justify-between items-center mb-2">
-                            <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Translation</h4>
+                            <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider" data-i18n="translationLabel">Translation</h4>
                             <div class="flex gap-3">
                                 <button id="ocr-translation-tts"
                                     class="text-xs text-blue-400 hover:text-blue-300 transition-colors">
-                                    <i class="fa-solid fa-volume-high mr-1"></i>Listen
+                                    <i class="fa-solid fa-volume-high mr-1"></i><span data-i18n="ocrListenBtn">Listen</span>
                                 </button>
                                 <button id="copy-translation"
                                     class="text-xs text-blue-400 hover:text-blue-300 transition-colors">
-                                    <i class="fa-regular fa-copy mr-1"></i>Copy
+                                    <i class="fa-regular fa-copy mr-1"></i><span data-i18n="ocrCopyBtn">Copy</span>
                                 </button>
                             </div>
                         </div>

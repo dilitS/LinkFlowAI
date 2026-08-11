@@ -84,12 +84,14 @@ export const MODE_COLORS = {
         btn: 'bg-blue-600',
         shadow: 'shadow-[0_0_20px_rgba(37,99,235,0.4)]',
         icon: 'fa-globe',
-        text: 'Tłumacz'
+        i18nKey: 'modeTextTranslate',
+        get text() { return chrome.i18n?.getMessage('modeTextTranslate') || 'Translate'; }
     },
     prompt: {
         btn: 'bg-orange-600',
         shadow: 'shadow-[0_0_20px_rgba(234,88,12,0.4)]',
         icon: 'fa-robot',
-        text: 'Generuj'
+        i18nKey: 'modeTextGenerate',
+        get text() { return chrome.i18n?.getMessage('modeTextGenerate') || 'Generate'; }
     }
 };

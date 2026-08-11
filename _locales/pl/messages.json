@@ -211,5 +211,101 @@
     },
     "errorGeneric": {
         "message": "Coś poszło nie tak. Spróbuj ponownie."
+    },
+    "btnListenSource": {
+        "message": "Odsłuchaj tekst źródłowy"
+    },
+    "btnOcrCapture": {
+        "message": "OCR: Tłumacz z ekranu"
+    },
+    "btnPaste": {
+        "message": "Wklej"
+    },
+    "btnClear": {
+        "message": "Wyczyść"
+    },
+    "btnRegenerate": {
+        "message": "Generuj ponownie"
+    },
+    "btnListenOutput": {
+        "message": "Odsłuchaj (TTS)"
+    },
+    "btnCopy": {
+        "message": "Kopiuj"
+    },
+    "btnSave": {
+        "message": "Zapisz"
+    },
+    "settingsDefaultLangLabel": {
+        "message": "Domyślny język tłumaczenia (popup, zaznaczenie i OCR)"
+    },
+    "settingsAiEngine": {
+        "message": "Silnik AI"
+    },
+    "settingsModelLabel": {
+        "message": "Model"
+    },
+    "apiKeyPlaceholder": {
+        "message": "Klucz nie jest wymagany"
+    },
+    "settingsTtsLabel": {
+        "message": "Text-to-Speech"
+    },
+    "ttsEngineWeb": {
+        "message": "Systemowy (Web Speech API)"
+    },
+    "ttsEngineChrome": {
+        "message": "Zewnętrzny (Chrome TTS)"
+    },
+    "ttsLanguageLabel": {
+        "message": "Język głosu"
+    },
+    "ttsVoiceLabel": {
+        "message": "Głos"
+    },
+    "ttsVoiceAuto": {
+        "message": "Auto"
+    },
+    "filterAll": {
+        "message": "Wszystko"
+    },
+    "filterTranslate": {
+        "message": "Tłumacz"
+    },
+    "filterPrompt": {
+        "message": "Prompt"
+    },
+    "filterPinned": {
+        "message": "Przypięte"
+    },
+    "historyNoResults": {
+        "message": "Brak wyników"
+    },
+    "historyNoResultsHint": {
+        "message": "Spróbuj zmienić filtr albo wyszukiwane hasło."
+    },
+    "ocrModalTitle": {
+        "message": "Tłumaczenie zrzutu ekranu"
+    },
+    "ocrProcessing": {
+        "message": "Przetwarzanie zrzutu ekranu..."
+    },
+    "ocrCopyBtn": {
+        "message": "Kopiuj"
+    },
+    "ocrListenBtn": {
+        "message": "Odsłuchaj"
+    },
+    "modeTextTranslate": {
+        "message": "Tłumacz"
+    },
+    "modeTextGenerate": {
+        "message": "Generuj"
+    },
+    "btnPin": {
+        "message": "Przypnij"
+    },
+    "btnDelete": {
+        "message": "Usuń"
     }
 }

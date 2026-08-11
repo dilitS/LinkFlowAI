@@ -123,8 +123,8 @@ export function renderHistory(history, stateManager, showToast) {
         elements.emptyHistoryMsg.style.display = 'block';
         elements.emptyHistoryMsg.innerHTML = `
             <div class="space-y-1">
-                <div class="text-xs font-semibold text-gray-400">Brak wyników</div>
-                <div class="text-[11px] text-gray-600">Spróbuj zmienić filtr albo wyszukiwane hasło.</div>
+                <div class="text-xs font-semibold text-gray-400">${chrome.i18n?.getMessage('historyNoResults') || 'No results'}</div>
+                <div class="text-[11px] text-gray-600">${chrome.i18n?.getMessage('historyNoResultsHint') || 'Try changing the filter or search term.'}</div>
             </div>
         `;
         return;
@@ -152,13 +152,13 @@ export function renderHistory(history, stateManager, showToast) {
                     <p class="text-[10px] text-gray-600 font-medium uppercase tracking-wide">${escapeHtml(item.mode)}${meta}</p>
                 </div>
                 <div class="absolute bottom-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button class="w-7 h-7 flex items-center justify-center rounded-lg ${pinIconClass} hover:text-white hover:bg-white/10 transition-colors pin-history-btn" title="Przypnij">
+                    <button class="w-7 h-7 flex items-center justify-center rounded-lg ${pinIconClass} hover:text-white hover:bg-white/10 transition-colors pin-history-btn" title="${chrome.i18n?.getMessage('btnPin') || 'Pin'}">
                         <i class="fa-solid fa-thumbtack text-[10px]"></i>
                     </button>
-                    <button class="w-7 h-7 flex items-center justify-center rounded-lg bg-black/30 text-gray-500 hover:text-white hover:bg-white/10 transition-colors copy-history-btn" title="Kopiuj">
+                    <button class="w-7 h-7 flex items-center justify-center rounded-lg bg-black/30 text-gray-500 hover:text-white hover:bg-white/10 transition-colors copy-history-btn" title="${chrome.i18n?.getMessage('btnCopy') || 'Copy'}">
                         <i class="fa-regular fa-copy text-xs"></i>
                     </button>
-                    <button class="w-7 h-7 flex items-center justify-center rounded-lg bg-black/30 text-gray-500 hover:text-red-400 hover:bg-red-500/20 transition-colors delete-history-btn" title="Usuń">
+                    <button class="w-7 h-7 flex items-center justify-center rounded-lg bg-black/30 text-gray-500 hover:text-red-400 hover:bg-red-500/20 transition-colors delete-history-btn" title="${chrome.i18n?.getMessage('btnDelete') || 'Delete'}">
                         <i class="fa-solid fa-trash text-xs"></i>
                     </button>
                 </div>

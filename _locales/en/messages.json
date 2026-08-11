@@ -211,5 +211,101 @@
     },
     "errorGeneric": {
         "message": "Something went wrong. Please try again."
+    },
+    "btnListenSource": {
+        "message": "Listen to source text"
+    },
+    "btnOcrCapture": {
+        "message": "OCR: Translate from screen"
+    },
+    "btnPaste": {
+        "message": "Paste"
+    },
+    "btnClear": {
+        "message": "Clear"
+    },
+    "btnRegenerate": {
+        "message": "Regenerate"
+    },
+    "btnListenOutput": {
+        "message": "Listen (TTS)"
+    },
+    "btnCopy": {
+        "message": "Copy"
+    },
+    "btnSave": {
+        "message": "Save"
+    },
+    "settingsDefaultLangLabel": {
+        "message": "Default translation language (popup, selection & OCR)"
+    },
+    "settingsAiEngine": {
+        "message": "AI Engine"
+    },
+    "settingsModelLabel": {
+        "message": "Model"
+    },
+    "apiKeyPlaceholder": {
+        "message": "API Key not required"
+    },
+    "settingsTtsLabel": {
+        "message": "Text-to-Speech"
+    },
+    "ttsEngineWeb": {
+        "message": "System (Web Speech API)"
+    },
+    "ttsEngineChrome": {
+        "message": "External (Chrome TTS)"
+    },
+    "ttsLanguageLabel": {
+        "message": "Voice language"
+    },
+    "ttsVoiceLabel": {
+        "message": "Voice"
+    },
+    "ttsVoiceAuto": {
+        "message": "Auto"
+    },
+    "filterAll": {
+        "message": "All"
+    },
+    "filterTranslate": {
+        "message": "Translate"
+    },
+    "filterPrompt": {
+        "message": "Prompt"
+    },
+    "filterPinned": {
+        "message": "Pinned"
+    },
+    "historyNoResults": {
+        "message": "No results"
+    },
+    "historyNoResultsHint": {
+        "message": "Try changing the filter or search term."
+    },
+    "ocrModalTitle": {
+        "message": "Screenshot Translation"
+    },
+    "ocrProcessing": {
+        "message": "Processing screenshot..."
+    },
+    "ocrCopyBtn": {
+        "message": "Copy"
+    },
+    "ocrListenBtn": {
+        "message": "Listen"
+    },
+    "modeTextTranslate": {
+        "message": "Translate"
+    },
+    "modeTextGenerate": {
+        "message": "Generate"
+    },
+    "btnPin": {
+        "message": "Pin"
+    },
+    "btnDelete": {
+        "message": "Delete"
     }
 }
