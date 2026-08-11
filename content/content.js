@@ -452,9 +452,9 @@ function hideTooltip() {
     tooltip.classList.remove('visible');
 }
 
-// Safety net so the icon never pulses forever if the service worker is asleep
-// or never answers.
-const TRANSLATE_TIMEOUT_MS = 30000;
+// Safety net for BYOK paths when the service worker is slow to respond.
+// On-device Chrome AI may download a large model on first use — no timeout there.
+const BYOK_TRANSLATE_TIMEOUT_MS = 30000;
 
 function withTimeout(promise, ms) {
     let timer;
@@ -473,17 +473,24 @@ function withTimeout(promise, ms) {
  * page context). Falls back to Language Detector + Translator.create().
  * @returns {Promise<string>} translated text
  */
-async function translateWithChromeAI(text, targetLang) {
+async function translateWithChromeAI(text, targetLang, onProgress) {
     if (!('Translator' in globalThis)) {
         throw new Error('Chrome AI translation is not available in this browser.');
     }
+
+    const monitor = (m) => {
+        m?.addEventListener?.('downloadprogress', (event) => {
+            const pct = Math.round((event?.loaded || 0) * 100);
+            onProgress?.(pct);
+        });
+    };
 
     let sourceLang = null;
     if ('LanguageDetector' in globalThis) {
         try {
             const detAvail = await globalThis.LanguageDetector.availability();
             if (detAvail !== 'unavailable') {
-                const detector = await globalThis.LanguageDetector.create();
+                const detector = await globalThis.LanguageDetector.create({ monitor });
                 try {
                     const results = await detector.detect(text);
                     const top = Array.isArray(results) ? results[0] : null;
@@ -513,7 +520,8 @@ async function translateWithChromeAI(text, targetLang) {
 
     const translator = await globalThis.Translator.create({
         sourceLanguage: sourceLang,
-        targetLanguage: targetLang
+        targetLanguage: targetLang,
+        monitor
     });
     try {
         return await translator.translate(text);
@@ -547,10 +555,11 @@ async function handleTranslateClick(e) {
 
         let result;
         if (provider === 'chrome-ai') {
-            result = await withTimeout(
-                translateWithChromeAI(currentSelection, targetLang),
-                TRANSLATE_TIMEOUT_MS
-            );
+            const downloadLabel = chrome.i18n.getMessage('chromeAiDownloading') || 'Downloading AI model';
+            result = await translateWithChromeAI(currentSelection, targetLang, (pct) => {
+                renderTooltipLoading(`${downloadLabel}… ${pct}%`);
+                showTooltip(anchorX, anchorY, btnRect);
+            });
         } else {
             const response = await withTimeout(
                 chrome.runtime.sendMessage({
@@ -558,7 +567,7 @@ async function handleTranslateClick(e) {
                     text: currentSelection,
                     targetLang
                 }),
-                TRANSLATE_TIMEOUT_MS
+                BYOK_TRANSLATE_TIMEOUT_MS
             );
             if (response && response.success) {
                 result = response.data;

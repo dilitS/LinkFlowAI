@@ -1,6 +1,6 @@
-import { elements } from './dom-elements.js';
 import { getCurrentMode, getSelectedPromptType, setLoading, showToast } from './ui-manager.js';
 import { getCurrentTone } from './tone.js';
+import { elements } from './dom-elements.js';
 
 const MAX_CHARS = 5000;
 
@@ -81,7 +81,22 @@ async function runAction(apiClient, stateManager, force = false) {
         elements.outputText.textContent = accumulated;
     };
 
-    const options = { onStream, signal: abortController.signal, tone, force, sourceLang: elements.sourceLang.value };
+    const options = {
+        onStream,
+        signal: abortController.signal,
+        tone,
+        force,
+        sourceLang: elements.sourceLang.value,
+        onProgress: (pct) => {
+            if (abortController?.signal.aborted) return;
+            const label = chrome.i18n.getMessage('chromeAiDownloading') || 'Downloading AI model';
+            elements.outputText.textContent = `${label}… ${pct}%`;
+            if (elements.chromeAiProgress && elements.chromeAiProgressBar) {
+                elements.chromeAiProgress.classList.remove('hidden');
+                elements.chromeAiProgressBar.style.width = `${pct}%`;
+            }
+        }
+    };
 
     try {
         let result;

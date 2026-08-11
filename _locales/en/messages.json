@@ -203,6 +203,9 @@
     "errorTimeout": {
         "message": "Request timed out. Please try again with a shorter text."
     },
+    "chromeAiDownloading": {
+        "message": "Downloading AI model"
+    },
     "errorContentTooLarge": {
         "message": "Text is too long for the model. Please try a shorter text."
     },

@@ -2,6 +2,8 @@ import { elements } from './dom-elements.js';
 import { SUPPORTED_LANGUAGES, MODELS } from './constants.js';
 import { escapeHtml } from '../../lib/sanitize.js';
 import { ChromeAIProvider, CHROME_AI_STATUS } from '../../lib/chrome-ai-provider.js';
+import { getCurrentMode } from './ui-manager.js';
+import { updateToneVisibility } from './tone.js';
 
 /**
  * Populate language dropdowns
@@ -178,6 +180,8 @@ export function loadSettingsToInputs(state) {
         }
         populateTtsVoices(state.settings);
     }
+
+    updateToneVisibility(getCurrentMode(), provider);
 }
 
 /**
@@ -222,6 +226,7 @@ export function setupSettingsListeners(stateManager, showToast) {
 
             // Save provider immediately
             await stateManager.setState({ apiProvider: provider });
+            updateToneVisibility(getCurrentMode(), provider);
         });
     });
 

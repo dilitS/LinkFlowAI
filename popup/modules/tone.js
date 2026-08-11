@@ -41,10 +41,10 @@ export function getCurrentTone() {
 }
 
 /**
- * Tone only applies to translate; hidden in prompt mode.
+ * Tone only applies to translate with cloud providers; hidden for on-device AI.
  */
-export function updateToneVisibility(mode) {
+export function updateToneVisibility(mode, provider = 'chrome-ai') {
     if (!elements.toneSelector) return;
-    const visible = mode === 'translate';
+    const visible = mode === 'translate' && provider !== 'chrome-ai';
     elements.toneSelector.classList.toggle('hidden', !visible);
 }

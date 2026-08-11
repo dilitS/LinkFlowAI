@@ -13,6 +13,7 @@ const outDir = path.join(ROOT, 'releases');
 const INCLUDE = [
     'manifest.json',
     'popup/',
+    'sidepanel/',
     'background/',
     'content/',
     'lib/',
@@ -87,3 +88,9 @@ console.log(`\n✅ Package created: ${zipPath}`);
 console.log(`   Size: ${sizeMB} MB`);
 console.log(`   SHA-256: ${sha256}`);
 console.log(`   Checksum: ${checksumFile}\n`);
+
+try {
+    execSync(`node "${path.join(__dirname, 'validate-zip.js')}" "${zipPath}"`, { stdio: 'inherit' });
+} catch {
+    process.exit(1);
+}

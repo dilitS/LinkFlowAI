@@ -195,6 +195,23 @@ describe('Gemini SDK integration', () => {
             expect.objectContaining({ inlineData: { mimeType: 'image/png', data: 'abc123' } })
         ]));
     });
+
+    it('callGemini rejects empty non-streaming response', async () => {
+        mockModels.generateContent.mockResolvedValueOnce({ text: '   ' });
+        const client = makeGeminiClient();
+        await expect(client.callGemini('system', 'prompt'))
+            .rejects.toMatchObject({ code: 'EMPTY_RESPONSE' });
+    });
+
+    it('callGemini preserves HTTP status on SDK errors', async () => {
+        const sdkError = new Error('Rate limited');
+        sdkError.status = 429;
+        sdkError.code = 'RESOURCE_EXHAUSTED';
+        mockModels.generateContent.mockRejectedValueOnce(sdkError);
+        const client = makeGeminiClient();
+        await expect(client.callGemini('system', 'prompt'))
+            .rejects.toMatchObject({ status: 429, providerCode: 'RESOURCE_EXHAUSTED' });
+    });
 });
 
 describe('APIClient.validateInput', () => {
@@ -275,6 +292,14 @@ describe('Cache key includes provider and model', () => {
         const params = { text: 'hello', targetLang: 'pl', model: 'any' };
         const key1 = optimizer.generateCacheKey('translate', { ...params, provider: 'openai' });
         const key2 = optimizer.generateCacheKey('translate', { ...params, provider: 'gemini' });
+        expect(key1).not.toBe(key2);
+    });
+
+    it('produces different keys when prompt version changes', () => {
+        const optimizer = new PerformanceOptimizer();
+        const params = { text: 'hello', targetLang: 'pl', provider: 'openai', model: 'gpt-5.6-luna' };
+        const key1 = optimizer.generateCacheKey('translate', { ...params, promptVersion: 1 });
+        const key2 = optimizer.generateCacheKey('translate', { ...params, promptVersion: 2 });
         expect(key1).not.toBe(key2);
     });
 });

@@ -1,6 +1,6 @@
 {
   "name": "lingflow-ai",
-  "version": "2.0.0",
+  "version": "2.0.0-rc.1",
   "description": "AI-powered translation, text correction, and prompt engineering browser extension",
   "main": "index.js",
   "directories": {
@@ -17,19 +17,21 @@
     "build": "webpack --mode production",
     "watch": "webpack --mode development --watch",
     "verify": "npm run lint && npm test && npm run build:css && npm run build && node scripts/verify.js",
-    "package": "npm run verify && node scripts/package.js"
+    "package": "npm run verify && node scripts/package.js",
+    "package:only": "node scripts/package.js",
+    "validate-zip": "node scripts/validate-zip.js"
   },
   "keywords": ["chrome-extension", "translation", "ai", "chrome-ai", "openai", "gemini", "ocr", "tts"],
   "author": "Sebastian",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/seba/LingFlow-AI"
+    "url": "https://github.com/dilitS/LinkFlowAI"
   },
   "bugs": {
-    "url": "https://github.com/seba/LingFlow-AI/issues"
+    "url": "https://github.com/dilitS/LinkFlowAI/issues"
   },
-  "homepage": "https://github.com/seba/LingFlow-AI#readme",
+  "homepage": "https://github.com/dilitS/LinkFlowAI#readme",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.62.1",

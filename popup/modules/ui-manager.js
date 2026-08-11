@@ -15,7 +15,8 @@ function normalizeMode(mode) {
 export function switchMode(mode) {
     currentMode = normalizeMode(mode);
     localStorage.setItem(MODE_STORAGE_KEY, currentMode);
-    updateToneVisibility(currentMode);
+    const provider = document.querySelector('input[name="api-provider-select"]:checked')?.value || 'chrome-ai';
+    updateToneVisibility(currentMode, provider);
     window.dispatchEvent(new CustomEvent('lingflow:modechange', { detail: currentMode }));
 
     elements.modeTabs.forEach(tab => {

@@ -2,6 +2,28 @@
 
 All notable changes to LingFlow AI will be documented in this file.
 
+## [2.0.0-rc.1] - 2026-08-11
+
+### Added
+- `sidepanel/` included in release ZIP with post-package validation (`scripts/validate-zip.js`)
+- Chrome AI download progress in popup, settings, and on-page translation
+- `PROMPT_VERSION` in cache keys to invalidate stale results after prompt changes
+- `lib/message-validation.js` with sender, type, language, and OCR area checks
+- 15 message-validation unit tests; Chrome AI language guard tests
+- `SMOKE-TEST.md` manual QA checklist for release candidate
+- `chromeAiDownloading` i18n key (en, pl)
+- CI: full `npm run verify`, `package:only`, ZIP validation, clean CSS tree check, Playwright E2E job
+
+### Changed
+- Version bumped to `2.0.0-rc.1`
+- UI locales officially limited to **English + Polish** for v2.0 (translation picker still supports 26 languages)
+- Tone control hidden for Chrome AI translate (Translator API ignores tone)
+- Chrome AI: correct/prompt pass proper `inputLang`/`outputLang`; unsupported languages blocked early
+- On-page Chrome AI translation: no 30s timeout during first model download
+- Gemini: removed deprecated `topP`/`topK` sampling params; preserve HTTP status; reject empty responses
+- `package.json` repository URL → `https://github.com/dilitS/LinkFlowAI`
+- README rewritten for v2.0 RC (install from ZIP, model docs, privacy contact)
+
 ## [2.0.0] - Unreleased
 
 ### Added

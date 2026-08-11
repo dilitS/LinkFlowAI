@@ -28,6 +28,9 @@ export const SUPPORTED_LANGUAGES = [
     { code: 'hi', name: 'Hindi', flag: '🇮🇳' }
 ];
 
+// Bump when system prompts change so cached results are invalidated.
+export const PROMPT_VERSION = 1;
+
 // Single source of truth for available AI models.
 // Both the popup UI and APIClient import from here.
 export const CHROME_AI_PROVIDER = 'chrome-ai';

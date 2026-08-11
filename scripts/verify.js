@@ -74,6 +74,7 @@ for (const resource of manifest.web_accessible_resources || []) {
 
 // 3. Validate all locale files
 console.log('\n▸ Locale validation');
+const SUPPORTED_UI_LOCALES = ['en', 'pl'];
 const localesDir = path.join(ROOT, '_locales');
 const enMessages = JSON.parse(fs.readFileSync(path.join(localesDir, 'en', 'messages.json'), 'utf-8'));
 const enKeys = Object.keys(enMessages).sort();
@@ -81,10 +82,14 @@ const locales = fs.readdirSync(localesDir).filter(d =>
     fs.statSync(path.join(localesDir, d)).isDirectory()
 );
 
-pass(`${locales.length} locales found, en has ${enKeys.length} keys`);
+pass(`${locales.length} UI locales (v2.0: ${SUPPORTED_UI_LOCALES.join(', ')}), en has ${enKeys.length} keys`);
 
 for (const locale of locales) {
     if (locale === 'en') continue;
+    if (!SUPPORTED_UI_LOCALES.includes(locale)) {
+        fail(`unexpected locale directory: ${locale} (v2.0 supports: ${SUPPORTED_UI_LOCALES.join(', ')})`);
+        continue;
+    }
     try {
         const msgs = JSON.parse(fs.readFileSync(path.join(localesDir, locale, 'messages.json'), 'utf-8'));
         const localeKeys = Object.keys(msgs).sort();

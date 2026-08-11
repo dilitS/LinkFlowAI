@@ -128,4 +128,18 @@ describe('ChromeAIProvider.run', () => {
         expect(out).toBe('prompt-translation');
         expect(prompt).toHaveBeenCalled();
     });
+
+    it('blocks correct for unsupported Prompt API language', async () => {
+        globalThis.LanguageModel = {
+            availability: vi.fn().mockResolvedValue('unavailable'),
+            create: vi.fn()
+        };
+        const provider = new ChromeAIProvider();
+        await expect(provider.run({
+            kind: 'correct',
+            sourceLang: 'pl',
+            targetLang: 'pl',
+            prompt: 'fix'
+        })).rejects.toMatchObject({ code: CHROME_AI_ERRORS.UNAVAILABLE });
+    });
 });

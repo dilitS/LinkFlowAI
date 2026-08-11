@@ -203,6 +203,9 @@
     "errorTimeout": {
         "message": "Przekroczono czas oczekiwania. Spróbuj ponownie z krótszym tekstem."
     },
+    "chromeAiDownloading": {
+        "message": "Pobieranie modelu AI"
+    },
     "errorContentTooLarge": {
         "message": "Tekst jest zbyt długi dla modelu. Spróbuj z krótszym tekstem."
     },
