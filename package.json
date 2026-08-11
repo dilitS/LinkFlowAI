@@ -1,6 +1,6 @@
 {
   "name": "lingflow-ai",
-  "version": "1.6.0",
+  "version": "2.0.0",
   "description": "AI-powered translation, text correction, and prompt engineering browser extension",
   "main": "index.js",
   "directories": {
@@ -10,17 +10,29 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:e2e": "npx playwright test",
     "lint": "eslint lib popup background content",
     "build:css": "tailwindcss -i ./popup/input.css -o ./popup/output.css",
     "watch:css": "tailwindcss -i ./popup/input.css -o ./popup/output.css --watch",
     "build": "webpack --mode production",
-    "watch": "webpack --mode development --watch"
+    "watch": "webpack --mode development --watch",
+    "verify": "npm run lint && npm test && npm run build:css && npm run build && node scripts/verify.js",
+    "package": "npm run verify && node scripts/package.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["chrome-extension", "translation", "ai", "chrome-ai", "openai", "gemini", "ocr", "tts"],
+  "author": "Sebastian",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seba/LingFlow-AI"
+  },
+  "bugs": {
+    "url": "https://github.com/seba/LingFlow-AI/issues"
+  },
+  "homepage": "https://github.com/seba/LingFlow-AI#readme",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.62.1",
     "autoprefixer": "^10.4.22",
     "eslint": "^10.5.0",
     "globals": "^17.6.0",
