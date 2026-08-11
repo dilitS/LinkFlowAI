@@ -18,13 +18,11 @@ export function switchMode(mode) {
     updateToneVisibility(currentMode);
     window.dispatchEvent(new CustomEvent('lingflow:modechange', { detail: currentMode }));
 
-    // Update Tabs UI
     elements.modeTabs.forEach(tab => {
-        if (tab.dataset.mode === currentMode) {
-            tab.className = 'mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-white bg-[#27272a] shadow-sm transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase';
-        } else {
-            tab.className = 'mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-gray-500 hover:text-gray-300 transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase';
-        }
+        const isActive = tab.dataset.mode === currentMode;
+        tab.className = `mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg ${isActive ? 'text-white bg-[#27272a] shadow-sm' : 'text-gray-500 hover:text-gray-300'} transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase`;
+        tab.setAttribute('aria-selected', String(isActive));
+        tab.setAttribute('tabindex', isActive ? '0' : '-1');
     });
 
     // Update Action Button

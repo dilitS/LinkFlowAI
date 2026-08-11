@@ -90,10 +90,33 @@ async function initialize() {
  * Setup all event listeners
  */
 function setupEventListeners() {
-    // Mode tabs
     elements.modeTabs.forEach(tab => {
         tab.addEventListener('click', () => switchMode(tab.dataset.mode));
     });
+
+    const tabList = document.querySelector('[role="tablist"]');
+    if (tabList) {
+        tabList.addEventListener('keydown', (e) => {
+            const tabs = [...tabList.querySelectorAll('[role="tab"]')];
+            const idx = tabs.indexOf(document.activeElement);
+            if (idx < 0) return;
+            let next = -1;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                next = (idx + 1) % tabs.length;
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                next = (idx - 1 + tabs.length) % tabs.length;
+            } else if (e.key === 'Home') {
+                next = 0;
+            } else if (e.key === 'End') {
+                next = tabs.length - 1;
+            }
+            if (next >= 0) {
+                e.preventDefault();
+                tabs[next].focus();
+                tabs[next].click();
+            }
+        });
+    }
 
     // Prompt type buttons
     elements.promptTypeBtns.forEach(btn => {
