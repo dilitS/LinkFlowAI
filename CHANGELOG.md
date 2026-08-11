@@ -1,0 +1,49 @@
+# Changelog
+
+All notable changes to LingFlow AI will be documented in this file.
+
+## [2.0.0] - Unreleased
+
+### Added
+- Chrome Built-in AI (Translator, Language Detector, Prompt API) with proper execution context handling
+- Google Gemini integration via `@google/genai` SDK (replaces legacy `@google/generative-ai`)
+- OpenAI GPT-5.6 models (Luna, Terra, Sol)
+- Typed error handling with retry logic (exponential backoff + jitter + Retry-After)
+- Cache key generation includes provider and model
+- Message validation schema with size limits in background script
+- `chrome.storage.local.setAccessLevel('TRUSTED_CONTEXTS')` for API key isolation
+- 163 unit tests (Vitest) covering all core modules
+- 11 end-to-end browser tests (Playwright)
+- i18n completeness test ensuring all 26 locales match English keys
+- 49 new i18n keys for buttons, labels, filters, settings, and error messages
+- Accessibility: ARIA roles, labels, live regions, keyboard navigation, focus-visible rings
+- `prefers-reduced-motion` support
+- `npm run verify` — full verification pipeline (lint + test + build + checks)
+- `npm run package` — creates versioned ZIP with SHA-256 checksum
+- Architecture Decision Record: ADR-001 Chrome AI Context
+- CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md
+- GitHub issue and PR templates
+- NOTICES.md with third-party license information
+
+### Changed
+- Content scripts fetch preferences via `getPreferences` message instead of direct storage access
+- Popup HTML uses English fallback text with `data-i18n` attributes (no hardcoded Polish)
+- Manifest permissions minimized: removed `tabs`, narrowed `content_scripts` to `http(s)://`, scoped `web_accessible_resources`
+- README and Privacy Policy rewritten to reflect actual product behavior
+- MODE_COLORS uses `chrome.i18n.getMessage()` for localized mode labels
+
+### Removed
+- Piper TTS (incomplete implementation removed from all files)
+- Deprecated models: `gpt-4o-mini`, `gpt-4o` (migration to GPT-5.6)
+- Legacy `@google/generative-ai` SDK
+- `tabs` permission from manifest
+- `<all_urls>` from content script matches
+
+### Fixed
+- SSE streaming now correctly processes trailing buffer and validates empty responses
+- `callOpenAIVision` uses configured model instead of hardcoded one
+- Correction mode properly triggered when source and target languages match
+
+## [1.6.0] - Previous Release
+
+Initial public release with Chrome AI, OpenAI, and Gemini support.
