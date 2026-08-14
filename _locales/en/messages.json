@@ -326,17 +326,98 @@
     "toneFriendly": {
         "message": "Friendly"
     },
+    "promptCategoryGraphics": {
+        "message": "Graphics"
+    },
+    "promptCategoryVideo": {
+        "message": "Video"
+    },
+    "promptCategoryCode": {
+        "message": "Code"
+    },
+    "promptGroupGraphics": {
+        "message": "Graphics"
+    },
+    "promptGroupVideo": {
+        "message": "Video"
+    },
+    "promptGroupCode": {
+        "message": "Code"
+    },
     "promptTypePhoto": {
         "message": "Photo"
     },
     "promptTypeGraphic": {
-        "message": "Graphic"
+        "message": "Graphic & Illustration"
     },
     "promptTypeEnhance": {
-        "message": "Enhance"
+        "message": "Enhance Prompt"
     },
-    "promptTypeUniversal": {
-        "message": "Universal"
+    "promptTypeUiWeb": {
+        "message": "Web UI (App Visualization)"
+    },
+    "promptTypeUiMobile": {
+        "message": "Mobile UI (App Visualization)"
+    },
+    "promptTypeUiCollage": {
+        "message": "Mobile UI Showcase (4 Screens 16:9)"
+    },
+    "promptTypeVideoCinematic": {
+        "message": "Cinematic (Text-to-Video)"
+    },
+    "promptTypeVideoI2V": {
+        "message": "Image to Video (Motion)"
+    },
+    "promptTypeVideoProduct": {
+        "message": "3D Product Commercial"
+    },
+    "promptTypeVideoSocial": {
+        "message": "Social Media / Reels / TikTok"
+    },
+    "promptTypeVideoLoop": {
+        "message": "Seamless Loop (Ambient)"
+    },
+    "promptTypeCodeAgent": {
+        "message": "Code Agent (Implementation)"
+    },
+    "promptTypeCodeUiAesthetic": {
+        "message": "UI Aesthetic (Vibe & Style)"
+    },
+    "promptAdvancedToggle": {
+        "message": "Parameters"
+    },
+    "promptAspectRatioLabel": {
+        "message": "Aspect Ratio"
+    },
+    "promptAspectRatioAuto": {
+        "message": "Auto (Default)"
+    },
+    "promptCameraMotionLabel": {
+        "message": "Camera Motion"
+    },
+    "promptCameraAuto": {
+        "message": "Auto / Dynamic"
+    },
+    "promptCameraZoomIn": {
+        "message": "Slow Zoom In"
+    },
+    "promptCameraZoomOut": {
+        "message": "Slow Zoom Out"
+    },
+    "promptCameraPan": {
+        "message": "Pan Left/Right"
+    },
+    "promptCameraTracking": {
+        "message": "Dolly / Tracking"
+    },
+    "promptCameraOrbit": {
+        "message": "Orbit 360°"
+    },
+    "promptCameraFpv": {
+        "message": "FPV Drone"
+    },
+    "promptCameraStatic": {
+        "message": "Static Shot"
     },
     "chromeAiStatusUnsupported": {
         "message": "Not available in this browser. Chrome 138+ with built-in AI is required."

@@ -75,35 +75,61 @@
         <div id="main-content"
             class="flex-1 overflow-y-auto flex flex-col relative scroll-smooth px-4 pb-4 no-scrollbar">
 
-            <!-- PROMPT TYPE SELECTOR (Conditional) -->
-            <div id="prompt-options" class="hidden py-2 flex flex-col gap-2 animate-fade-in mb-2">
-                <div class="flex gap-2">
-                    <button id="btn-p-photo"
-                        class="prompt-type-btn flex-1 py-1.5 px-3 text-xs font-medium rounded-lg border border-orange-500/30 bg-orange-500/10 text-orange-400 flex items-center justify-center gap-2 hover:bg-orange-500/20 transition-colors"
-                        data-type="image-photo">
-                        <i class="fa-solid fa-camera"></i> <span data-i18n="promptTypePhoto">Photo</span>
+            <!-- PROMPT TYPE SELECTOR & ADVANCED PANEL -->
+            <div id="prompt-options" class="hidden py-1 flex flex-col gap-2 animate-fade-in mb-2">
+                <!-- 3 pills obok siebie -->
+                <div class="flex items-center gap-1.5 p-1 bg-[#18181b] rounded-xl border border-gray-800/50" role="tablist">
+                    <button class="prompt-category-btn flex-1 py-1.5 text-[10px] font-bold rounded-lg text-white bg-[#27272a] shadow-sm transition-all duration-200 flex justify-center items-center gap-1.5 tracking-wider uppercase" data-category="graphics" role="tab" aria-selected="true" tabindex="0">
+                        <i class="fa-solid fa-image" aria-hidden="true"></i> <span data-i18n="promptCategoryGraphics">Graphics</span>
                     </button>
-                    <button id="btn-p-graphic"
-                        class="prompt-type-btn flex-1 py-1.5 px-3 text-xs font-medium rounded-lg border border-gray-700 bg-[#1e1e1e] text-gray-500 flex items-center justify-center gap-2 hover:bg-[#252525] hover:text-gray-300 transition-colors"
-                        data-type="image-graphic">
-                        <i class="fa-solid fa-pen-nib"></i> <span data-i18n="promptTypeGraphic">Graphic</span>
+                    <button class="prompt-category-btn flex-1 py-1.5 text-[10px] font-bold rounded-lg text-gray-500 hover:text-gray-300 transition-all duration-200 flex justify-center items-center gap-1.5 tracking-wider uppercase" data-category="video" role="tab" aria-selected="false" tabindex="-1">
+                        <i class="fa-solid fa-video" aria-hidden="true"></i> <span data-i18n="promptCategoryVideo">Video</span>
                     </button>
-                    <button id="btn-p-enhance"
-                        class="prompt-type-btn flex-1 py-1.5 px-3 text-xs font-medium rounded-lg border border-gray-700 bg-[#1e1e1e] text-gray-500 flex items-center justify-center gap-2 hover:bg-[#252525] hover:text-gray-300 transition-colors"
-                        data-type="image">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="promptTypeEnhance">Enhance</span>
-                    </button>
-                    <button id="btn-p-universal"
-                        class="prompt-type-btn flex-1 py-1.5 px-3 text-xs font-medium rounded-lg border border-gray-700 bg-[#1e1e1e] text-gray-500 flex items-center justify-center gap-2 hover:bg-[#252525] hover:text-gray-300 transition-colors"
-                        data-type="image-universal">
-                        <i class="fa-solid fa-globe"></i> <span data-i18n="promptTypeUniversal">Universal</span>
+                    <button class="prompt-category-btn flex-1 py-1.5 text-[10px] font-bold rounded-lg text-gray-500 hover:text-gray-300 transition-all duration-200 flex justify-center items-center gap-1.5 tracking-wider uppercase" data-category="code" role="tab" aria-selected="false" tabindex="-1">
+                        <i class="fa-solid fa-code" aria-hidden="true"></i> <span data-i18n="promptCategoryCode">Code</span>
                     </button>
                 </div>
 
-                <input type="radio" name="prompt-type" value="image-photo" class="hidden" checked>
-                <input type="radio" name="prompt-type" value="image-graphic" class="hidden">
-                <input type="radio" name="prompt-type" value="image" class="hidden">
-                <input type="radio" name="prompt-type" value="image-universal" class="hidden">
+                <div class="flex items-center gap-1.5">
+                    <!-- Prompt Type Select -->
+                    <div class="relative flex-1 min-w-[130px] bg-[#18181b] rounded-xl border border-gray-800 hover:border-gray-700 transition-colors">
+                        <select id="prompt-type-select" aria-label="Prompt Type"
+                            class="w-full h-8 appearance-none bg-transparent pl-2.5 pr-6 text-xs font-semibold text-orange-400 hover:text-orange-300 outline-none cursor-pointer">
+                            <!-- Populated dynamically via JS -->
+                        </select>
+                        <i class="fa-solid fa-chevron-down pointer-events-none absolute right-2 top-2.5 text-[9px] text-gray-500"></i>
+                    </div>
+
+                    <!-- Aspect Ratio -->
+                    <div id="aspect-ratio-container" class="relative bg-[#18181b] rounded-xl border border-gray-800 hover:border-gray-700 transition-colors w-[80px]">
+                        <select id="prompt-aspect-ratio" aria-label="Aspect Ratio"
+                            class="w-full h-8 appearance-none bg-transparent pl-2 pr-5 text-[10px] font-semibold text-gray-300 hover:text-white outline-none cursor-pointer">
+                            <option value="auto" data-i18n="promptAspectRatioAuto">Auto</option>
+                            <option value="16:9">16:9</option>
+                            <option value="9:16">9:16</option>
+                            <option value="1:1">1:1</option>
+                            <option value="4:5">4:5</option>
+                            <option value="21:9">21:9</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down pointer-events-none absolute right-1.5 top-2.5 text-[8px] text-gray-500"></i>
+                    </div>
+
+                    <!-- Camera Motion -->
+                    <div id="camera-motion-container" class="relative bg-[#18181b] rounded-xl border border-gray-800 hover:border-gray-700 transition-colors w-[90px]">
+                        <select id="prompt-camera-motion" aria-label="Camera Motion"
+                            class="w-full h-8 appearance-none bg-transparent pl-2 pr-5 text-[10px] font-semibold text-gray-300 hover:text-white outline-none cursor-pointer">
+                            <option value="auto" data-i18n="promptCameraAuto">Auto</option>
+                            <option value="zoom-in" data-i18n="promptCameraZoomIn">Zoom In</option>
+                            <option value="zoom-out" data-i18n="promptCameraZoomOut">Zoom Out</option>
+                            <option value="pan" data-i18n="promptCameraPan">Pan</option>
+                            <option value="tracking" data-i18n="promptCameraTracking">Tracking</option>
+                            <option value="orbit" data-i18n="promptCameraOrbit">Orbit</option>
+                            <option value="fpv" data-i18n="promptCameraFpv">FPV</option>
+                            <option value="static" data-i18n="promptCameraStatic">Static</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down pointer-events-none absolute right-1.5 top-2.5 text-[8px] text-gray-500"></i>
+                    </div>
+                </div>
             </div>
 
             <!-- TONE / REGISTER SELECTOR (Translate) -->

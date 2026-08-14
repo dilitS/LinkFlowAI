@@ -6,7 +6,7 @@ import { ScreenshotManager } from '../lib/screenshot-manager.js';
 
 // Import modules
 import { elements } from './modules/dom-elements.js';
-import { switchMode, updatePromptTypeVisuals, showToast } from './modules/ui-manager.js';
+import { switchMode, updatePromptParameterVisibility, showToast, selectPromptCategory } from './modules/ui-manager.js';
 import { populateLanguages, setupSettingsListeners, loadSettingsToInputs, toggleSettings } from './modules/settings.js';
 import { setupHistoryListeners, renderHistory } from './modules/history.js';
 import { setupTranslationListeners } from './modules/translation.js';
@@ -50,6 +50,15 @@ function initI18n() {
             el.title = message;
         }
     });
+
+    // Replace label attributes (optgroup, etc.)
+    document.querySelectorAll('[data-i18n-label]').forEach(el => {
+        const key = el.getAttribute('data-i18n-label');
+        const message = chrome.i18n.getMessage(key);
+        if (message) {
+            el.label = message;
+        }
+    });
 }
 
 /**
@@ -84,6 +93,23 @@ async function initialize() {
         elements.inputText.value = savedInput;
     }
 
+    // Restore prompt settings
+    const savedPromptType = localStorage.getItem('lingflow_prompt_type') || 'image-photo';
+    const savedPromptCategory = localStorage.getItem('lingflow_prompt_category') || 'graphics';
+    selectPromptCategory(savedPromptCategory);
+    if (elements.promptTypeSelect) {
+        elements.promptTypeSelect.value = savedPromptType;
+    }
+    const savedPromptAr = localStorage.getItem('lingflow_prompt_ar');
+    if (savedPromptAr && elements.promptAspectRatio) {
+        elements.promptAspectRatio.value = savedPromptAr;
+    }
+    const savedPromptCamera = localStorage.getItem('lingflow_prompt_camera');
+    if (savedPromptCamera && elements.promptCameraMotion) {
+        elements.promptCameraMotion.value = savedPromptCamera;
+    }
+    updatePromptParameterVisibility(elements.promptTypeSelect?.value || 'image-photo');
+
     // Setup all event listeners
     setupEventListeners();
 
@@ -106,8 +132,8 @@ function setupEventListeners() {
         tab.addEventListener('click', () => switchMode(tab.dataset.mode));
     });
 
-    const tabList = document.querySelector('[role="tablist"]');
-    if (tabList) {
+    const tabLists = document.querySelectorAll('[role="tablist"]');
+    tabLists.forEach(tabList => {
         tabList.addEventListener('keydown', (e) => {
             const tabs = [...tabList.querySelectorAll('[role="tab"]')];
             const idx = tabs.indexOf(document.activeElement);
@@ -128,17 +154,39 @@ function setupEventListeners() {
                 tabs[next].click();
             }
         });
+    });
+
+    // Prompt type and parameters listeners
+    if (elements.promptCategoryBtns) {
+        elements.promptCategoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const category = btn.dataset.category;
+                selectPromptCategory(category);
+            });
+        });
     }
 
-    // Prompt type buttons
-    elements.promptTypeBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const type = btn.dataset.type;
-            const radio = document.querySelector(`input[name="prompt-type"][value="${type}"]`);
-            if (radio) radio.checked = true;
-            updatePromptTypeVisuals(type);
+    if (elements.promptTypeSelect) {
+        elements.promptTypeSelect.addEventListener('change', (e) => {
+            const type = e.target.value;
+            localStorage.setItem('lingflow_prompt_type', type);
+            updatePromptParameterVisibility(type);
         });
-    });
+    }
+
+
+
+    if (elements.promptAspectRatio) {
+        elements.promptAspectRatio.addEventListener('change', (e) => {
+            localStorage.setItem('lingflow_prompt_ar', e.target.value);
+        });
+    }
+
+    if (elements.promptCameraMotion) {
+        elements.promptCameraMotion.addEventListener('change', (e) => {
+            localStorage.setItem('lingflow_prompt_camera', e.target.value);
+        });
+    }
 
     // Setup module-specific listeners
     setupSettingsListeners(stateManager, showToast);

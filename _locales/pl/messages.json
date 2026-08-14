@@ -326,17 +326,98 @@
     "toneFriendly": {
         "message": "Przyjazny"
     },
+    "promptCategoryGraphics": {
+        "message": "Grafika"
+    },
+    "promptCategoryVideo": {
+        "message": "Wideo"
+    },
+    "promptCategoryCode": {
+        "message": "Kod"
+    },
+    "promptGroupGraphics": {
+        "message": "Grafika"
+    },
+    "promptGroupVideo": {
+        "message": "Wideo"
+    },
+    "promptGroupCode": {
+        "message": "Kod"
+    },
     "promptTypePhoto": {
         "message": "Zdjęcie"
     },
     "promptTypeGraphic": {
-        "message": "Grafika"
+        "message": "Grafika / Ilustracja"
     },
     "promptTypeEnhance": {
-        "message": "Rozbuduj"
+        "message": "Rozbuduj prompt"
     },
-    "promptTypeUniversal": {
-        "message": "Uniwersalny"
+    "promptTypeUiWeb": {
+        "message": "UI Web (Wizualizacja)"
+    },
+    "promptTypeUiMobile": {
+        "message": "UI Mobile (Wizualizacja)"
+    },
+    "promptTypeUiCollage": {
+        "message": "Kolaż UI (4 ekrany 16:9)"
+    },
+    "promptTypeVideoCinematic": {
+        "message": "Filmowy (Text-to-Video)"
+    },
+    "promptTypeVideoI2V": {
+        "message": "Image to Video (Animacja)"
+    },
+    "promptTypeVideoProduct": {
+        "message": "Prezentacja Produktu 3D"
+    },
+    "promptTypeVideoSocial": {
+        "message": "Social Media / Reels / TikTok"
+    },
+    "promptTypeVideoLoop": {
+        "message": "Seamless Loop (Pętla)"
+    },
+    "promptTypeCodeAgent": {
+        "message": "Code Agent (Implementacja)"
+    },
+    "promptTypeCodeUiAesthetic": {
+        "message": "Stylistyka UI (Vibe & Aesthetic)"
+    },
+    "promptAdvancedToggle": {
+        "message": "Parametry"
+    },
+    "promptAspectRatioLabel": {
+        "message": "Format"
+    },
+    "promptAspectRatioAuto": {
+        "message": "Auto (Domyślny)"
+    },
+    "promptCameraMotionLabel": {
+        "message": "Ruch kamery"
+    },
+    "promptCameraAuto": {
+        "message": "Auto / Dynamiczny"
+    },
+    "promptCameraZoomIn": {
+        "message": "Najazd (Zoom In)"
+    },
+    "promptCameraZoomOut": {
+        "message": "Odjazd (Zoom Out)"
+    },
+    "promptCameraPan": {
+        "message": "Obrót (Pan)"
+    },
+    "promptCameraTracking": {
+        "message": "Śledzenie (Dolly)"
+    },
+    "promptCameraOrbit": {
+        "message": "Okrążanie (Orbit 360°)"
+    },
+    "promptCameraFpv": {
+        "message": "Lot drona / FPV"
+    },
+    "promptCameraStatic": {
+        "message": "Statyczny kadr"
     },
     "chromeAiStatusUnsupported": {
         "message": "Niedostępne w tej przeglądarce. Wymagany Chrome 138+ z obsługą AI."

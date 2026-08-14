@@ -1,4 +1,4 @@
-import { getCurrentMode, getSelectedPromptType, setLoading, showToast } from './ui-manager.js';
+import { getCurrentMode, getSelectedPromptType, getPromptParameters, setLoading, showToast } from './ui-manager.js';
 import { getCurrentTone } from './tone.js';
 import { elements } from './dom-elements.js';
 
@@ -101,7 +101,8 @@ async function runAction(apiClient, stateManager, force = false) {
     try {
         let result;
         if (mode === 'prompt') {
-            result = await apiClient.generatePrompt(text, targetLang, resolvePromptType(), options);
+            const promptOptions = { ...options, ...getPromptParameters() };
+            result = await apiClient.generatePrompt(text, targetLang, resolvePromptType(), promptOptions);
         } else {
             const sourceLang = elements.sourceLang.value;
             const isSameLanguage = sourceLang !== 'auto' && sourceLang === targetLang;

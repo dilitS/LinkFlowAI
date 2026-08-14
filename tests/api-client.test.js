@@ -151,6 +151,60 @@ describe('APIClient operation routing', () => {
         expect(calls[0].sourceLang).toBe('auto');
     });
 
+    it('generatePrompt() supports all specialized graphic, video, and code types', async () => {
+        const { client, calls } = makeAiClient({ apiProvider: 'chrome-ai' });
+        const types = [
+            'image-photo', 'image-graphic', 'image-enhance',
+            'ui-web', 'ui-mobile', 'ui-collage',
+            'video-cinematic', 'video-i2v', 'video-product', 'video-social', 'video-loop',
+            'code-agent', 'code-ui-aesthetic'
+        ];
+
+        for (const type of types) {
+            await client.generatePrompt('test prompt idea', 'pl', type);
+        }
+
+        expect(calls.length).toBe(types.length);
+        calls.forEach(call => {
+            expect(call.kind).toBe('generate');
+            expect(call.targetLang).toBe('pl');
+        });
+    });
+
+    it('generatePrompt() includes aspectRatio and cameraMotion in options', async () => {
+        const client = makeClient({ apiProvider: 'openai', openaiApiKey: 'test-key' });
+        let capturedArgs = null;
+        client._runText = (args) => {
+            capturedArgs = args;
+            return Promise.resolve('ok');
+        };
+
+        await client.generatePrompt('scenic view', 'en', 'video-cinematic', {
+            aspectRatio: '16:9',
+            cameraMotion: 'zoom-in'
+        });
+
+        expect(capturedArgs.systemInstruction).toContain('Aspect ratio: 16:9');
+        expect(capturedArgs.systemInstruction).toContain('Camera Motion: zoom-in');
+        expect(capturedArgs.cacheParams.aspectRatio).toBe('16:9');
+        expect(capturedArgs.cacheParams.cameraMotion).toBe('zoom-in');
+    });
+
+    it('generatePrompt() for ui-collage defaults to 16:9 widescreen format and clean mockup', async () => {
+        const client = makeClient({ apiProvider: 'openai', openaiApiKey: 'test-key' });
+        let capturedArgs = null;
+        client._runText = (args) => {
+            capturedArgs = args;
+            return Promise.resolve('ok');
+        };
+
+        await client.generatePrompt('fitness tracker app', 'en', 'ui-collage');
+
+        expect(capturedArgs.systemInstruction).toContain('Aspect ratio: 16:9');
+        expect(capturedArgs.systemInstruction).toContain('4-screen');
+        expect(capturedArgs.systemInstruction).toContain('NO hands');
+    });
+
     it('correct() and translate() invoke different operations', async () => {
         const { client, kinds } = makeAiClient({ apiProvider: 'chrome-ai' });
         await client.translate('hi', 'en');

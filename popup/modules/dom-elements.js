@@ -46,8 +46,12 @@ export const elements = {
     historyFilterBtns: document.querySelectorAll('.history-filter-btn'),
 
     promptOptions: document.getElementById('prompt-options'),
-    promptTypeBtns: document.querySelectorAll('.prompt-type-btn'),
-    promptTypeRadios: document.getElementsByName('prompt-type'),
+    promptCategoryBtns: document.querySelectorAll('.prompt-category-btn'),
+    promptTypeSelect: document.getElementById('prompt-type-select'),
+    aspectRatioContainer: document.getElementById('aspect-ratio-container'),
+    promptAspectRatio: document.getElementById('prompt-aspect-ratio'),
+    cameraMotionContainer: document.getElementById('camera-motion-container'),
+    promptCameraMotion: document.getElementById('prompt-camera-motion'),
 
     toast: document.getElementById('toast'),
 

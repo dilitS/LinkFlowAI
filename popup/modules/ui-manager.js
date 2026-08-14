@@ -5,6 +5,71 @@ import { updateToneVisibility } from './tone.js';
 const MODE_STORAGE_KEY = 'lingflow_mode';
 let currentMode = localStorage.getItem(MODE_STORAGE_KEY) || 'translate';
 
+export const PROMPT_CATEGORIES = {
+    graphics: [
+        { value: 'image-photo', key: 'promptTypePhoto' },
+        { value: 'image-graphic', key: 'promptTypeGraphic' },
+        { value: 'image-enhance', key: 'promptTypeEnhance' },
+        { value: 'ui-web', key: 'promptTypeUiWeb' },
+        { value: 'ui-mobile', key: 'promptTypeUiMobile' },
+        { value: 'ui-collage', key: 'promptTypeUiCollage' }
+    ],
+    video: [
+        { value: 'video-cinematic', key: 'promptTypeVideoCinematic' },
+        { value: 'video-i2v', key: 'promptTypeVideoI2V' },
+        { value: 'video-product', key: 'promptTypeVideoProduct' },
+        { value: 'video-social', key: 'promptTypeVideoSocial' },
+        { value: 'video-loop', key: 'promptTypeVideoLoop' }
+    ],
+    code: [
+        { value: 'code-agent', key: 'promptTypeCodeAgent' },
+        { value: 'code-ui-aesthetic', key: 'promptTypeCodeUiAesthetic' }
+    ]
+};
+
+export function getPromptCategoryFromType(type) {
+    if (type?.startsWith('video')) return 'video';
+    if (type?.startsWith('code')) return 'code';
+    return 'graphics';
+}
+
+export function populatePromptStyles(category, selectedType = null) {
+    if (!elements.promptTypeSelect) return;
+    elements.promptTypeSelect.innerHTML = '';
+
+    const styles = PROMPT_CATEGORIES[category] || [];
+    styles.forEach(style => {
+        const option = document.createElement('option');
+        option.value = style.value;
+        option.textContent = chrome.i18n.getMessage(style.key) || style.value;
+        elements.promptTypeSelect.appendChild(option);
+    });
+
+    if (selectedType && styles.some(s => s.value === selectedType)) {
+        elements.promptTypeSelect.value = selectedType;
+    } else if (styles.length > 0) {
+        elements.promptTypeSelect.value = styles[0].value;
+    }
+
+    localStorage.setItem('lingflow_prompt_type', elements.promptTypeSelect.value);
+    updatePromptParameterVisibility(elements.promptTypeSelect.value);
+}
+
+export function selectPromptCategory(category) {
+    localStorage.setItem('lingflow_prompt_category', category);
+    
+    // Update pills styling
+    elements.promptCategoryBtns.forEach(btn => {
+        const isActive = btn.dataset.category === category;
+        btn.className = `prompt-category-btn flex-1 py-1.5 text-[10px] font-bold rounded-lg ${isActive ? 'text-white bg-[#27272a] shadow-sm' : 'text-gray-500 hover:text-gray-300'} transition-all duration-200 flex justify-center items-center gap-1.5 tracking-wider uppercase`;
+        btn.setAttribute('aria-selected', String(isActive));
+        btn.setAttribute('tabindex', isActive ? '0' : '-1');
+    });
+
+    const savedType = localStorage.getItem('lingflow_prompt_type');
+    populatePromptStyles(category, savedType);
+}
+
 function normalizeMode(mode) {
     return mode === 'prompt' ? 'prompt' : 'translate';
 }
@@ -42,35 +107,44 @@ export function switchMode(mode) {
         elements.ocrBtn.style.display = 'none';
         elements.inputText.placeholder = chrome.i18n.getMessage("inputPlaceholderPrompt");
         elements.outputLabel.textContent = chrome.i18n.getMessage("promptMode");
-        updatePromptTypeVisuals(getSelectedPromptType());
+        
+        const savedType = getSelectedPromptType();
+        const category = getPromptCategoryFromType(savedType);
+        selectPromptCategory(category);
     }
 }
 
 /**
- * Update prompt type button visuals
+ * Update visibility of advanced prompt parameters based on selected type
  */
-export function updatePromptTypeVisuals(type) {
-    elements.promptTypeBtns.forEach(btn => {
-        if (btn.dataset.type === type) {
-            if (type === 'image-universal') {
-                btn.className = 'prompt-type-btn flex-1 py-2 px-3 text-xs font-medium rounded-lg border border-green-500/30 bg-green-500/10 text-green-400 flex items-center justify-center gap-2 hover:bg-green-500/20 transition-colors';
-            } else {
-                btn.className = 'prompt-type-btn flex-1 py-2 px-3 text-xs font-medium rounded-lg border border-orange-500/30 bg-orange-500/10 text-orange-400 flex items-center justify-center gap-2 hover:bg-orange-500/20 transition-colors';
-            }
-        } else {
-            btn.className = 'prompt-type-btn flex-1 py-2 px-3 text-xs font-medium rounded-lg border border-gray-700 bg-[#1e1e1e] text-gray-500 flex items-center justify-center gap-2 hover:bg-[#252525] hover:text-gray-300 transition-colors';
-        }
-    });
+export function updatePromptParameterVisibility(type) {
+    const isVideo = type?.startsWith('video');
+    const isCode = type?.startsWith('code');
+
+    if (elements.cameraMotionContainer) {
+        elements.cameraMotionContainer.style.display = isVideo ? 'flex' : 'none';
+    }
+
+    if (elements.aspectRatioContainer) {
+        elements.aspectRatioContainer.style.display = isCode ? 'none' : 'flex';
+    }
 }
 
 /**
  * Get selected prompt type
  */
 export function getSelectedPromptType() {
-    for (const radio of elements.promptTypeRadios) {
-        if (radio.checked) return radio.value;
-    }
-    return 'image-photo';
+    return elements.promptTypeSelect?.value || localStorage.getItem('lingflow_prompt_type') || 'image-photo';
+}
+
+/**
+ * Get selected prompt parameters (aspect ratio, camera motion)
+ */
+export function getPromptParameters() {
+    return {
+        aspectRatio: elements.promptAspectRatio?.value || localStorage.getItem('lingflow_prompt_ar') || 'auto',
+        cameraMotion: elements.promptCameraMotion?.value || localStorage.getItem('lingflow_prompt_camera') || 'auto'
+    };
 }
 
 /**

@@ -7,7 +7,7 @@
 <p><strong>AI-powered translation, text correction, and prompt engineering — right in your browser.</strong></p>
 
 <p>
-  <a href="#installation"><img src="https://img.shields.io/badge/version-2.0.0--rc.1-blue?style=flat-square" alt="Version"></a>
+  <a href="#installation"><img src="https://img.shields.io/badge/version-2.0.0--rc.2-blue?style=flat-square" alt="Version"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License"></a>
   <img src="https://img.shields.io/badge/Manifest-V3-orange?style=flat-square" alt="Manifest V3">
   <img src="https://img.shields.io/badge/UI-locales%20en%20%2B%20pl-success?style=flat-square" alt="UI locales">
@@ -26,7 +26,7 @@
 
 ---
 
-LingFlow AI is an open-source, Manifest V3 browser extension that combines AI translation, text correction, OCR, text-to-speech, and image-prompt engineering in a single workspace. Work from the popup, side panel, or directly on any page.
+LingFlow AI is an open-source, Manifest V3 browser extension that combines AI translation, text correction, OCR, text-to-speech, and prompt engineering (graphics, video & code) in a single workspace. Work from the popup, side panel, or directly on any page.
 
 > **v2.0 UI languages:** English and Polish (`_locales/en`, `_locales/pl`). Translation targets still include 26 languages in the language picker.
 
@@ -51,7 +51,7 @@ LingFlow AI supports two tiers:
 
 ### From a release ZIP
 
-1. Download `lingflow-ai-v2.0.0-rc.1.zip` from [GitHub Releases](https://github.com/dilitS/LinkFlowAI/releases).
+1. Download `lingflow-ai-v2.0.0-rc.2.zip` from [GitHub Releases](https://github.com/dilitS/LinkFlowAI/releases).
 2. Unzip to a folder.
 3. Open `chrome://extensions` → **Developer mode** → **Load unpacked** → select the folder.
 
@@ -86,8 +86,24 @@ See [Build from source](#build-from-source).
 
 ### Prompt engineering
 
-- **Photo**, **Graphic**, **Expand** — image prompt modes.
-- Chrome AI outputs English for photo/graphic modes.
+- **Category Pills**: Quick switching between **Graphics**, **Video**, and **Code** prompt domains.
+- **Graphics (Nano Banana & Diffusion models)**:
+  - *Photo*: Structured formula (Subject, Style, Composition, Lighting, Camera, Constraints).
+  - *Graphic design*: Vector, 3D icons, minimal, editorial, and branding visual prompts.
+  - *Enhance / Expand*: Turn rough text or tag-lists into full descriptive prompts.
+  - *Web UI Mockup*: Clean Dribbble/Behance-level UI mockups (strictly no hands/stock lifestyle clutter).
+  - *Mobile App UI*: Flat and isometric mobile screen presentations with touch ergonomics.
+  - *4-Screen UI Collage*: Panoramic 16:9 4-screen app showcase (Onboarding, Dashboard, Detail, Profile).
+- **Video (Sora, Runway, Kling, Luma, Veo)**:
+  - *Cinematic*: Dynamic camera angles, volumetric fog, fluid dynamics, and 60fps lighting cues.
+  - *Image-to-Video (I2V)*: Static frame animation with subject consistency.
+  - *3D Product Commercial*: Macro studio lighting and luxury industrial design reveal.
+  - *Social Media*: High-energy hooks for TikTok, Reels, and Shorts.
+  - *Seamless Loop*: Ambient backgrounds, lofi animations, and wallpaper motion.
+- **Code (AI Assistants & Design Directives)**:
+  - *AI Coding Agent*: Concise, actionable task prompts with signatures, logic, and edge cases.
+  - *UI Aesthetic Spec*: Avant-garde design direction, spatial rhythm, and kinetic styling specifications.
+- **Inline Controls**: Direct inline aspect ratio selector (`16:9`, `9:16`, `1:1`, `4:5`, `21:9`) and camera motion selector (`zoom-in/out`, `pan`, `tracking`, `orbit`, `fpv`, `static`).
 
 ### OCR & screenshot translation (BYOK only)
 
@@ -110,7 +126,7 @@ See [Build from source](#build-from-source).
 | --- | --- |
 | **Translate** | *Translate* tab → languages → text → action button |
 | **Fix text** | Same source/target language → **Translate** |
-| **Generate prompt** | *Prompt* tab → type → **Generate** |
+| **Generate prompt** | *Prompt* tab → Category (Graphics/Video/Code) → Type & Parameters → **Generate** |
 | **OCR** | Camera icon → drag region (BYOK) |
 | **On-page** | Select text → floating button |
 | **Side panel** | `Ctrl+Shift+Y` / `Cmd+Shift+Y` |
