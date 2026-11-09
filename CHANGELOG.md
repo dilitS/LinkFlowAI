@@ -2,6 +2,15 @@
 
 All notable changes to LingFlow AI will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+- System prompts rewritten for 2026 models and moved to `lib/prompts.js`: XML-tagged rules, user text wrapped as data (no more answering instead of translating), minimal-edit proofreading, narrative image prompts with positive exclusions, video prompts with camera/audio/dialogue, structured coding-agent and design briefs
+- Gemini 3.x requests drop deprecated `temperature`/`topP`/`topK` and set `thinkingConfig.thinkingLevel` per operation; output cap raised to 8192 tokens because it includes thinking tokens (2000 could truncate or empty responses)
+- OpenAI GPT-5.x requests use `max_completion_tokens` and `reasoning_effort` instead of `max_tokens`/`temperature`
+- `gemini-3.5-flash` removed from the model list (deprecated; the API routes it to `gemini-3.6-flash`)
+- `PROMPT_VERSION` bumped to 2 to invalidate cached results
+
 ## [2.0.0-rc.2] - 2026-08-11
 
 ### Fixed

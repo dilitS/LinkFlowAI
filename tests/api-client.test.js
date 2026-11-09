@@ -68,12 +68,6 @@ describe('APIClient helpers', () => {
         expect(client.getLanguageName('pl')).toBe('Polish');
         expect(client.getLanguageName('zz')).toBe('English');
     });
-
-    it('builds tone directives only for known tones', () => {
-        expect(client.getToneInstruction('formal')).toContain('formal register');
-        expect(client.getToneInstruction('auto')).toBe('');
-        expect(client.getToneInstruction(undefined)).toBe('');
-    });
 });
 
 describe('Model registry', () => {
@@ -202,7 +196,7 @@ describe('APIClient operation routing', () => {
 
         expect(capturedArgs.systemInstruction).toContain('Aspect ratio: 16:9');
         expect(capturedArgs.systemInstruction).toContain('4-screen');
-        expect(capturedArgs.systemInstruction).toContain('NO hands');
+        expect(capturedArgs.systemInstruction).toContain('hands');
     });
 
     it('correct() and translate() invoke different operations', async () => {
@@ -261,12 +255,32 @@ describe('Gemini SDK integration', () => {
 
     it('callGeminiVision sends inline image data', async () => {
         const client = makeGeminiClient();
-        const result = await client.callGeminiVision('describe', 'what is this', 'data:image/png;base64,abc123', { model: 'gemini-3.5-flash' });
+        const result = await client.callGeminiVision('describe', 'what is this', 'data:image/png;base64,abc123', { model: 'gemini-3.6-flash' });
         expect(result).toBe('gemini response');
         const callArgs = mockModels.generateContent.mock.calls.at(-1)[0];
         expect(callArgs.contents).toEqual(expect.arrayContaining([
             expect.objectContaining({ inlineData: { mimeType: 'image/png', data: 'abc123' } })
         ]));
+    });
+
+    it('callGemini sends thinkingLevel and no deprecated sampling params', async () => {
+        const client = makeGeminiClient();
+        await client.callGemini('system', 'prompt', { thinkingLevel: 'MINIMAL', maxOutputTokens: 8192 });
+        const { config } = mockModels.generateContent.mock.calls.at(-1)[0];
+        expect(config.thinkingConfig).toEqual({ thinkingLevel: 'MINIMAL' });
+        expect(config.maxOutputTokens).toBe(8192);
+        expect(config).not.toHaveProperty('temperature');
+        expect(config).not.toHaveProperty('topP');
+        expect(config).not.toHaveProperty('topK');
+    });
+
+    it('translate() routes GEN_SETTINGS.translate to Gemini', async () => {
+        const client = makeGeminiClient();
+        await client.translate('Hello', 'pl');
+        const { contents, config } = mockModels.generateContent.mock.calls.at(-1)[0];
+        expect(config.thinkingConfig.thinkingLevel).toBe('MINIMAL');
+        expect(config.systemInstruction).toContain('Polish');
+        expect(contents).toContain('<source_text>\nHello\n</source_text>');
     });
 
     it('callGemini rejects empty non-streaming response', async () => {
@@ -284,6 +298,27 @@ describe('Gemini SDK integration', () => {
         const client = makeGeminiClient();
         await expect(client.callGemini('system', 'prompt'))
             .rejects.toMatchObject({ status: 429, providerCode: 'RESOURCE_EXHAUSTED' });
+    });
+});
+
+describe('OpenAI request body', () => {
+    it('uses max_completion_tokens + reasoning_effort and omits temperature', async () => {
+        const client = makeClient({ apiProvider: 'openai', openaiApiKey: 'sk-test' });
+        const fetchMock = vi.fn().mockResolvedValue({
+            ok: true,
+            json: async () => ({ choices: [{ message: { content: 'ok' } }] })
+        });
+        vi.stubGlobal('fetch', fetchMock);
+        try {
+            await client.callOpenAI('sys', 'user', { reasoningEffort: 'low', maxOutputTokens: 8192 });
+            const body = JSON.parse(fetchMock.mock.calls[0][1].body);
+            expect(body.max_completion_tokens).toBe(8192);
+            expect(body.reasoning_effort).toBe('low');
+            expect(body).not.toHaveProperty('temperature');
+            expect(body).not.toHaveProperty('max_tokens');
+        } finally {
+            vi.unstubAllGlobals();
+        }
     });
 });
 

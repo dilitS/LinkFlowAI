@@ -63,7 +63,7 @@ export function getLanguageLabel(code) {
 }
 
 // Bump when system prompts change so cached results are invalidated.
-export const PROMPT_VERSION = 1;
+export const PROMPT_VERSION = 2;
 
 // Single source of truth for available AI models.
 // Both the popup UI and APIClient import from here.
@@ -81,7 +81,6 @@ export const MODELS = {
     ],
     gemini: [
         { id: 'gemini-3.5-flash-lite', name: 'Gemini 3.5 Flash Lite' },
-        { id: 'gemini-3.5-flash', name: 'Gemini 3.5 Flash' },
         { id: 'gemini-3.6-flash', name: 'Gemini 3.6 Flash' }
     ]
 };
@@ -103,7 +102,9 @@ export const DEPRECATED_MODELS = [
     'gemini-2.5-flash',
     'gemini-3.1-flash-lite',
     'gemini-3.1-flash-lite-preview',
-    'gemini-3-flash-preview'
+    'gemini-3-flash-preview',
+    // Deprecated; the API auto-routes it to gemini-3.6-flash.
+    'gemini-3.5-flash'
 ];
 
 // Tone / register presets used by Translate mode.
