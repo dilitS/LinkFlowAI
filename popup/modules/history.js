@@ -2,6 +2,7 @@ import { elements } from './dom-elements.js';
 import { switchMode } from './ui-manager.js';
 import { setTone } from './tone.js';
 import { resizeInputTextarea } from './translation.js';
+import { setOutputText, renderCorrection } from './output.js';
 import { escapeHtml } from '../../lib/sanitize.js';
 
 let isHistoryOpen = false;
@@ -9,6 +10,12 @@ let historyFilter = 'all';
 let historySearch = '';
 
 function getItemBadge(item) {
+    if (item.mode === 'correct') {
+        return {
+            color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+            label: chrome.i18n.getMessage('correctMode')
+        };
+    }
     if (item.mode === 'prompt') {
         return {
             color: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
@@ -24,7 +31,7 @@ function getItemBadge(item) {
 function normalizeHistoryItem(item) {
     return {
         ...item,
-        mode: item.mode === 'correct' ? 'translate' : item.mode,
+        mode: item.mode,
         input: item.input || item.sourceText || '',
         output: item.output || item.targetText || '',
         pinned: !!item.pinned
@@ -40,7 +47,9 @@ function getFilteredHistory(history) {
         })
         .filter(item => {
             if (historyFilter === 'pinned' && !item.pinned) return false;
-            if (historyFilter !== 'all' && historyFilter !== 'pinned' && item.mode !== historyFilter) return false;
+            // The Translate filter also covers corrections (both are text work).
+            const itemGroup = item.mode === 'correct' ? 'translate' : item.mode;
+            if (historyFilter !== 'all' && historyFilter !== 'pinned' && itemGroup !== historyFilter) return false;
 
             if (!historySearch) return true;
             const haystack = `${item.input} ${item.output} ${item.targetLang || ''} ${item.tone || ''}`.toLowerCase();
@@ -178,7 +187,9 @@ export function renderHistory(history, stateManager, showToast) {
 
             switchMode(historyItem.mode || 'translate');
             if (historyItem.tone) setTone(historyItem.tone);
-            if (historyItem.targetLang) {
+            if (historyItem.mode === 'correct') {
+                if (historyItem.targetLang) elements.sourceLang.value = historyItem.targetLang;
+            } else if (historyItem.targetLang) {
                 elements.targetLang.value = historyItem.targetLang;
                 localStorage.setItem('lingflow_target_lang', historyItem.targetLang);
             }
@@ -187,9 +198,11 @@ export function renderHistory(history, stateManager, showToast) {
             localStorage.setItem('lingflow_input_text', historyItem.input);
             resizeInputTextarea();
             elements.inputText.dispatchEvent(new Event('input', { bubbles: true }));
-            elements.outputText.innerText = historyItem.output;
-            elements.outputText.classList.remove('italic', 'text-gray-500');
-            elements.outputText.classList.add('text-gray-200');
+            if (historyItem.mode === 'correct') {
+                renderCorrection(historyItem.input, historyItem.output);
+            } else {
+                setOutputText(historyItem.output);
+            }
         });
     });
 

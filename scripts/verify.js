@@ -96,6 +96,10 @@ for (const cs of manifest.content_scripts || []) {
     for (const cssFile of cs.css || []) checkFile(cssFile, 'content_script CSS');
 }
 
+// Injected on demand by lib/content-injection.js (no manifest content_scripts).
+const INJECTED_FILES = ['content/content.js', 'content/content.css', 'assets/css/inter.css'];
+for (const file of INJECTED_FILES) checkFile(file, 'injected content script');
+
 for (const resource of manifest.web_accessible_resources || []) {
     for (const r of resource.resources || []) {
         if (r.includes('*')) continue;

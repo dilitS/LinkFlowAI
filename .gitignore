@@ -8,3 +8,4 @@ server/
 docs/
 !docs/ADR-*.md
 test-results/
+evals/results/

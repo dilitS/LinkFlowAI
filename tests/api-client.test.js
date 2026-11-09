@@ -106,6 +106,14 @@ describe('APIClient operation routing', () => {
         const kinds = [];
         const calls = [];
         client.chromeAI.run = async (args) => { kinds.push(args.kind); calls.push(args); return 'out'; };
+        // Pass-through language plan (all languages supported on-device).
+        client.chromeAI.planPromptLanguages = async ({ text, sourceLang, targetLang }) => ({
+            text,
+            inputLang: sourceLang === 'auto' ? undefined : sourceLang,
+            outputLang: targetLang,
+            inputTranslated: false,
+            outputFallback: false
+        });
         client.optimizer = {
             generateCacheKey: () => Math.random().toString(),
             getCache: () => null,
@@ -137,6 +145,26 @@ describe('APIClient operation routing', () => {
         const { client, calls } = makeAiClient({ apiProvider: 'chrome-ai' });
         await client.generatePrompt('pomysł na zdjęcie', 'en', 'image-photo', { sourceLang: 'pl' });
         expect(calls[0]).toMatchObject({ kind: 'generate', sourceLang: 'pl', text: 'pomysł na zdjęcie' });
+    });
+
+    it('generatePrompt() uses the on-device language plan and reports an English fallback', async () => {
+        const { client, calls } = makeAiClient({ apiProvider: 'chrome-ai' });
+        client.chromeAI.planPromptLanguages = async () => ({
+            text: 'a cat on a roof', inputLang: 'en', outputLang: 'en', inputTranslated: true, outputFallback: true
+        });
+        const notices = [];
+        await client.generatePrompt('kot na dachu', 'pl', 'image-photo', { sourceLang: 'pl', onNotice: (c) => notices.push(c) });
+        expect(calls[0]).toMatchObject({ text: 'a cat on a roof', sourceLang: 'en', targetLang: 'en' });
+        expect(calls[0].prompt).toContain('a cat on a roof');
+        expect(calls[0].systemInstruction).toContain('in English');
+        expect(notices).toEqual(['PROMPT_OUTPUT_ENGLISH']);
+    });
+
+    it('correct() accepts auto and lets the model keep the text language', async () => {
+        const { client, calls } = makeAiClient({ apiProvider: 'chrome-ai' });
+        await client.correct('tekst', 'auto');
+        expect(calls[0]).toMatchObject({ kind: 'correct', sourceLang: 'auto', targetLang: 'auto' });
+        expect(calls[0].systemInstruction).toContain('whatever language the text is written in');
     });
 
     it('generatePrompt() defaults to auto when no source language is given', async () => {

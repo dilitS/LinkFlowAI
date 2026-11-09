@@ -134,3 +134,14 @@ describe('validateMessage — rejection cases', () => {
         }, contentSender(), EXT_ID)).toEqual({ valid: true });
     });
 });
+
+describe('correct_selection', () => {
+    it('accepts text without a target language', () => {
+        expect(validateMessage({ action: 'correct_selection', text: 'tekst' }, contentSender(), EXT_ID)).toEqual({ valid: true });
+    });
+
+    it('rejects text over the limit', () => {
+        expect(validateMessage({ action: 'correct_selection', text: 'x'.repeat(5001) }, contentSender(), EXT_ID))
+            .toMatchObject({ valid: false, code: 'INPUT_TOO_LONG' });
+    });
+});

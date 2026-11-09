@@ -19,6 +19,8 @@ export const elements = {
     sourceLang: document.getElementById('source-lang'),
     targetLang: document.getElementById('target-lang'),
     swapLangBtn: document.getElementById('swap-lang-btn'),
+    outputMeta: document.getElementById('output-meta'),
+    selectionButtonToggle: document.getElementById('selection-button-toggle'),
     inputText: document.getElementById('input-text'),
     actionBtn: document.getElementById('action-btn'),
     inputTtsBtn: document.getElementById('input-tts-btn'),

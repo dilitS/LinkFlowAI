@@ -45,7 +45,12 @@ Use a **clean Chrome profile** (or guest window) and the release ZIP from `relea
 
 ## Regression
 
-- [ ] No console errors in popup, side panel, or example.com with content script
+- [ ] No console errors in popup, side panel, or example.com after a context-menu action
+- [ ] Right-click a selection → "Translate with LingFlow" shows the tooltip; "Correct with LingFlow" works with a cloud key and explains the key requirement with Chrome AI
+- [ ] Right-click a page → OCR item starts the area selection (cloud key)
+- [ ] Settings → "Show translate button…" asks for site access; the button appears after a page reload; turning it off removes access
+- [ ] Correct tab: proofreading shows red/green word diff and a change count; Copy copies the clean text
+- [ ] Chrome AI + Polish idea in Prompt tab: prompt is generated in English with a notice
 - [ ] History saves and restores entries
 - [ ] TTS plays on input/output (Web Speech or Chrome TTS)
 

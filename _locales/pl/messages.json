@@ -60,7 +60,7 @@
         "message": "Wykryj automatycznie"
     },
     "inputPlaceholderCorrect": {
-        "message": "Wklej tekst do sprawdzenia..."
+        "message": "Wklej lub wpisz tekst do korekty…"
     },
     "inputPlaceholderPrompt": {
         "message": "Opisz co chcesz wygenerować..."
@@ -436,5 +436,62 @@
     },
     "chromeAiStatusCheckFailed": {
         "message": "Nie udało się sprawdzić dostępności Chrome AI."
+    },
+    "modeTextCorrect": {
+        "message": "Popraw"
+    },
+    "correctionChanges": {
+        "message": "Poprawki: $COUNT$",
+        "placeholders": {
+            "count": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "correctionNoChanges": {
+        "message": "Bez zmian, tekst jest poprawny"
+    },
+    "correctionLangHint": {
+        "message": "Język tekstu"
+    },
+    "noticePromptEnglish": {
+        "message": "Gemini Nano nie obsługuje jeszcze tego języka, więc prompt jest po angielsku (modele obrazu i wideo najlepiej rozumieją angielski)."
+    },
+    "btnOpenSettings": {
+        "message": "Otwórz ustawienia"
+    },
+    "errorChromeAiLanguage": {
+        "message": "Wbudowane AI Chrome (Gemini Nano) nie obsługuje jeszcze języka: $LANG$ w tej funkcji. Dodaj darmowy klucz Gemini w Ustawieniach albo użyj angielskiego, hiszpańskiego, japońskiego, niemieckiego lub francuskiego.",
+        "placeholders": {
+            "lang": {
+                "content": "$1",
+                "example": "Polish"
+            }
+        }
+    },
+    "settingSelectionButton": {
+        "message": "Pokazuj przycisk tłumaczenia po zaznaczeniu tekstu"
+    },
+    "settingSelectionButtonHint": {
+        "message": "Wymaga dostępu do wszystkich stron. Bez tego używaj menu pod prawym przyciskiem myszy."
+    },
+    "ctxTranslate": {
+        "message": "Przetłumacz (LingFlow)"
+    },
+    "ctxCorrect": {
+        "message": "Popraw (LingFlow)"
+    },
+    "ctxOcr": {
+        "message": "Przetłumacz tekst z obszaru ekranu (OCR)"
+    },
+    "errorInlineCorrectNeedsKey": {
+        "message": "Korekta na stronie wymaga klucza Gemini lub OpenAI. Przy wbudowanym AI użyj zakładki Korekta w oknie LingFlow."
+    },
+    "errorPageNotSupported": {
+        "message": "LingFlow nie działa na tej stronie (strony przeglądarki i Chrome Web Store są chronione)."
+    },
+    "permissionDenied": {
+        "message": "Nie przyznano uprawnienia."
     }
 }

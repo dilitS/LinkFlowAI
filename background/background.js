@@ -1,15 +1,74 @@
 import { APIClient } from '../dist/lib/api-client.bundle.js';
 import { StateManager } from '../dist/lib/state-manager.bundle.js';
 import { validateMessage } from '../lib/message-validation.js';
+import { ensureContentScript, unregisterSelectionScript, ALL_SITES } from '../lib/content-injection.js';
 
 console.log('LingFlow AI Background Service Worker Loaded');
 
 const stateManager = new StateManager();
 const apiClient = new APIClient(stateManager);
 
+const MENU = {
+    translate: 'lingflow-translate',
+    correct: 'lingflow-correct',
+    ocr: 'lingflow-ocr'
+};
+
+function createContextMenus() {
+    chrome.contextMenus.removeAll(() => {
+        chrome.contextMenus.create({ id: MENU.translate, title: chrome.i18n.getMessage('ctxTranslate'), contexts: ['selection'] });
+        chrome.contextMenus.create({ id: MENU.correct, title: chrome.i18n.getMessage('ctxCorrect'), contexts: ['selection', 'editable'] });
+        chrome.contextMenus.create({ id: MENU.ocr, title: chrome.i18n.getMessage('ctxOcr'), contexts: ['page', 'image'] });
+    });
+}
+
 chrome.runtime.onInstalled.addListener(() => {
     console.log('LingFlow AI Installed');
     chrome.storage.local.setAccessLevel?.({ accessLevel: 'TRUSTED_CONTEXTS' });
+    createContextMenus();
+});
+
+// A context-menu click grants activeTab, so the content script can be
+// injected into this tab without broad host permissions.
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+    if (!tab?.id || tab.id < 0) return;
+    try {
+        await ensureContentScript(tab.id);
+    } catch (error) {
+        console.warn('LingFlow cannot run on this page:', error.message);
+        return;
+    }
+
+    if (info.menuItemId === MENU.ocr) {
+        await stateManager.loadState();
+        const provider = stateManager.state.apiProvider;
+        if (provider !== 'openai' && provider !== 'gemini') {
+            chrome.tabs.sendMessage(tab.id, {
+                action: 'show_translation_error',
+                error: chrome.i18n.getMessage('errorOcrRequiresKey')
+            });
+            return;
+        }
+        chrome.tabs.sendMessage(tab.id, {
+            action: 'start_ocr_selection',
+            targetLang: stateManager.state.settings?.defaultTargetLang || 'pl'
+        });
+        return;
+    }
+
+    const kind = info.menuItemId === MENU.correct ? 'correct' : 'translate';
+    chrome.tabs.sendMessage(tab.id, {
+        action: 'run_selection_action',
+        kind,
+        text: info.selectionText || ''
+    }, { frameId: 0 });
+});
+
+// If the user revokes "all sites" access in chrome://extensions, stop the
+// opt-in selection script so it does not fail on every page load.
+chrome.permissions.onRemoved.addListener(async (removed) => {
+    const lostAllSites = (removed.origins || []).some(origin => ALL_SITES.origins.includes(origin));
+    if (lostAllSites) await unregisterSelectionScript();
 });
 
 // The active tab is passed straight to the listener so we can call
@@ -31,7 +90,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         return false;
     }
 
-    if (request.action === 'translate_selection') {
+    if (request.action === 'correct_selection') {
+        handleCorrection(request.text)
+            .then(result => sendResponse({ success: true, data: result }))
+            .catch(error => sendResponse({ success: false, error: error.message, code: error.code }));
+        return true;
+    } else if (request.action === 'translate_selection') {
         handleTranslation(request.text, request.targetLang)
             .then(result => sendResponse({ success: true, data: result }))
             .catch(error => sendResponse({ success: false, error: error.message, code: error.code }));
@@ -133,6 +197,17 @@ async function handleTranslation(text, targetLang) {
     }
 
     return await apiClient.translate(text, targetLang);
+}
+
+async function handleCorrection(text) {
+    await stateManager.loadState();
+    const provider = stateManager.state.apiProvider;
+    if (provider !== 'openai' && provider !== 'gemini') {
+        const error = new Error(chrome.i18n.getMessage('errorInlineCorrectNeedsKey'));
+        error.code = 'CHROME_AI_WRONG_CONTEXT';
+        throw error;
+    }
+    return await apiClient.correct(text, 'auto');
 }
 
 async function speakText(text, lang) {

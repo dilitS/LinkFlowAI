@@ -88,15 +88,15 @@ describe('ChromeAIProvider language validation', () => {
         expect(calledWith.expectedOutputs[0].languages).toContain('ja');
     });
 
-    it('throws when model reports unavailable for language', async () => {
+    it('throws LANGUAGE_UNSUPPORTED when only the language is unavailable', async () => {
         globalThis.LanguageModel = {
-            availability: vi.fn().mockResolvedValue('unavailable'),
+            availability: vi.fn(async (opts) => (opts ? 'unavailable' : 'available')),
             create: vi.fn()
         };
         const provider = new ChromeAIProvider();
         await expect(
             provider.generateText({ prompt: 'test', inputLang: 'pl', outputLang: 'pl' })
-        ).rejects.toMatchObject({ code: CHROME_AI_ERRORS.UNAVAILABLE });
+        ).rejects.toMatchObject({ code: CHROME_AI_ERRORS.LANGUAGE_UNSUPPORTED, lang: 'pl' });
     });
 
     it('lists known supported languages', () => {
@@ -200,9 +200,16 @@ describe('ChromeAIProvider.run', () => {
         expect(create.mock.calls[0][0].expectedInputs[0].languages).toEqual(['en', 'es']);
     });
 
+    it('reports UNAVAILABLE (not a language problem) when the model itself is missing', async () => {
+        globalThis.LanguageModel = { availability: vi.fn().mockResolvedValue('unavailable'), create: vi.fn() };
+        const provider = new ChromeAIProvider();
+        await expect(provider.run({ kind: 'correct', sourceLang: 'en', targetLang: 'en', prompt: 'fix' }))
+            .rejects.toMatchObject({ code: CHROME_AI_ERRORS.UNAVAILABLE });
+    });
+
     it('blocks correct for unsupported Prompt API language', async () => {
         globalThis.LanguageModel = {
-            availability: vi.fn().mockResolvedValue('unavailable'),
+            availability: vi.fn(async (opts) => (opts ? 'unavailable' : 'available')),
             create: vi.fn()
         };
         const provider = new ChromeAIProvider();
@@ -211,6 +218,60 @@ describe('ChromeAIProvider.run', () => {
             sourceLang: 'pl',
             targetLang: 'pl',
             prompt: 'fix'
-        })).rejects.toMatchObject({ code: CHROME_AI_ERRORS.UNAVAILABLE });
+        })).rejects.toMatchObject({ code: CHROME_AI_ERRORS.LANGUAGE_UNSUPPORTED, lang: 'pl' });
+    });
+
+    it('detects the language for correct with auto and answers in it', async () => {
+        globalThis.LanguageDetector = {
+            availability: vi.fn().mockResolvedValue('available'),
+            create: vi.fn().mockResolvedValue({
+                detect: vi.fn().mockResolvedValue([{ detectedLanguage: 'de', confidence: 0.9 }]),
+                destroy: vi.fn()
+            })
+        };
+        const create = vi.fn().mockResolvedValue({ prompt: vi.fn().mockResolvedValue('ok'), destroy: vi.fn() });
+        globalThis.LanguageModel = { availability: vi.fn().mockResolvedValue('available'), create };
+
+        const provider = new ChromeAIProvider();
+        await provider.run({ kind: 'correct', text: 'Gutn Tag', sourceLang: 'auto', targetLang: 'auto', prompt: 'fix' });
+
+        const args = create.mock.calls[0][0];
+        expect(args.expectedInputs[0].languages).toEqual(['en', 'de']);
+        expect(args.expectedOutputs[0].languages).toEqual(['de']);
+    });
+});
+
+describe('ChromeAIProvider.planPromptLanguages', () => {
+    const onlyEnglish = vi.fn(async (opts) => {
+        if (!opts) return 'available';
+        const { expectedInputs, expectedOutputs } = opts;
+        const langs = [...expectedInputs[0].languages, ...expectedOutputs[0].languages];
+        return langs.every(l => ['en', 'es'].includes(l)) ? 'available' : 'unavailable';
+    });
+
+    it('pivots unsupported input through the Translator and falls back to English output', async () => {
+        globalThis.LanguageModel = { availability: onlyEnglish, create: vi.fn() };
+        const translate = vi.fn().mockResolvedValue('a cat on a roof');
+        globalThis.Translator = {
+            availability: vi.fn().mockResolvedValue('available'),
+            create: vi.fn().mockResolvedValue({ translate, destroy: vi.fn() })
+        };
+
+        const plan = await new ChromeAIProvider().planPromptLanguages({ text: 'kot na dachu', sourceLang: 'pl', targetLang: 'pl' });
+
+        expect(plan).toEqual({ text: 'a cat on a roof', inputLang: 'en', outputLang: 'en', inputTranslated: true, outputFallback: true });
+        expect(translate).toHaveBeenCalledWith('kot na dachu');
+    });
+
+    it('keeps supported languages untouched', async () => {
+        globalThis.LanguageModel = { availability: onlyEnglish, create: vi.fn() };
+        const plan = await new ChromeAIProvider().planPromptLanguages({ text: 'un gato', sourceLang: 'es', targetLang: 'es' });
+        expect(plan).toMatchObject({ text: 'un gato', inputLang: 'es', outputLang: 'es', inputTranslated: false, outputFallback: false });
+    });
+
+    it('reports LANGUAGE_UNSUPPORTED when the input cannot be pivoted', async () => {
+        globalThis.LanguageModel = { availability: onlyEnglish, create: vi.fn() };
+        await expect(new ChromeAIProvider().planPromptLanguages({ text: 'kot', sourceLang: 'pl', targetLang: 'en' }))
+            .rejects.toMatchObject({ code: CHROME_AI_ERRORS.LANGUAGE_UNSUPPORTED, lang: 'pl' });
     });
 });

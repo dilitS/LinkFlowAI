@@ -118,6 +118,10 @@ try {
         for (const jsFile of cs.js || []) checkRef(jsFile, 'content_script JS');
         for (const cssFile of cs.css || []) checkRef(cssFile, 'content_script CSS');
     }
+    // Injected on demand by lib/content-injection.js.
+    for (const file of ['content/content.js', 'content/content.css', 'assets/css/inter.css', 'lib/content-injection.js']) {
+        checkRef(file, 'injected content script');
+    }
 } finally {
     fs.rmSync(tmpDir, { recursive: true, force: true });
 }

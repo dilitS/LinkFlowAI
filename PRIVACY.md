@@ -84,12 +84,14 @@ browser data removes it.
 | Permission | Why the extension needs it |
 | --- | --- |
 | `storage` | Save your settings, API keys, history, and voice preferences locally. Keys and history are isolated to trusted extension contexts. |
-| `activeTab` | Know the current tab so OCR can capture the visible area. |
+| `activeTab` | Act on the current tab only after you click the extension, a right-click menu item or OCR, e.g. to show the result tooltip or capture the selected screen area. |
+| `scripting` | Insert the result-tooltip script into that tab when you use one of those actions. |
+| `contextMenus` | Add Translate, Correct and OCR items to the right-click menu. |
 | `clipboardWrite` | Copy a result to your clipboard when you press the Copy button. |
 | `tts` | List and play Chrome TTS voices for the text-to-speech feature. |
 | `sidePanel` | Open the LingFlow workspace in the browser side panel. |
 | Host access to the AI endpoints above | Send your request directly to the AI provider you selected. |
-| Content script on `http://` and `https://` pages | Show the quick-translate button and inline result tooltip on web pages where you select text. Does not inject on local files, extensions, or browser-internal pages. |
+| Optional: access to all `http://` and `https://` sites | Only if you turn on "Show translate button when you select text" in Settings. It lets the quick-translate button appear on pages as you select text. Turning the option off removes the access. Without it, LingFlow never runs on a page until you invoke it. |
 
 ## 6. Data retention
 

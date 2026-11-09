@@ -47,6 +47,11 @@ test.describe('LingFlow AI Extension', () => {
             }
         }
 
+        // Injected on demand (activeTab + scripting) instead of manifest content_scripts.
+        for (const file of ['content/content.js', 'content/content.css', 'assets/css/inter.css']) {
+            expect(fs.existsSync(path.join(extensionPath, file)), `Missing injected file: ${file}`).toBe(true);
+        }
+
         if (manifest.background?.service_worker) {
             const swPath = path.join(extensionPath, manifest.background.service_worker);
             expect(fs.existsSync(swPath), `Missing SW: ${manifest.background.service_worker}`).toBe(true);

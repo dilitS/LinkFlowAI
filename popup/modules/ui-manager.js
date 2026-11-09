@@ -70,8 +70,10 @@ export function selectPromptCategory(category) {
     populatePromptStyles(category, savedType);
 }
 
+const MODES = ['translate', 'correct', 'prompt'];
+
 function normalizeMode(mode) {
-    return mode === 'prompt' ? 'prompt' : 'translate';
+    return MODES.includes(mode) ? mode : 'translate';
 }
 
 /**
@@ -96,12 +98,23 @@ export function switchMode(mode) {
     elements.actionBtn.className = `relative z-10 text-white text-sm font-bold uppercase tracking-wider py-3.5 px-12 rounded-full transition-all hover:scale-105 active:scale-95 group ${MODE_COLORS[currentMode].btn} ${MODE_COLORS[currentMode].shadow}`;
     btnSpan.textContent = MODE_COLORS[currentMode].text;
 
+    // Correction works in the text's own language: no target, no swap.
+    const isCorrect = currentMode === 'correct';
+    elements.targetLang.parentElement?.classList.toggle('hidden', isCorrect);
+    elements.swapLangBtn.classList.toggle('hidden', isCorrect);
+    elements.sourceLang.title = isCorrect ? (chrome.i18n.getMessage('correctionLangHint') || '') : '';
+
     // Update UI visibility
     if (currentMode === 'translate') {
         elements.promptOptions.classList.add('hidden');
         elements.ocrBtn.style.display = 'flex';
         elements.inputText.placeholder = chrome.i18n.getMessage("inputPlaceholder");
         elements.outputLabel.textContent = chrome.i18n.getMessage("outputLabel");
+    } else if (currentMode === 'correct') {
+        elements.promptOptions.classList.add('hidden');
+        elements.ocrBtn.style.display = 'none';
+        elements.inputText.placeholder = chrome.i18n.getMessage("inputPlaceholderCorrect");
+        elements.outputLabel.textContent = chrome.i18n.getMessage("correctMode");
     } else if (currentMode === 'prompt') {
         elements.promptOptions.classList.remove('hidden');
         elements.ocrBtn.style.display = 'none';
@@ -150,13 +163,16 @@ export function getPromptParameters() {
 /**
  * Show toast notification
  */
-export function showToast(msg) {
+let toastTimer = null;
+
+export function showToast(msg, duration = 2000) {
     const toast = elements.toast;
     toast.querySelector('span').innerText = msg;
     toast.classList.remove('translate-y-24', 'opacity-0');
-    setTimeout(() => {
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
         toast.classList.add('translate-y-24', 'opacity-0');
-    }, 2000);
+    }, duration);
 }
 
 /**

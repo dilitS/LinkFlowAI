@@ -1,5 +1,6 @@
 import { elements } from './dom-elements.js';
 import { showToast } from './ui-manager.js';
+import { ensureContentScript } from '../../lib/content-injection.js';
 
 /**
  * Handle OCR capture
@@ -26,6 +27,14 @@ export async function handleOCRCapture(apiClient, screenshotManager) {
 
         // Get OCR target lang from state or fallback to 'pl'
         const ocrLang = apiClient.stateManager.state.settings?.defaultTargetLang || 'pl';
+
+        // The content script is injected on demand (activeTab + scripting).
+        try {
+            await ensureContentScript(tab.id);
+        } catch {
+            showToast(chrome.i18n.getMessage('errorPageNotSupported'), 4000);
+            return;
+        }
 
         // Send message to content script to start selection
         await chrome.tabs.sendMessage(tab.id, {

@@ -2,7 +2,8 @@ import { elements } from './dom-elements.js';
 import { SUPPORTED_LANGUAGES, MODELS, getLanguageLabel } from './constants.js';
 import { escapeHtml } from '../../lib/sanitize.js';
 import { ChromeAIProvider, CHROME_AI_STATUS } from '../../lib/chrome-ai-provider.js';
-import { getCurrentMode } from './ui-manager.js';
+import { getCurrentMode, showToast } from './ui-manager.js';
+import { isSelectionButtonEnabled, enableSelectionButton, disableSelectionButton } from '../../lib/content-injection.js';
 import { updateToneVisibility } from './tone.js';
 
 /**
@@ -80,6 +81,31 @@ export function populateModels(provider, selectedModelId = null) {
 /**
  * Toggle settings panel
  */
+/**
+ * Opt-in floating button on text selection. Changes apply immediately: the
+ * permission prompt must run inside the click gesture.
+ */
+async function setupSelectionButtonToggle() {
+    const toggle = elements.selectionButtonToggle;
+    if (!toggle) return;
+    toggle.checked = await isSelectionButtonEnabled();
+
+    toggle.addEventListener('change', async () => {
+        try {
+            if (toggle.checked) {
+                const enabled = await enableSelectionButton();
+                toggle.checked = enabled;
+                if (!enabled) showToast(chrome.i18n.getMessage('permissionDenied'));
+            } else {
+                await disableSelectionButton();
+            }
+        } catch (error) {
+            console.error('Selection button toggle failed:', error);
+            toggle.checked = await isSelectionButtonEnabled();
+        }
+    });
+}
+
 export function toggleSettings() {
     elements.settingsView.classList.toggle('translate-y-full');
 }
@@ -193,7 +219,13 @@ export function loadSettingsToInputs(state) {
  */
 export function setupSettingsListeners(stateManager, showToast) {
     // Settings toggle
+    setupSelectionButtonToggle();
+
     elements.settingsBtn.addEventListener('click', toggleSettings);
+    // Error messages offer an "Open settings" shortcut (missing key etc.).
+    window.addEventListener('lingflow:open-settings', () => {
+        elements.settingsView.classList.remove('translate-y-full');
+    });
     elements.closeSettingsBtn.addEventListener('click', toggleSettings);
 
     // Handle API Provider Radio Change

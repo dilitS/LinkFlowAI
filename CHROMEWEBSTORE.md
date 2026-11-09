@@ -35,13 +35,14 @@ LingFlow AI provides AI-powered language assistance: translation, text correctio
 
 | Permission | Justification |
 |---|---|
-| `activeTab` | Access the current tab's content for inline translation of selected text |
+| `activeTab` | Run on the current tab only after the user clicks the extension, a context-menu item or OCR (inline result tooltip, screen-area capture) |
 | `sidePanel` | Provide a persistent side panel UI for translation and prompts |
 | `storage` | Store user preferences, API keys, and translation history locally |
-| `contextMenus` | Add "Translate with LingFlow AI" to the right-click context menu |
-| `offscreen` | Create offscreen documents for Chrome AI operations not available in service workers |
-| `scripting` | Inject content scripts for inline translation and text replacement |
-| Host permission `http://*/*`, `https://*/*` | Content scripts need access to web pages for inline translation features |
+| `contextMenus` | "Translate", "Correct" and "Translate screen area (OCR)" items in the right-click menu |
+| `scripting` | Inject the inline tooltip script into the active tab on user action (no content script runs by default) |
+| `clipboardWrite` | Copy results to the clipboard on the Copy button |
+| `tts` | Read results aloud with Chrome TTS voices |
+| Optional host permission `http://*/*`, `https://*/*` | Requested only when the user turns on "Show translate button when you select text" in Settings; removed again when it is turned off |
 
 ## Privacy Practices
 

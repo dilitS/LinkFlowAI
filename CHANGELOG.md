@@ -4,7 +4,16 @@ All notable changes to LingFlow AI will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- **Correct** tab: proofreading in the text's own language (auto-detected or chosen), with an inline red/green word diff and change count; Copy/TTS use the clean text
+- Right-click menu: Translate, Correct and Translate screen area (OCR)
+- `npm run eval`: golden cases in `evals/cases.json` run against the real Gemini/OpenAI API with heuristic checks, optional `--judge` scoring, Markdown + JSON reports in `evals/results/`
+- "Open settings" button on errors that are fixed in Settings (missing key, Chrome AI unavailable or language unsupported)
+
 ### Changed
+- No content script runs by default: it is injected on demand (`activeTab` + `scripting`). The floating selection button is opt-in in Settings and requests optional all-sites access, which is removed again when turned off
+- Chrome AI prompt generation pivots unsupported input (e.g. Polish) through the on-device Translator and writes the prompt in English, with a notice
+- Chrome AI distinguishes "model unavailable on this device" from "language not supported" (`CHROME_AI_LANGUAGE_UNSUPPORTED`, localized with the language name)
 - System prompts rewritten for 2026 models and moved to `lib/prompts.js`: XML-tagged rules, user text wrapped as data (no more answering instead of translating), minimal-edit proofreading, narrative image prompts with positive exclusions, video prompts with camera/audio/dialogue, structured coding-agent and design briefs
 - Gemini 3.x requests drop deprecated `temperature`/`topP`/`topK` and set `thinkingConfig.thinkingLevel` per operation; output cap raised to 8192 tokens because it includes thinking tokens (2000 could truncate or empty responses)
 - OpenAI GPT-5.x requests use `max_completion_tokens` and `reasoning_effort` instead of `max_tokens`/`temperature`

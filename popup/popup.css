@@ -115,6 +115,25 @@ body {
 }
 
 /* Streaming caret: blinking block appended while tokens stream in */
+/* Proofreading diff */
+.lf-diff-del {
+    margin-right: 2px;
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.12);
+    text-decoration: line-through;
+    text-decoration-color: rgba(252, 165, 165, 0.7);
+    border-radius: 3px;
+    padding: 0 1px;
+}
+
+.lf-diff-ins {
+    color: #6ee7b7;
+    background: rgba(16, 185, 129, 0.14);
+    text-decoration: none;
+    border-radius: 3px;
+    padding: 0 1px;
+}
+
 #output-container.is-streaming #output-text::after {
     content: '';
     display: inline-block;

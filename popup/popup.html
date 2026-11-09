@@ -63,6 +63,11 @@
                     data-mode="translate" role="tab" aria-selected="true" tabindex="0">
                     <i class="fa-solid fa-globe" aria-hidden="true"></i> <span data-i18n="translateMode">TRANSLATE</span>
                 </button>
+                <button id="btn-correct"
+                    class="mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-gray-500 hover:text-gray-300 transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase"
+                    data-mode="correct" role="tab" aria-selected="false" tabindex="-1">
+                    <i class="fa-solid fa-spell-check" aria-hidden="true"></i> <span data-i18n="correctMode">CORRECT</span>
+                </button>
                 <button id="btn-prompt"
                     class="mode-tab flex-1 py-1.5 text-[10px] font-bold rounded-lg text-gray-500 hover:text-gray-300 transition-all duration-200 flex justify-center items-center gap-2 tracking-wider uppercase"
                     data-mode="prompt" role="tab" aria-selected="false" tabindex="-1">
@@ -195,9 +200,10 @@
                 <div id="output-container"
                     class="bg-[#18181b] rounded-2xl p-4 border border-gray-800 relative transition-all duration-300 min-h-[100px] hover:border-gray-700 group">
                     <div class="flex justify-between items-start mb-3">
-                        <div class="min-w-0">
+                        <div class="min-w-0 flex items-center gap-2">
                             <span class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]" id="output-label"
                                 data-i18n="outputLabel">RESULT</span>
+                            <span id="output-meta" class="hidden text-[10px] font-semibold text-emerald-400"></span>
                         </div>
                         <div class="flex gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity">
                             <!-- Regenerate Button -->
@@ -301,6 +307,14 @@
                                 class="fa-solid fa-chevron-down absolute right-3 top-3.5 text-gray-500 text-xs pointer-events-none"></i>
                         </div>
                     </div>
+                    <label for="selection-button-toggle" class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" id="selection-button-toggle"
+                            class="mt-0.5 h-4 w-4 shrink-0 cursor-pointer accent-blue-500">
+                        <span class="flex flex-col gap-1">
+                            <span class="text-xs font-semibold text-gray-200" data-i18n="settingSelectionButton">Show translate button when you select text</span>
+                            <span class="text-[11px] leading-snug text-gray-500" data-i18n="settingSelectionButtonHint">Needs access to all websites. Without it, use the right-click menu.</span>
+                        </span>
+                    </label>
                 </div>
 
                 <div class="space-y-3">

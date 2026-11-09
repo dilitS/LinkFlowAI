@@ -1,19 +1,13 @@
 import { getCurrentMode, getSelectedPromptType, getPromptParameters, setLoading, showToast } from './ui-manager.js';
 import { getCurrentTone } from './tone.js';
 import { elements } from './dom-elements.js';
+import { getCurrentOutput, setOutputText, resetOutput, renderCorrection, renderError } from './output.js';
 
 const MAX_CHARS = 5000;
 
 // In-flight request state (module scoped).
 let isProcessing = false;
 let abortController = null;
-
-/**
- * Resolve the selected prompt type.
- */
-function resolvePromptType() {
-    return getSelectedPromptType();
-}
 
 /**
  * Update the live character counter and warn as the limit approaches.
@@ -36,6 +30,8 @@ export function resizeInputTextarea() {
 }
 
 function showOutputPlaceholder() {
+    resetOutput();
+    elements.outputText.classList.remove('whitespace-pre-wrap');
     elements.outputText.innerHTML = `<span class="italic text-gray-500">${chrome.i18n.getMessage('outputTextPlaceholder')}</span>`;
 }
 
@@ -63,7 +59,9 @@ async function runAction(apiClient, stateManager, force = false) {
     let firstChunk = true;
 
     setLoading(true, false);
+    resetOutput();
     if (elements.regenerateBtn) elements.regenerateBtn.disabled = true;
+    elements.outputText.classList.remove('whitespace-pre-wrap');
     elements.outputText.textContent = chrome.i18n.getMessage('processingText');
     elements.outputText.classList.remove('text-gray-200');
     elements.outputContainer.classList.add('animate-pulse');
@@ -78,7 +76,7 @@ async function runAction(apiClient, stateManager, force = false) {
             setStreamingState(true);
             setLoading(true, true);
         }
-        elements.outputText.textContent = accumulated;
+        setOutputText(accumulated);
     };
 
     const options = {
@@ -87,6 +85,9 @@ async function runAction(apiClient, stateManager, force = false) {
         tone,
         force,
         sourceLang: elements.sourceLang.value,
+        onNotice: (code) => {
+            if (code === 'PROMPT_OUTPUT_ENGLISH') showToast(chrome.i18n.getMessage('noticePromptEnglish'), 6000);
+        },
         onProgress: (pct) => {
             if (abortController?.signal.aborted) return;
             const label = chrome.i18n.getMessage('chromeAiDownloading') || 'Downloading AI model';
@@ -102,7 +103,9 @@ async function runAction(apiClient, stateManager, force = false) {
         let result;
         if (mode === 'prompt') {
             const promptOptions = { ...options, ...getPromptParameters() };
-            result = await apiClient.generatePrompt(text, targetLang, resolvePromptType(), promptOptions);
+            result = await apiClient.generatePrompt(text, targetLang, getSelectedPromptType(), promptOptions);
+        } else if (mode === 'correct') {
+            result = await apiClient.correct(text, elements.sourceLang.value, options);
         } else {
             const sourceLang = elements.sourceLang.value;
             const isSameLanguage = sourceLang !== 'auto' && sourceLang === targetLang;
@@ -120,18 +123,21 @@ async function runAction(apiClient, stateManager, force = false) {
             return;
         }
 
-        elements.outputText.textContent = result;
-        elements.outputText.classList.remove('italic', 'text-gray-500');
-        elements.outputText.classList.add('text-gray-200');
+        const correcting = mode === 'correct' || (mode === 'translate' && elements.sourceLang.value !== 'auto' && elements.sourceLang.value === targetLang);
+        if (correcting) {
+            renderCorrection(text, result);
+        } else {
+            setOutputText(result);
+        }
 
         stateManager.addToHistory({
             id: Date.now().toString(),
-            mode,
+            mode: correcting ? 'correct' : mode,
             sourceText: text,
             targetText: result,
             input: text,
             output: result,
-            targetLang,
+            targetLang: mode === 'correct' ? elements.sourceLang.value : targetLang,
             tone,
             timestamp: new Date().toISOString()
         });
@@ -141,8 +147,7 @@ async function runAction(apiClient, stateManager, force = false) {
             showToast(chrome.i18n.getMessage('toastStopped'));
         } else {
             console.error('Action failed:', error);
-            elements.outputText.textContent = `${chrome.i18n.getMessage('errorPrefix')}${error.message}`;
-            elements.outputText.classList.remove('italic', 'text-gray-500');
+            renderError(error.message, error.code);
             elements.outputContainer.classList.remove('surface-shake');
             void elements.outputContainer.offsetWidth;
             elements.outputContainer.classList.add('surface-shake');
@@ -252,15 +257,15 @@ export function setupTranslationListeners(apiClient, stateManager, ttsManager) {
 
     // Output tools
     elements.copyBtn.addEventListener('click', () => {
-        const text = elements.outputText.innerText.trim();
+        const text = getCurrentOutput().trim();
         if (!text) return;
         navigator.clipboard.writeText(text);
         showToast(chrome.i18n.getMessage('toastCopied'));
     });
 
     elements.outputTtsBtn.addEventListener('click', () => {
-        const text = elements.outputText.innerText;
-        if (!text || text.includes(chrome.i18n.getMessage('outputTextPlaceholder'))) return;
+        const text = getCurrentOutput();
+        if (!text) return;
 
         const icon = elements.outputTtsBtn.querySelector('i');
         icon.classList.add('speaking-icon');

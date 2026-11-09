@@ -60,7 +60,7 @@
         "message": "Detect Automatically"
     },
     "inputPlaceholderCorrect": {
-        "message": "Paste text to check..."
+        "message": "Paste or type text to proofread…"
     },
     "inputPlaceholderPrompt": {
         "message": "Describe what you want to generate..."
@@ -436,5 +436,62 @@
     },
     "chromeAiStatusCheckFailed": {
         "message": "Could not check Chrome AI availability."
+    },
+    "modeTextCorrect": {
+        "message": "Correct"
+    },
+    "correctionChanges": {
+        "message": "Changes: $COUNT$",
+        "placeholders": {
+            "count": {
+                "content": "$1",
+                "example": "3"
+            }
+        }
+    },
+    "correctionNoChanges": {
+        "message": "No changes needed"
+    },
+    "correctionLangHint": {
+        "message": "Language of the text"
+    },
+    "noticePromptEnglish": {
+        "message": "Gemini Nano doesn't support this language yet, so the prompt is in English (image and video models understand English best)."
+    },
+    "btnOpenSettings": {
+        "message": "Open settings"
+    },
+    "errorChromeAiLanguage": {
+        "message": "On-device Chrome AI (Gemini Nano) does not support $LANG$ for this feature yet. Add a free Gemini API key in Settings, or use English, Spanish, Japanese, German or French.",
+        "placeholders": {
+            "lang": {
+                "content": "$1",
+                "example": "Polish"
+            }
+        }
+    },
+    "settingSelectionButton": {
+        "message": "Show translate button when you select text"
+    },
+    "settingSelectionButtonHint": {
+        "message": "Needs access to all websites. Without it, use the right-click menu or the keyboard shortcut."
+    },
+    "ctxTranslate": {
+        "message": "Translate with LingFlow"
+    },
+    "ctxCorrect": {
+        "message": "Correct with LingFlow"
+    },
+    "ctxOcr": {
+        "message": "Translate text from a screen area (OCR)"
+    },
+    "errorInlineCorrectNeedsKey": {
+        "message": "Correcting on the page needs a Gemini or OpenAI key. With on-device AI, use the Correct tab in the LingFlow window."
+    },
+    "errorPageNotSupported": {
+        "message": "LingFlow can't run on this page (browser pages and the Chrome Web Store are protected)."
+    },
+    "permissionDenied": {
+        "message": "Permission was not granted."
     }
 }

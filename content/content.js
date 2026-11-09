@@ -1,4 +1,11 @@
 // LingFlow AI Content Script
+//
+// Injected on demand (context menu / OCR) or registered dynamically when the
+// user opts into the floating selection button, so it can run twice in the
+// same page. The guard keeps a single instance.
+(() => {
+if (globalThis.__lingflowContentLoaded) return;
+globalThis.__lingflowContentLoaded = true;
 
 let floatingBtn = null;
 let tooltip = null;
@@ -181,7 +188,13 @@ function init() {
 
     // Listen for messages from the background service worker.
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-        if (request.action === 'show_translation_result') {
+        if (request.action === 'lingflow_ping') {
+            sendResponse({ ok: true });
+            return false;
+        }
+        if (request.action === 'run_selection_action') {
+            runSelectionAction(request.kind, request.text);
+        } else if (request.action === 'show_translation_result') {
             showResultFromBackground(request.translation);
         } else if (request.action === 'show_translation_error') {
             showErrorFromBackground(request.error);
@@ -532,15 +545,62 @@ async function translateWithChromeAI(text, targetLang, onProgress) {
 
 async function handleTranslateClick(e) {
     e.stopPropagation();
+    floatingBtn.classList.add('pulsing');
+    try {
+        await runInlineAction('translate', floatingBtn.getBoundingClientRect());
+    } finally {
+        floatingBtn.classList.remove('pulsing');
+        hideFloatingButton();
+    }
+}
 
+/** Bounding rect of the current selection (or field), for tooltip placement. */
+function selectionRect() {
+    const active = document.activeElement;
+    if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) {
+        return active.getBoundingClientRect();
+    }
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0) {
+        const rect = sel.getRangeAt(0).getBoundingClientRect();
+        if (rect.width || rect.height) return rect;
+    }
+    return new DOMRect(window.innerWidth / 2 - 150, 80, 300, 0);
+}
+
+/** Text currently selected in the page or in a focused input/textarea. */
+function currentSelectedText() {
+    const active = document.activeElement;
+    if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA') && active.selectionStart !== active.selectionEnd) {
+        return active.value.slice(active.selectionStart, active.selectionEnd);
+    }
+    return window.getSelection()?.toString() || '';
+}
+
+/**
+ * Entry point for the context menu. Prefers the live selection (keeps line
+ * breaks) over Chrome's flattened `selectionText`.
+ */
+async function runSelectionAction(kind, fallbackText) {
+    const text = (currentSelectedText() || fallbackText || '').trim();
+    if (!text) return;
+    currentSelection = text;
+    await runInlineAction(kind === 'correct' ? 'correct' : 'translate', selectionRect());
+}
+
+/**
+ * Translate or correct `currentSelection` and show the result in the tooltip.
+ * @param {'translate'|'correct'} kind
+ * @param {DOMRect} anchorRect - viewport rect to attach the tooltip to
+ */
+async function runInlineAction(kind, anchorRect) {
     replaceContext = captureReplaceContext();
     const targetLang = await getTargetLang();
     currentResultLang = targetLang;
 
-    floatingBtn.classList.add('pulsing');
-    const btnRect = floatingBtn.getBoundingClientRect();
+    const btnRect = anchorRect;
     const anchorX = btnRect.left + window.scrollX;
-    const anchorY = btnRect.top + window.scrollY;
+    const anchorY = btnRect.bottom + window.scrollY + 10;
 
     renderTooltipLoading(chrome.i18n.getMessage('processingText') || 'Przetwarzanie...');
     showTooltip(anchorX, anchorY, btnRect);
@@ -554,7 +614,18 @@ async function handleTranslateClick(e) {
         } catch { /* default to chrome-ai */ }
 
         let result;
-        if (provider === 'chrome-ai') {
+        if (kind === 'correct') {
+            // Correction runs in the service worker with a cloud key; the
+            // on-device path lives in the popup's Correct tab.
+            const response = await withTimeout(
+                chrome.runtime.sendMessage({ action: 'correct_selection', text: currentSelection }),
+                BYOK_TRANSLATE_TIMEOUT_MS
+            );
+            if (!response?.success) {
+                throw new Error(response?.error || chrome.i18n.getMessage('communicationError'));
+            }
+            result = response.data;
+        } else if (provider === 'chrome-ai') {
             const downloadLabel = chrome.i18n.getMessage('chromeAiDownloading') || 'Downloading AI model';
             result = await translateWithChromeAI(currentSelection, targetLang, (pct) => {
                 renderTooltipLoading(`${downloadLabel}… ${pct}%`);
@@ -584,9 +655,6 @@ async function handleTranslateClick(e) {
             : (error?.message || chrome.i18n.getMessage('communicationError'));
         renderTooltipError(message);
         showTooltip(anchorX, anchorY, btnRect);
-    } finally {
-        floatingBtn.classList.remove('pulsing');
-        hideFloatingButton();
     }
 }
 
@@ -729,3 +797,4 @@ function renderTooltipError(error) {
 
 // Start
 init();
+})();

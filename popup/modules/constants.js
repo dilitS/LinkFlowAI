@@ -135,6 +135,13 @@ export const MODE_COLORS = {
         i18nKey: 'modeTextTranslate',
         get text() { return chrome.i18n?.getMessage('modeTextTranslate') || 'Translate'; }
     },
+    correct: {
+        btn: 'bg-emerald-600',
+        shadow: 'shadow-[0_0_20px_rgba(5,150,105,0.4)]',
+        icon: 'fa-spell-check',
+        i18nKey: 'modeTextCorrect',
+        get text() { return chrome.i18n?.getMessage('modeTextCorrect') || 'Correct'; }
+    },
     prompt: {
         btn: 'bg-orange-600',
         shadow: 'shadow-[0_0_20px_rgba(234,88,12,0.4)]',
