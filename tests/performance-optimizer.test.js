@@ -107,3 +107,32 @@ describe('PerformanceOptimizer retryWithBackoff', () => {
         expect(attempts).toBe(1);
     });
 });
+
+describe('session-backed response cache', () => {
+    it('survives a fresh optimizer (popup reopened) via chrome.storage.session', async () => {
+        const store = {};
+        globalThis.chrome = {
+            storage: {
+                session: {
+                    get: async (key) => ({ [key]: store[key] }),
+                    set: async (obj) => Object.assign(store, obj),
+                    remove: async (key) => { delete store[key]; }
+                }
+            }
+        };
+        try {
+            const first = new PerformanceOptimizer();
+            await first.setResponse('translate:{"text":"hi"}', 'cześć');
+
+            const second = new PerformanceOptimizer();
+            expect(await second.getResponse('translate:{"text":"hi"}')).toBe('cześć');
+            // Raw text never becomes a storage key.
+            expect(JSON.stringify(Object.keys(store.lingflowResponseCache))).not.toContain('hi');
+
+            await second.clearResponses();
+            expect(await new PerformanceOptimizer().getResponse('translate:{"text":"hi"}')).toBeNull();
+        } finally {
+            delete globalThis.chrome;
+        }
+    });
+});

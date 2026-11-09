@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { validateMessage, validateSender } from '../lib/message-validation.js';
+import { validateMessage, validateSender, MAX_TEXT_LENGTH } from '../lib/message-validation.js';
 
 const EXT_ID = 'test-extension-id';
 
@@ -72,7 +72,7 @@ describe('validateMessage — rejection cases', () => {
     it('rejects oversize text', () => {
         expect(validateMessage({
             action: 'translate_selection',
-            text: 'x'.repeat(5001),
+            text: 'x'.repeat(MAX_TEXT_LENGTH + 1),
             targetLang: 'pl'
         }, contentSender(), EXT_ID)).toMatchObject({ valid: false, code: 'INPUT_TOO_LONG' });
     });
@@ -141,7 +141,7 @@ describe('correct_selection', () => {
     });
 
     it('rejects text over the limit', () => {
-        expect(validateMessage({ action: 'correct_selection', text: 'x'.repeat(5001) }, contentSender(), EXT_ID))
+        expect(validateMessage({ action: 'correct_selection', text: 'x'.repeat(MAX_TEXT_LENGTH + 1) }, contentSender(), EXT_ID))
             .toMatchObject({ valid: false, code: 'INPUT_TOO_LONG' });
     });
 });

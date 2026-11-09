@@ -168,9 +168,10 @@ export function loadSettingsToInputs(state) {
     const provider = normalizeProvider(state.apiProvider);
     elements.apiProvider.value = provider;
 
-    // Update radios
+    // Update radios (programmatic changes fire no 'change' event, so announce it)
     const radio = document.querySelector(`input[name="api-provider-select"][value="${provider}"]`);
     if (radio) radio.checked = true;
+    window.dispatchEvent(new CustomEvent('lingflow:providerchange', { detail: provider }));
 
     populateModels(provider, state.selectedModel);
     // On-device tier has a single, fixed model — no manual selection.
@@ -192,7 +193,12 @@ export function loadSettingsToInputs(state) {
         }
     }
 
-    // Load language settings
+    // Privacy
+    const settings = state.settings || {};
+    if (elements.keysSessionOnly) elements.keysSessionOnly.checked = !!settings.keysSessionOnly;
+    if (elements.saveHistoryToggle) elements.saveHistoryToggle.checked = settings.saveHistory !== false;
+    if (elements.historyRetention) elements.historyRetention.value = String(settings.historyRetentionDays || 0);
+
     // Load language settings
     if (state.settings) {
         if (state.settings.defaultTargetLang) {
@@ -275,6 +281,9 @@ export function setupSettingsListeners(stateManager, showToast) {
             selectedModel: elements.modelSelect.value,
             settings: {
                 ...stateManager.state.settings,
+                keysSessionOnly: !!elements.keysSessionOnly?.checked,
+                saveHistory: elements.saveHistoryToggle ? elements.saveHistoryToggle.checked : true,
+                historyRetentionDays: Number(elements.historyRetention?.value || 0),
                 defaultTargetLang: elements.settingsTargetLang.value,
                 ocrTargetLang: elements.settingsTargetLang.value,
                 ttsEngine: elements.ttsEngine?.value || 'web',
@@ -309,6 +318,9 @@ export function setupSettingsListeners(stateManager, showToast) {
     elements.settingsTargetLang?.addEventListener('change', () => saveAllSettings(false));
     elements.modelSelect?.addEventListener('change', () => saveAllSettings(false));
     elements.ttsVoice?.addEventListener('change', () => saveAllSettings(false));
+    elements.keysSessionOnly?.addEventListener('change', () => saveAllSettings(false));
+    elements.saveHistoryToggle?.addEventListener('change', () => saveAllSettings(false));
+    elements.historyRetention?.addEventListener('change', () => saveAllSettings(false));
 
     elements.ttsLanguage?.addEventListener('change', async () => {
         await populateTtsVoices({

@@ -624,6 +624,10 @@ video {
   right: 0.5rem;
 }
 
+.right-2\.5 {
+  right: 0.625rem;
+}
+
 .right-3 {
   right: 0.75rem;
 }
@@ -778,6 +782,10 @@ video {
 
 .min-h-screen {
   min-height: 100vh;
+}
+
+.w-32 {
+  width: 8rem;
 }
 
 .w-4 {
@@ -1165,6 +1173,10 @@ video {
   padding: 0.25rem;
 }
 
+.p-2 {
+  padding: 0.5rem;
+}
+
 .p-3 {
   padding: 0.75rem;
 }
@@ -1300,6 +1312,10 @@ video {
 
 .pr-6 {
   padding-right: 1.5rem;
+}
+
+.pr-7 {
+  padding-right: 1.75rem;
 }
 
 .pt-1 {

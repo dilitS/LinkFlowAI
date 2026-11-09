@@ -75,3 +75,41 @@ describe('StateManager', () => {
         expect(calls.length).toBe(0);
     });
 });
+
+describe('history privacy', async () => {
+    const { pruneHistory } = await import('../lib/state-manager.js');
+    const day = 24 * 60 * 60 * 1000;
+    const now = Date.parse('2026-11-10T12:00:00Z');
+    const items = [
+        { id: 'new', timestamp: new Date(now - day).toISOString() },
+        { id: 'old', timestamp: new Date(now - 10 * day).toISOString() },
+        { id: 'old-pinned', pinned: true, timestamp: new Date(now - 40 * day).toISOString() }
+    ];
+
+    it('keeps everything when retention is 0', () => {
+        expect(pruneHistory(items, 0, now)).toHaveLength(3);
+    });
+
+    it('drops entries older than the retention but keeps pinned ones', () => {
+        expect(pruneHistory(items, 7, now).map(i => i.id)).toEqual(['new', 'old-pinned']);
+    });
+
+    it('does not record history when saving is turned off', async () => {
+        const sm = new StateManager();
+        sm.state.settings = { saveHistory: false };
+        await sm.addToHistory({ id: '1', input: 'a', output: 'b' });
+        expect(sm.state.history).toEqual([]);
+    });
+
+    it('keeps API keys off disk in session-only mode', () => {
+        const sm = new StateManager();
+        sm.state.geminiApiKey = 'secret';
+        sm.state.settings = { keysSessionOnly: true };
+        const plan = sm.storagePlan();
+        expect(plan.local.geminiApiKey).toBeNull();
+        expect(plan.session.geminiApiKey).toBe('secret');
+
+        sm.state.settings = { keysSessionOnly: false };
+        expect(sm.storagePlan()).toMatchObject({ local: { geminiApiKey: 'secret' }, session: null });
+    });
+});

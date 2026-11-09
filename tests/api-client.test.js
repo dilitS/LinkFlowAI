@@ -64,9 +64,9 @@ describe('APIClient.getEffectiveConfig', () => {
 describe('APIClient helpers', () => {
     const client = makeClient();
 
-    it('maps language codes to names with an English fallback', () => {
+    it('maps language codes to names', () => {
         expect(client.getLanguageName('pl')).toBe('Polish');
-        expect(client.getLanguageName('zz')).toBe('English');
+        expect(client.getLanguageName('zz')).toBe('zz');
     });
 });
 
@@ -116,8 +116,8 @@ describe('APIClient operation routing', () => {
         });
         client.optimizer = {
             generateCacheKey: () => Math.random().toString(),
-            getCache: () => null,
-            setCache: () => {},
+            getResponse: async () => null,
+            setResponse: async () => {},
             retryWithBackoff: (fn) => fn()
         };
         return { client, kinds, calls };
@@ -244,8 +244,8 @@ describe('Gemini SDK integration', () => {
         });
         client.optimizer = {
             generateCacheKey: () => Math.random().toString(),
-            getCache: () => null,
-            setCache: () => {},
+            getResponse: async () => null,
+            setResponse: async () => {},
             retryWithBackoff: (fn) => fn()
         };
         return client;
@@ -326,6 +326,90 @@ describe('Gemini SDK integration', () => {
         const client = makeGeminiClient();
         await expect(client.callGemini('system', 'prompt'))
             .rejects.toMatchObject({ status: 429, providerCode: 'RESOURCE_EXHAUSTED' });
+    });
+});
+
+describe('Resilience: truncation and retired models', () => {
+    function makeGemini(state = {}) {
+        const client = makeClient({ apiProvider: 'gemini', geminiApiKey: 'k', ...state });
+        client.optimizer = {
+            generateCacheKey: () => 'key',
+            getResponse: async () => null,
+            setResponse: vi.fn(async () => {}),
+            retryWithBackoff: (fn) => fn()
+        };
+        return client;
+    }
+
+    it('flags a partial answer cut at MAX_TOKENS and does not cache it', async () => {
+        mockModels.generateContent.mockResolvedValueOnce({ text: 'partial', candidates: [{ finishReason: 'MAX_TOKENS' }] });
+        const client = makeGemini();
+        const notices = [];
+        const out = await client.translate('Hello', 'pl', { onNotice: (c) => notices.push(c) });
+        expect(out).toBe('partial');
+        expect(notices).toEqual(['OUTPUT_TRUNCATED']);
+        expect(client.optimizer.setResponse).not.toHaveBeenCalled();
+    });
+
+    it('retries an empty MAX_TOKENS answer with less thinking and a bigger cap', async () => {
+        mockModels.generateContent
+            .mockResolvedValueOnce({ text: '', candidates: [{ finishReason: 'MAX_TOKENS' }] })
+            .mockResolvedValueOnce({ text: 'full answer', candidates: [{ finishReason: 'STOP' }] });
+        const client = makeGemini();
+        const out = await client.correct('tekst', 'pl');
+        expect(out).toBe('full answer');
+        const { config } = mockModels.generateContent.mock.calls.at(-1)[0];
+        expect(config.thinkingConfig.thinkingLevel).toBe('MINIMAL');
+        expect(config.maxOutputTokens).toBe(32768);
+    });
+
+    it('falls back to the default model when the selected one is retired', async () => {
+        const notFound = Object.assign(new Error('models/gemini-3.6-flash is not found for API version v1beta'), { status: 404 });
+        mockModels.generateContent
+            .mockRejectedValueOnce(notFound)
+            .mockResolvedValueOnce({ text: 'ok', candidates: [{ finishReason: 'STOP' }] });
+        const client = makeGemini({ selectedModel: 'gemini-3.6-flash' });
+        const notices = [];
+        const out = await client.translate('Hello', 'pl', { onNotice: (c, d) => notices.push([c, d]) });
+        expect(out).toBe('ok');
+        expect(client.stateManager.state.selectedModel).toBe(DEFAULT_MODELS.gemini);
+        expect(notices[0]).toEqual(['MODEL_FALLBACK', { from: 'gemini-3.6-flash', to: DEFAULT_MODELS.gemini }]);
+        expect(mockModels.generateContent.mock.calls.at(-1)[0].model).toBe(DEFAULT_MODELS.gemini);
+    });
+
+    it('does not treat ordinary 400 errors as a retired model', () => {
+        const client = makeGemini({ selectedModel: 'gemini-3.6-flash' });
+        const cfg = { provider: 'gemini', model: 'gemini-3.6-flash' };
+        expect(client.isModelUnavailable(Object.assign(new Error('Invalid argument'), { status: 400 }), cfg)).toBe(false);
+        expect(client.isModelUnavailable(Object.assign(new Error('model not found'), { status: 404 }), { provider: 'gemini', model: DEFAULT_MODELS.gemini })).toBe(false);
+    });
+});
+
+describe('OCR result parsing', () => {
+    const client = makeClient();
+
+    it('reads structured JSON output, with or without a code fence', () => {
+        expect(client.parseOCRResult('{"transcription":"Hello","translation":"Cześć"}'))
+            .toEqual({ transcription: 'Hello', translation: 'Cześć' });
+        expect(client.parseOCRResult('```json\n{"transcription":"A","translation":"B"}\n```'))
+            .toEqual({ transcription: 'A', translation: 'B' });
+    });
+
+    it('still understands the legacy header format', () => {
+        expect(client.parseOCRResult('TRANSCRIPTION:\nHi\n\nTRANSLATION:\nCześć'))
+            .toEqual({ transcription: 'Hi', translation: 'Cześć' });
+    });
+});
+
+describe('Input limits and language names', () => {
+    it('allows longer input for cloud providers than for on-device AI', () => {
+        const text = 'x'.repeat(12000);
+        expect(() => makeClient({ apiProvider: 'chrome-ai' }).validateInput(text)).toThrow();
+        expect(makeClient({ apiProvider: 'gemini' }).validateInput(text)).toBe(text);
+    });
+
+    it('never silently maps an unknown language code to English', () => {
+        expect(makeClient().getLanguageName('ga')).toBe('Irish');
     });
 });
 

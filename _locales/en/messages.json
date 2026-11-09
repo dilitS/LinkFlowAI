@@ -183,7 +183,13 @@
         "message": "API key required. Add your OpenAI or Gemini key in Settings."
     },
     "errorInputTooLong": {
-        "message": "Your text exceeds the 5000-character limit. Please shorten it."
+        "message": "Your text exceeds the $LIMIT$-character limit. Please shorten it.",
+        "placeholders": {
+            "limit": {
+                "content": "$1",
+                "example": "5000"
+            }
+        }
     },
     "errorChromeAiUnavailable": {
         "message": "On-device AI is unavailable here. Update Chrome, or pick OpenAI/Gemini with your own key in Settings."
@@ -493,5 +499,54 @@
     },
     "permissionDenied": {
         "message": "Permission was not granted."
+    },
+    "errorOutputTruncated": {
+        "message": "The model ran out of output space before answering. Try a shorter text."
+    },
+    "noticeOutputTruncated": {
+        "message": "The answer was cut off at the length limit. Try a shorter text for the full result."
+    },
+    "noticeModelFallback": {
+        "message": "$FROM$ is no longer available, so LingFlow switched to $TO$.",
+        "placeholders": {
+            "from": {
+                "content": "$1",
+                "example": "gemini-3.5-flash"
+            },
+            "to": {
+                "content": "$2",
+                "example": "gemini-3.5-flash-lite"
+            }
+        }
+    },
+    "settingKeysSessionOnly": {
+        "message": "Forget API keys when the browser closes"
+    },
+    "settingKeysSessionOnlyHint": {
+        "message": "Keys are kept in memory only, not on disk. You will paste them again after a restart."
+    },
+    "settingsPrivacyLabel": {
+        "message": "Privacy"
+    },
+    "settingSaveHistory": {
+        "message": "Save history of translations and prompts"
+    },
+    "settingHistoryRetention": {
+        "message": "Delete history entries older than"
+    },
+    "retentionNever": {
+        "message": "Never"
+    },
+    "retention1Day": {
+        "message": "1 day"
+    },
+    "retention7Days": {
+        "message": "7 days"
+    },
+    "retention30Days": {
+        "message": "30 days"
+    },
+    "retention90Days": {
+        "message": "90 days"
     }
 }

@@ -116,8 +116,8 @@ function makeClient(provider, model, key) {
     // Never serve cached answers in an eval and do not retry silently.
     client.optimizer = {
         generateCacheKey: () => '',
-        getCache: () => null,
-        setCache: () => {},
+        getResponse: async () => null,
+        setResponse: async () => {},
         retryWithBackoff: (fn) => fn()
     };
     return client;

@@ -4,6 +4,7 @@ import { setTone } from './tone.js';
 import { resizeInputTextarea } from './translation.js';
 import { setOutputText, renderCorrection } from './output.js';
 import { escapeHtml } from '../../lib/sanitize.js';
+import { performanceOptimizer } from '../../lib/performance-optimizer.js';
 
 let isHistoryOpen = false;
 let historyFilter = 'all';
@@ -259,6 +260,8 @@ export function setupHistoryListeners(stateManager, showToast) {
             e.stopPropagation();
             if (confirm(chrome.i18n.getMessage('confirmClearHistory'))) {
                 await stateManager.clearHistory();
+                // Cached responses contain the same texts.
+                await performanceOptimizer.clearResponses();
             }
         });
     }

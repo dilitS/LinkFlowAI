@@ -3,7 +3,11 @@ import { getCurrentTone } from './tone.js';
 import { elements } from './dom-elements.js';
 import { getCurrentOutput, setOutputText, resetOutput, renderCorrection, renderError } from './output.js';
 
-const MAX_CHARS = 5000;
+import { getInputLimit } from '../../lib/sanitize.js';
+
+function currentProvider() {
+    return document.querySelector('input[name="api-provider-select"]:checked')?.value || 'chrome-ai';
+}
 
 // In-flight request state (module scoped).
 let isProcessing = false;
@@ -15,6 +19,7 @@ let abortController = null;
 function updateCharCounter() {
     if (!elements.charCounter) return;
     const len = elements.inputText.value.length;
+    const MAX_CHARS = getInputLimit(currentProvider());
     elements.charCounter.textContent = `${len} / ${MAX_CHARS}`;
     elements.charCounter.classList.toggle('text-red-400', len > MAX_CHARS);
     elements.charCounter.classList.toggle('text-amber-400', len <= MAX_CHARS && len > MAX_CHARS * 0.9);
@@ -85,8 +90,10 @@ async function runAction(apiClient, stateManager, force = false) {
         tone,
         force,
         sourceLang: elements.sourceLang.value,
-        onNotice: (code) => {
+        onNotice: (code, detail) => {
             if (code === 'PROMPT_OUTPUT_ENGLISH') showToast(chrome.i18n.getMessage('noticePromptEnglish'), 6000);
+            if (code === 'OUTPUT_TRUNCATED') showToast(chrome.i18n.getMessage('noticeOutputTruncated'), 6000);
+            if (code === 'MODEL_FALLBACK') showToast(chrome.i18n.getMessage('noticeModelFallback', [detail?.from || '', detail?.to || '']), 7000);
         },
         onProgress: (pct) => {
             if (abortController?.signal.aborted) return;
@@ -167,8 +174,12 @@ async function runAction(apiClient, stateManager, force = false) {
  * Setup translation/action event listeners
  */
 export function setupTranslationListeners(apiClient, stateManager, ttsManager) {
-    // Initial counter state
+    // Initial counter state; the limit depends on the selected provider.
     updateCharCounter();
+    document.getElementsByName('api-provider-select').forEach(radio => {
+        radio.addEventListener('change', updateCharCounter);
+    });
+    window.addEventListener('lingflow:providerchange', updateCharCounter);
     resizeInputTextarea();
 
     // Action button doubles as a Stop control while processing.

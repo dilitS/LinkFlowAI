@@ -100,6 +100,17 @@ on your device until you clear history, change preferences, or uninstall. Any re
 by OpenAI or Google (when you use your own key) is governed by their respective policies
 linked above.
 
+You control local retention in **Settings → Privacy**:
+
+- **Save history** can be turned off; nothing new is then written to history.
+- **Delete history entries older than** 1, 7, 30 or 90 days (pinned entries are kept).
+- **Forget API keys when the browser closes** keeps keys in session memory only
+  (`chrome.storage.session`), never on disk.
+
+Recent results are cached for up to one hour in `chrome.storage.session` so reopening the
+popup does not repeat a request. This cache lives in memory, is wiped when the browser
+closes, and is cleared together with history.
+
 ## 7. Children
 
 LingFlow AI is a general-purpose productivity tool and is not directed at children under

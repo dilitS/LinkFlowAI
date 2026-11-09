@@ -387,6 +387,38 @@
                         <button id="save-settings-btn"
                             class="absolute right-2 top-2 bg-gray-700 hover:bg-white text-white hover:text-black text-[10px] font-bold uppercase px-3 py-1 rounded-lg transition-colors" data-i18n="btnSave">Save</button>
                     </div>
+                    <label for="keys-session-only" class="mt-3 flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" id="keys-session-only"
+                            class="mt-0.5 h-4 w-4 shrink-0 cursor-pointer accent-blue-500">
+                        <span class="flex flex-col gap-1">
+                            <span class="text-xs font-semibold text-gray-200" data-i18n="settingKeysSessionOnly">Forget API keys when the browser closes</span>
+                            <span class="text-[11px] leading-snug text-gray-500" data-i18n="settingKeysSessionOnlyHint">Keys are kept in memory only, not on disk. You will paste them again after a restart.</span>
+                        </span>
+                    </label>
+                </div>
+
+                <!-- Privacy -->
+                <div class="space-y-3 border-t border-gray-800 pt-4">
+                    <label class="text-xs font-bold text-gray-500 uppercase tracking-widest block" data-i18n="settingsPrivacyLabel">Privacy</label>
+                    <label for="save-history-toggle" class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" id="save-history-toggle" checked
+                            class="mt-0.5 h-4 w-4 shrink-0 cursor-pointer accent-blue-500">
+                        <span class="text-xs font-semibold text-gray-200" data-i18n="settingSaveHistory">Save history of translations and prompts</span>
+                    </label>
+                    <div class="flex items-center justify-between gap-3">
+                        <span class="text-xs text-gray-400" data-i18n="settingHistoryRetention">Delete history entries older than</span>
+                        <div class="relative w-32">
+                            <select id="history-retention"
+                                class="w-full bg-[#18181b] text-gray-200 text-xs font-medium border border-gray-700 rounded-xl p-2 pr-7 focus:border-blue-500 outline-none appearance-none cursor-pointer hover:bg-[#27272a]">
+                                <option value="0" data-i18n="retentionNever">Never</option>
+                                <option value="1" data-i18n="retention1Day">1 day</option>
+                                <option value="7" data-i18n="retention7Days">7 days</option>
+                                <option value="30" data-i18n="retention30Days">30 days</option>
+                                <option value="90" data-i18n="retention90Days">90 days</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down absolute right-2.5 top-2.5 text-gray-500 text-[10px] pointer-events-none"></i>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- TTS Settings -->

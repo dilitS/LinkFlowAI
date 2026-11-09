@@ -80,10 +80,10 @@ describe('buildGeneratePrompt', () => {
 });
 
 describe('buildOcrPrompt', () => {
-    it('keeps the format parseOCRResult relies on', () => {
+    it('asks for the JSON fields parseOCRResult reads', () => {
         const { systemInstruction } = buildOcrPrompt({ targetLangName: 'Polish' });
-        expect(systemInstruction).toContain('TRANSCRIPTION:');
-        expect(systemInstruction).toContain('TRANSLATION:');
+        expect(systemInstruction).toContain('"transcription"');
+        expect(systemInstruction).toContain('"translation"');
     });
 });
 
