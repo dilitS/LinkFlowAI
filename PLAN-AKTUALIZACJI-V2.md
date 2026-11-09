@@ -5,6 +5,9 @@
 > Cel: stabilne v2.0.0, publiczne repozytorium i paczka gotowa do Chrome Web Store  
 > Założenie wydania: Piper TTS nie blokuje v2.0.0; wraca jako osobny milestone po ustabilizowaniu podstawowych funkcji.
 
+> **Status (2026-11-09): dokument historyczny.** Sprinty 0–9 zostały zrealizowane, a checkboxy poniżej nie były na bieżąco odhaczane.
+> Aktualny stan i otwarte punkty są w [`ROADMAP.md`](ROADMAP.md), a szczegóły zmian w [`CHANGELOG.md`](CHANGELOG.md).
+
 ## Jak korzystać z planu
 
 - Każde zadanie kończy się spełnieniem sekcji **DoD** (Definition of Done).

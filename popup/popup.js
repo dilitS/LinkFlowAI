@@ -2,7 +2,6 @@
 import { StateManager } from '../lib/state-manager.js';
 import { APIClient } from '../lib/api-client.js';
 import { TTSManager } from '../lib/tts-manager.js';
-import { ScreenshotManager } from '../lib/screenshot-manager.js';
 
 // Import modules
 import { elements } from './modules/dom-elements.js';
@@ -18,7 +17,6 @@ import { initSessionMeta, renderSessionMeta } from './modules/session-meta.js';
 const stateManager = new StateManager();
 const apiClient = new APIClient(stateManager);
 const ttsManager = new TTSManager();
-const screenshotManager = new ScreenshotManager();
 
 /**
  * Initialize i18n translations
@@ -192,7 +190,7 @@ function setupEventListeners() {
     setupSettingsListeners(stateManager, showToast);
     setupHistoryListeners(stateManager, showToast);
     setupTranslationListeners(apiClient, stateManager, ttsManager);
-    setupOCRListeners(apiClient, screenshotManager, ttsManager);
+    setupOCRListeners(apiClient, ttsManager);
 
     // Input persistence
     elements.inputText.addEventListener('input', (e) => {

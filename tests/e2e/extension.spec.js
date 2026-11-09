@@ -203,25 +203,49 @@ test.describe('LingFlow AI Extension', () => {
         await page.close();
     });
 
-    test('content script does not break example.com', async () => {
+    // Hermetic page: example.com changed its markup (no <h1>) in Nov 2026 and
+    // asks not to be used for testing.
+    test('web pages load untouched: no content script by default', async () => {
+        await context.route('https://lingflow.test/**', route => route.fulfill({
+            status: 200,
+            contentType: 'text/html; charset=utf-8',
+            body: '<!doctype html><html><head><title>Fixture</title></head><body><h1>Fixture Page</h1><p>Select me</p></body></html>'
+        }));
+
         const page = await context.newPage();
         const errors = [];
-
         page.on('pageerror', err => errors.push(err.message));
 
-        await page.goto('https://example.com');
+        await page.goto('https://lingflow.test/');
         await page.waitForLoadState('domcontentloaded');
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(500);
 
-        const heading = await page.locator('h1').textContent();
-        expect(heading).toContain('Example Domain');
+        await expect(page.locator('h1')).toHaveText('Fixture Page');
 
-        const injectedErrors = errors.filter(e =>
-            e.includes('lingflow') || e.includes('LingFlow')
-        );
-        expect(injectedErrors).toEqual([]);
+        // Injection happens only on user action (context menu / OCR) or after
+        // opting into the selection button.
+        expect(await page.locator('#lingflow-floating-btn, #lingflow-tooltip').count()).toBe(0);
+        expect(errors.filter(e => /lingflow/i.test(e))).toEqual([]);
 
         await page.close();
+        await context.unroute('https://lingflow.test/**');
+    });
+
+    test('correct tab works in the text language only', async () => {
+        const popupPage = await context.newPage();
+        await popupPage.goto(`chrome-extension://${extensionId}/popup/popup.html`);
+        await popupPage.waitForLoadState('domcontentloaded');
+
+        await popupPage.click('#btn-correct');
+        await expect(popupPage.locator('#btn-correct')).toHaveAttribute('aria-selected', 'true');
+        await expect(popupPage.locator('#target-lang')).toBeHidden();
+        await expect(popupPage.locator('#swap-lang-btn')).toBeHidden();
+        await expect(popupPage.locator('#source-lang')).toBeVisible();
+
+        await popupPage.click('#btn-translate');
+        await expect(popupPage.locator('#target-lang')).toBeVisible();
+
+        await popupPage.close();
     });
 
     test('switching provider via radio buttons updates hidden select', async () => {

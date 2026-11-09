@@ -13,11 +13,19 @@ All notable changes to LingFlow AI will be documented in this file.
 - `npm run eval`: golden cases in `evals/cases.json` run against the real Gemini/OpenAI API with heuristic checks, optional `--judge` scoring, Markdown + JSON reports in `evals/results/`
 - "Open settings" button on errors that are fixed in Settings (missing key, Chrome AI unavailable or language unsupported)
 
+### Removed
+- Unused `lib/utils.js`, `lib/screenshot-manager.js` and unused `PerformanceOptimizer` helpers (debounce, throttle, lazyLoad, compression, batching, stats)
+
+### Fixed
+- E2E: the page test no longer depends on example.com (its markup changed in Nov 2026); it uses a hermetic fixture and asserts that no content script runs by default
+- E2E: new test for the Correct tab language controls
+
 ### Changed
 - Response cache is mirrored to `chrome.storage.session` (hashed keys), so it survives the popup closing and is shared with the side panel; clearing history clears it
 - Input limit per provider: 5,000 characters on-device, 30,000 with Gemini/OpenAI; translate/correct output cap raised to 16,384 tokens
 - OCR uses structured JSON output (Gemini `responseJsonSchema`, OpenAI `json_schema`) and high image resolution for small UI text, with the legacy text format as a fallback
 - Unknown language codes are named via `Intl.DisplayNames` instead of silently becoming English
+- README, CONTRIBUTING and ROADMAP describe the current features, permissions, privacy settings and eval workflow; the v2 plan is marked historical
 - No content script runs by default: it is injected on demand (`activeTab` + `scripting`). The floating selection button is opt-in in Settings and requests optional all-sites access, which is removed again when turned off
 - Chrome AI prompt generation pivots unsupported input (e.g. Polish) through the on-device Translator and writes the prompt in English, with a notice
 - Chrome AI distinguishes "model unavailable on this device" from "language not supported" (`CHROME_AI_LANGUAGE_UNSUPPORTED`, localized with the language name)

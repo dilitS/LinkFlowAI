@@ -5,7 +5,7 @@ import { ensureContentScript } from '../../lib/content-injection.js';
 /**
  * Handle OCR capture
  */
-export async function handleOCRCapture(apiClient, screenshotManager) {
+export async function handleOCRCapture(apiClient) {
     try {
         // Check if using free tier
         await apiClient.stateManager.loadState();
@@ -64,8 +64,8 @@ export function closeOCRModal() {
 /**
  * Setup OCR event listeners
  */
-export function setupOCRListeners(apiClient, screenshotManager, ttsManager) {
-    elements.ocrBtn.addEventListener('click', () => handleOCRCapture(apiClient, screenshotManager));
+export function setupOCRListeners(apiClient, ttsManager) {
+    elements.ocrBtn.addEventListener('click', () => handleOCRCapture(apiClient));
     elements.closeOcrModal.addEventListener('click', closeOCRModal);
 
     elements.copyTranscription.addEventListener('click', () => {
