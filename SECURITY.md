@@ -11,17 +11,18 @@
 
 If you discover a security vulnerability in LingFlow AI, please report it responsibly:
 
-1. **Do not** create a public GitHub issue
-2. Email the maintainer directly or use GitHub's private vulnerability reporting feature
-3. Include a description of the vulnerability, steps to reproduce, and potential impact
-4. Allow reasonable time for a fix before public disclosure
+1. Open a [GitHub issue](https://github.com/dilitS/LinkFlowAI/issues) titled "Security report" **without** exploit details, and ask
+   for a private channel; details are then exchanged privately
+2. Include a description of the impact, steps to reproduce and affected versions once in private
+3. Allow reasonable time for a fix before public disclosure
 
-We aim to acknowledge reports within 48 hours and provide a fix within 7 days for critical issues.
+This is a volunteer open-source project; response times are best effort.
+
 
 ## Security Considerations
 
 - API keys are stored in `chrome.storage.local` with `TRUSTED_CONTEXTS` access level
-- Content scripts do not have direct access to API keys
+- Content scripts do not have direct access to API keys and run only when the user invokes LingFlow on a page (or opts into the selection button)
 - All inter-script messages are validated against a schema with size limits
 - The extension requests minimal permissions
 - No remote code execution — all code is bundled locally

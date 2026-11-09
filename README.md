@@ -43,15 +43,11 @@ LingFlow AI supports two tiers:
 
 ## Installation
 
-### Chrome Web Store
-
-1. Visit the **LingFlow AI** listing *(link coming soon)*.
-2. Click **Add to Chrome**.
-3. Pin the extension for quick access.
+LingFlow AI is an open-source project distributed through GitHub only (it is not published in the Chrome Web Store).
 
 ### From a release ZIP
 
-1. Download `lingflow-ai-v2.0.0-rc.2.zip` from [GitHub Releases](https://github.com/dilitS/LinkFlowAI/releases).
+1. Download the latest `lingflow-ai-v<version>.zip` from [GitHub Releases](https://github.com/dilitS/LinkFlowAI/releases).
 2. Unzip to a folder.
 3. Open `chrome://extensions` → **Developer mode** → **Load unpacked** → select the folder.
 
@@ -187,7 +183,7 @@ Cases live in [`evals/cases.json`](evals/cases.json); reports go to `evals/resul
 - **Minimal permissions:** no access to websites by default; the optional all-sites access is only for the floating selection button.
 - **No telemetry** by LingFlow AI.
 
-Full policy: [PRIVACY.md](PRIVACY.md) · Contact: `privacy@lingflow.ai`
+Full policy: [PRIVACY.md](PRIVACY.md) · Questions: [GitHub issues](https://github.com/dilitS/LinkFlowAI/issues)
 
 ## Known limitations
 

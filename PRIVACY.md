@@ -1,6 +1,6 @@
 # Privacy Policy — LingFlow AI
 
-_Last updated: August 11, 2026_
+_Last updated: November 9, 2026_
 
 LingFlow AI ("the extension", "we", "us") is a browser extension that translates,
 corrects, and rewrites text and generates AI prompts. This policy explains exactly
@@ -119,12 +119,14 @@ LingFlow AI is a general-purpose productivity tool and is not directed at childr
 ## 8. Changes to this policy
 
 If this policy changes, the "Last updated" date above will change and the updated policy
-will be published at the same URL. Material changes will be reflected in the extension's
-store listing.
+will be published at the same URL. Material changes are also noted in the repository's
+[CHANGELOG](CHANGELOG.md).
 
 ## 9. Contact
 
-Questions or requests about privacy: **privacy@lingflow.ai**
+LingFlow AI is an open-source project without a company behind it. Questions or requests
+about privacy: open an issue at [github.com/dilitS/LinkFlowAI/issues](https://github.com/dilitS/LinkFlowAI/issues).
+Please do not paste API keys or personal texts into a public issue.
 
 ---
 
@@ -146,4 +148,4 @@ urządzeniu.
   przeglądania w tle.
 
 Pełna, wiążąca treść polityki znajduje się w wersji angielskiej powyżej. Kontakt:
-**privacy@lingflow.ai**.
+zgłoszenie na [GitHubie](https://github.com/dilitS/LinkFlowAI/issues) (bez wklejania kluczy API ani prywatnych tekstów).

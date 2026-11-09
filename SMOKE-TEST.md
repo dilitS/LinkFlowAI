@@ -1,6 +1,6 @@
 # LingFlow AI v2.0 — manual smoke test checklist
 
-Use a **clean Chrome profile** (or guest window) and the release ZIP from `releases/lingflow-ai-v2.0.0-rc.1.zip`.
+Use a **clean Chrome profile** (or guest window) and the release ZIP from `releases/lingflow-ai-v<version>.zip` (`npm run package`).
 
 ## Install
 
@@ -36,7 +36,7 @@ Use a **clean Chrome profile** (or guest window) and the release ZIP from `relea
 
 - [ ] Switch to OpenAI or Gemini, enter key, save
 - [ ] Translate works; tone pills visible
-- [ ] OCR capture returns transcription + translation
+- [ ] (optional) OCR capture returns transcription + translation
 - [ ] Stop button aborts streaming request
 
 ## Device without Chrome AI
@@ -47,7 +47,7 @@ Use a **clean Chrome profile** (or guest window) and the release ZIP from `relea
 
 - [ ] No console errors in popup, side panel, or example.com after a context-menu action
 - [ ] Right-click a selection → "Translate with LingFlow" shows the tooltip; "Correct with LingFlow" works with a cloud key and explains the key requirement with Chrome AI
-- [ ] Right-click a page → OCR item starts the area selection (cloud key)
+- [ ] (optional) Right-click a page → OCR item starts the area selection (cloud key)
 - [ ] Settings → "Show translate button…" asks for site access; the button appears after a page reload; turning it off removes access
 - [ ] Correct tab: proofreading shows red/green word diff and a change count; Copy copies the clean text
 - [ ] Chrome AI + Polish idea in Prompt tab: prompt is generated in English with a notice

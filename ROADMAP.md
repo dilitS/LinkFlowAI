@@ -16,12 +16,11 @@
 
 ## v2.0.0 — bramka wydania
 
-- [ ] Ręczny smoke test na czystym profilu Chrome (`SMOKE-TEST.md`), w tym OCR na prawdziwym kluczu
+- [ ] Ręczny smoke test na czystym profilu Chrome (`SMOKE-TEST.md`); OCR opcjonalnie
 - [ ] Bazowy raport `npm run eval -- --judge` zapisany do porównań
 - [x] CI zielone (`npm run verify`, package, E2E)
 - [ ] Podbicie wersji `2.0.0-rc.2` → `2.0.0` (manifest `version_name`, `package.json`, README, CHANGELOG)
-- [ ] Potwierdzenie `privacy@lingflow.ai`
-- [ ] GitHub Release + Chrome Web Store submission
+- [ ] GitHub Release z paczką ZIP (projekt open source, bez Chrome Web Store)
 - [ ] Tag `v2.0.0`
 
 ## Decyzje architektoniczne

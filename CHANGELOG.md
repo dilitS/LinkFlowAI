@@ -14,6 +14,7 @@ All notable changes to LingFlow AI will be documented in this file.
 - "Open settings" button on errors that are fixed in Settings (missing key, Chrome AI unavailable or language unsupported)
 
 ### Removed
+- Chrome Web Store submission guide and the non-working `privacy@lingflow.ai` contact: LingFlow AI is distributed via GitHub only; privacy and security questions go through GitHub issues
 - Unused `lib/utils.js`, `lib/screenshot-manager.js` and unused `PerformanceOptimizer` helpers (debounce, throttle, lazyLoad, compression, batching, stats)
 
 ### Fixed
